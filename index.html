@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
 *{
@@ -20,229 +20,145 @@ min-height:100vh;
 display:flex;
 justify-content:center;
 padding:40px 15px;
-overflow-x:hidden;
-transition:0.4s;
+transition:0.4s ease;
 }
 
-/* FLOATING BACKGROUND */
-
-body::before{
-content:"";
-position:fixed;
-width:600px;
-height:600px;
-background:radial-gradient(circle,#4facfe55,#00f2fe22);
-filter:blur(120px);
-top:-200px;
-left:-200px;
-animation:float 12s infinite alternate ease-in-out;
-z-index:-1;
-}
-
-@keyframes float{
-from{transform:translate(0,0);}
-to{transform:translate(200px,150px);}
-}
-
-/* AUTO THEME */
+/* AUTO DARK / LIGHT */
 
 @media (prefers-color-scheme: dark){
 body{
-background:#0f172a;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 }
 .card{
-background:rgba(255,255,255,0.07);
-border:1px solid rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.2);
 }
 }
 
 @media (prefers-color-scheme: light){
 body{
-background:#f1f5f9;
+background:linear-gradient(135deg,#e3f2fd,#f5f7fa);
 color:#111;
 }
 .card{
-background:rgba(255,255,255,0.8);
+background:rgba(255,255,255,0.65);
 border:1px solid rgba(255,255,255,0.9);
 }
 }
 
-/* CONTAINER */
-
 .container{
 width:100%;
-max-width:1100px;
+max-width:420px;
 }
 
-/* CARD BASE */
+/* CARD */
 
 .card{
-backdrop-filter:blur(25px);
-border-radius:30px;
-padding:30px;
-margin-bottom:30px;
-box-shadow:0 20px 50px rgba(0,0,0,0.15);
-position:relative;
-overflow:hidden;
+backdrop-filter:blur(20px);
+border-radius:28px;
+padding:25px;
+margin-bottom:25px;
+box-shadow:0 15px 35px rgba(0,0,0,0.15);
+transition:0.3s;
 }
 
-/* Animated Gradient Border */
-
-.card::before{
-content:"";
-position:absolute;
-inset:-2px;
-border-radius:32px;
-background:linear-gradient(45deg,#4facfe,#00f2fe,#8e2de2,#4facfe);
-background-size:300%;
-animation:borderMove 8s linear infinite;
-z-index:-1;
-}
-
-@keyframes borderMove{
-0%{background-position:0%;}
-100%{background-position:300%;}
-}
-
-/* PROFILE SECTION */
-
-.profile{
-display:flex;
-align-items:center;
-gap:25px;
-}
+/* PROFILE */
 
 .avatar{
-width:140px;
-height:140px;
+width:120px;
+height:120px;
 border-radius:50%;
 object-fit:cover;
+display:block;
+margin:0 auto 15px;
 }
 
-.profile-text h1{
-font-size:32px;
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.verify{
-color:#4facfe;
-font-size:18px;
+h1{
+text-align:center;
+font-weight:700;
+margin-bottom:8px;
+font-size:28px;
 }
 
 .subtitle{
+text-align:center;
+font-size:14px;
 opacity:0.8;
-margin-top:6px;
+margin-bottom:10px;
 }
 
-/* FEATURED WALLPAPER */
+/* SLIDER */
 
-.featured{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-align-items:center;
+.slider{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+scroll-behavior:smooth;
+gap:15px;
+padding-bottom:10px;
 }
 
-.featured img{
+.slider::-webkit-scrollbar{
+display:none;
+}
+
+.slide{
+flex:0 0 100%;
+scroll-snap-align:center;
+border-radius:22px;
+overflow:hidden;
+transition:0.4s ease;
+}
+
+.slide img{
 width:100%;
-border-radius:25px;
+display:block;
+border-radius:22px;
+}
+
+/* CONTROLS */
+
+.controls{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:15px;
+}
+
+.control-btn{
+width:45px;
+height:45px;
+border-radius:50%;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+color:white;
+font-size:18px;
+transition:0.3s;
+}
+
+.control-btn:hover{
+transform:scale(1.1);
 }
 
 /* DOWNLOAD BUTTON */
 
 .button{
-display:inline-block;
+display:block;
+text-align:center;
 margin-top:15px;
-padding:14px 25px;
+padding:14px;
 border-radius:50px;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-color:white;
 text-decoration:none;
 font-weight:600;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+color:white;
 transition:0.3s;
 }
 
 .button:hover{
-transform:scale(1.07);
-}
-
-/* APPS GRID */
-
-.apps{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:20px;
-}
-
-.app-card{
-padding:20px;
-border-radius:20px;
-background:rgba(255,255,255,0.08);
-text-align:center;
-transition:0.3s;
-}
-
-.app-card:hover{
-transform:translateY(-6px);
-}
-
-/* SOCIAL */
-
-.social-title{
-text-align:center;
-margin-bottom:20px;
-font-weight:600;
-}
-
-.social-icons{
-display:flex;
-justify-content:center;
-gap:20px;
-}
-
-.social-icons a{
-width:55px;
-height:55px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-color:white;
-font-size:22px;
-transition:0.3s;
-text-decoration:none;
-}
-
-.social-icons a:hover{
-transform:scale(1.2);
-}
-
-/* MOBILE OPTIMIZATION */
-
-@media(max-width:768px){
-
-.profile{
-flex-direction:column;
-text-align:center;
-}
-
-.featured{
-grid-template-columns:1fr;
-}
-
-.card{
-padding:22px;
-}
-
-.avatar{
-width:110px;
-height:110px;
-}
-
+transform:scale(1.05);
 }
 </style>
 </head>
@@ -251,52 +167,83 @@ height:110px;
 
 <div class="container">
 
-<!-- PROFILE -->
-<div class="card profile">
-<img src="wallpapers/avatar.jpg" class="avatar">
-<div class="profile-text">
-<h1>AT Design <span class="verify"><i class="fa-solid fa-circle-check"></i></span></h1>
-<div class="subtitle">Android Developer • UI Asset Designer</div>
-</div>
+<!-- PROFILE CARD -->
+<div class="card">
+<img src="wallpapers/avatar.jpg" class="avatar" alt="Avatar">
+<h1>AT Design</h1>
+<p class="subtitle">Android Developer • UI Asset Designer</p>
 </div>
 
-<!-- FEATURED WALLPAPER -->
-<div class="card featured">
-<div>
-<h2>Featured Wallpaper</h2>
-<p>Premium Abstract Collection</p>
-<a href="wallpapers/wallpaper1.png" download class="button">Download</a>
-</div>
+<!-- WALLPAPER CARD -->
+<div class="card">
+<h2 style="margin-bottom:15px;">Featured Wallpapers</h2>
+
+<div class="slider" id="slider">
+
+<div class="slide">
 <img src="wallpapers/wallpaper1.png">
 </div>
 
-<!-- APPS GRID -->
-<div class="card">
-<h2 style="margin-bottom:20px;">My Apps</h2>
-<div class="apps">
-
-<div class="app-card">App One</div>
-<div class="app-card">App Two</div>
-<div class="app-card">App Three</div>
-<div class="app-card">App Four</div>
-
-</div>
+<div class="slide">
+<img src="wallpapers/wallpaper2.png">
 </div>
 
-<!-- SOCIAL -->
-<div class="card">
-<div class="social-title">Follow Us for News & Giveaways</div>
-<div class="social-icons">
-
-<a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-<a href="#"><i class="fa-brands fa-threads"></i></a>
-<a href="#"><i class="fa-brands fa-instagram"></i></a>
-<a href="#"><i class="fa-brands fa-telegram"></i></a>
-
+<div class="slide">
+<img src="wallpapers/wallpaper3.png">
 </div>
+
+<div class="slide">
+<img src="wallpapers/wallpaper4.png">
 </div>
 
 </div>
+
+<div class="controls">
+<button class="control-btn" onclick="prev()">◀</button>
+<button class="control-btn" onclick="next()">▶</button>
+</div>
+
+<a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="button">
+Download Current
+</a>
+
+</div>
+
+</div>
+
+<script>
+const slider = document.getElementById('slider');
+const slides = document.querySelectorAll('.slide');
+const downloadBtn = document.getElementById('downloadBtn');
+
+let current = 0;
+
+function updateDownload() {
+  const img = slides[current].querySelector("img");
+  downloadBtn.href = img.src;
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= slides.length) return;
+
+  current = index;
+
+  slider.scrollTo({
+    left: slides[current].offsetLeft,
+    behavior: "smooth"
+  });
+
+  updateDownload();
+}
+
+function next() {
+  goToSlide(current + 1);
+}
+
+function prev() {
+  goToSlide(current - 1);
+}
+</script>
 
 </body>
 </html>
