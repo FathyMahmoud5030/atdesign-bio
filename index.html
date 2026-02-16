@@ -22,25 +22,25 @@
             --liquid-shadow-in: inset 0 2px 10px rgba(255, 255, 255, 0.05);
             
             --text-main: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7); /* أوضح قليلاً في الدارك */
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --text-accent: #00d2ff; /* اللون الفاتح المشع للدارك مود */
             --theme-icon: '\f185';
         }
 
         :root[data-theme="light"] {
-            --bg-base: #eef2f6; /* لون خلفية أغمق سنة صغيرة لإبراز الكروت */
+            --bg-base: #eef2f6;
             --bg-gradient-1: rgba(0, 153, 255, 0.12);
             --bg-gradient-2: rgba(0, 210, 255, 0.15);
             
-            /* تعديل مهم: خلفية صلبة أكثر لقراءة ممتازة */
             --liquid-bg: rgba(255, 255, 255, 0.85); 
             --liquid-border-top: rgba(255, 255, 255, 1);
             --liquid-border-bottom: rgba(0, 0, 0, 0.04);
             --liquid-shadow-out: 0 15px 35px rgba(0, 0, 0, 0.06);
             --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.8);
             
-            /* تعديل الألوان لتباين أقوى */
-            --text-main: #0a0d14; /* أسود صريح */
-            --text-muted: #4a5568; /* رصاصي داكن صلب */
+            --text-main: #0a0d14;
+            --text-muted: #4a5568;
+            --text-accent: #005bb5; /* أزرق داكن قوي عشان يكون مقروء على الأبيض */
             --theme-icon: '\f186';
         }
 
@@ -112,11 +112,16 @@
         }
 
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .verify-badge { color: var(--primary); font-size: 18px; }
+        
+        /* علامة التوثيق بقت بتاخد اللون المخصص اللي بيتغير حسب الثيم */
+        .verify-badge { color: var(--text-accent); font-size: 18px; }
 
         .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
-        .bio-sub { font-size: 14px; color: var(--primary); font-weight: 600; letter-spacing: 0.5px; }
+        
+        /* لون الكلمة دي بقى بيتغير من الفاتح للغامق حسب وضع الشاشة */
+        .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
+        
         .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
         .bio-tags i { font-size: 15px; }
 
@@ -152,7 +157,6 @@
         .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 24px 12px; gap: 12px; }
         
         .app-link:hover { transform: translateY(-4px) scale(1.02); }
-        /* أنيميشن الأيقونة عند اللمس */
         .app-link:hover .app-icon-wrapper { transform: scale(1.1); }
         
         .app-icon-wrapper { 
@@ -165,12 +169,12 @@
         .app-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .app-icon-wrapper i { font-size: 24px; }
 
-        /* === Brand Colors & Tints (الروح الجديدة للأيقونات) === */
+        /* === Brand Colors & Tints === */
         .brand-play { background: rgba(0, 210, 255, 0.15); color: #00d2ff; }
         .brand-gumroad { background: rgba(255, 42, 133, 0.15); color: #ff2a85; }
         .brand-kofi { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; }
         .brand-paypal { background: rgba(0, 112, 186, 0.15); color: #0070ba; }
-        .brand-apple { background: rgba(130, 130, 130, 0.15); color: var(--text-main); } /* يتغير للأسود في الفاتح والأبيض في الغامق */
+        .brand-apple { background: rgba(130, 130, 130, 0.15); color: var(--text-main); } 
 
         .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--text-main); }
         .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
