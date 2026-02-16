@@ -1,330 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AT Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AT Design | Portfolio</title>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-}
+    <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.08);
+        }
 
-html{
-scroll-behavior:smooth;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-body{
-min-height:100vh;
-display:flex;
-justify-content:center;
-padding:80px 20px;
-background:#0c111b;
-color:white;
-overflow-x:hidden;
-}
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+            background: var(--bg-color);
+            color: white;
+            overflow-x: hidden;
+        }
 
-body::before{
-content:"";
-position:fixed;
-width:800px;
-height:800px;
-background:radial-gradient(circle,#4facfe14,transparent 60%);
-top:-300px;
-right:-200px;
-filter:blur(140px);
-z-index:-1;
-}
+        /* إضاءة خلفية ناعمة جداً */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.15), transparent 60%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(120px);
+            z-index: -1;
+        }
 
-.container{
-width:100%;
-max-width:880px;
-}
+        .container {
+            width: 100%;
+            max-width: 500px; /* مقاس مثالي للـ Bio Links */
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-.card{
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(40px) saturate(160%);
--webkit-backdrop-filter:blur(40px) saturate(160%);
-border:1px solid rgba(255,255,255,0.08);
-border-radius:22px;
-padding:28px;
-margin-bottom:32px;
-transition:all 0.4s cubic-bezier(.25,.8,.25,1);
-position:relative;
-}
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.card::after{
-content:"";
-position:absolute;
-inset:0;
-border-radius:22px;
-background:linear-gradient(120deg,#4facfe20,#00f2fe10,#4facfe20);
-opacity:0;
-transition:opacity 0.4s ease;
-pointer-events:none;
-}
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
 
-.card:hover::after{
-opacity:1;
-}
+        /* Profile Section */
+        .profile {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
 
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 30px 80px rgba(0,0,0,0.45);
-}
+        .avatar-container {
+            position: relative;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
 
-/* Profile */
-.profile{
-display:flex;
-align-items:center;
-gap:20px;
-}
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-color);
+        }
 
-.avatar{
-width:100px;
-height:100px;
-border-radius:50%;
-object-fit:cover;
-}
+        .profile h1 {
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-.profile-text h1{
-font-size:24px;
-display:flex;
-align-items:center;
-gap:6px;
-font-weight:600;
-}
+        .verify {
+            font-size: 16px;
+            color: var(--primary);
+        }
 
-.verify{
-font-size:13px;
-color:#4facfe;
-}
+        .subtitle {
+            opacity: 0.7;
+            font-size: 14px;
+            font-weight: 300;
+        }
 
-.subtitle{
-opacity:0.65;
-font-size:13px;
-margin-top:4px;
-}
+        /* Wallpaper Section */
+        .section-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
 
-/* ===== Wallpaper (المعدل فقط) ===== */
+        .wallpaper-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
 
-.wallpaper-wrapper{
-text-align:center;
-padding:20px 10px;
-}
+        .slide {
+            display: none;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
 
-/* هنا صغرنا مقاس الصورة */
-.slide{
-display:none;
-width:100%;
-max-width:320px;      /* كان 420 */
-border-radius:22px;
-margin:25px auto;
-opacity:0;
-transition:opacity 0.5s ease, transform 0.4s ease;
-box-shadow:0 25px 60px rgba(0,0,0,0.4);
-}
+        .slide.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
 
-/* تأثير خفيف يخليها شيك */
-.slide.active{
-display:block;
-opacity:1;
-transform:scale(0.97);
-}
+        .controls-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
 
-/* Navigation */
-.nav-container{
-margin-top:15px;
-display:flex;
-justify-content:center;
-gap:14px;
-}
+        .nav-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.nav-btn{
-width:38px;
-height:38px;
-border-radius:50%;
-border:1px solid rgba(255,255,255,0.08);
-background:rgba(255,255,255,0.05);
-color:white;
-cursor:pointer;
-transition:all 0.3s ease;
-}
+        .nav-btn:hover {
+            background: var(--hover-bg);
+            transform: scale(1.1);
+        }
 
-.nav-btn:hover{
-background:rgba(255,255,255,0.12);
-transform:scale(1.15);
-}
+        .btn-primary {
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
 
-/* Button */
-.button{
-display:inline-block;
-margin-top:16px;
-padding:9px 18px;
-border-radius:22px;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-color:white;
-text-decoration:none;
-font-weight:500;
-transition:all 0.3s ease;
-}
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
+        }
 
-.button:hover{
-transform:scale(1.05);
-}
+        /* Apps Links (Premium Stacked Style) */
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-/* Apps */
-.apps{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:14px;
-}
+        .premium-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
 
-.app-card{
-background:rgba(255,255,255,0.04);
-padding:16px;
-border-radius:16px;
-text-align:center;
-text-decoration:none;
-color:white;
-transition:all 0.3s ease;
-}
+        .premium-link .link-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            font-size: 15px;
+        }
 
-.app-card:hover{
-background:rgba(255,255,255,0.08);
-transform:translateY(-6px);
-}
+        .premium-link .link-info i {
+            font-size: 20px;
+            opacity: 0.9;
+            color: var(--primary);
+        }
 
-/* Social */
-.social-title{
-text-align:center;
-margin-bottom:18px;
-font-size:14px;
-opacity:0.7;
-}
+        .premium-link .arrow {
+            opacity: 0.5;
+            transition: transform 0.3s ease;
+        }
 
-.social-icons{
-display:flex;
-justify-content:center;
-gap:16px;
-}
+        .premium-link:hover {
+            background: var(--hover-bg);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
 
-.social-icons a{
-width:42px;
-height:42px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-background:rgba(255,255,255,0.05);
-color:white;
-font-size:17px;
-transition:all 0.3s ease;
-text-decoration:none;
-}
+        .premium-link:hover .arrow {
+            transform: translateX(4px);
+            opacity: 1;
+            color: var(--secondary);
+        }
 
-.social-icons a:hover{
-background:rgba(255,255,255,0.15);
-transform:scale(1.15);
-}
+        /* Social Icons */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
 
-@media(max-width:768px){
-.profile{
-flex-direction:column;
-text-align:center;
-}
-.card{
-padding:22px;
-}
-.avatar{
-width:80px;
-height:80px;
-}
-.slide{
-max-width:260px;   /* أصغر على الموبايل */
-}
-}
-</style>
+        .social-icons a {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+            border-color: transparent;
+        }
+
+        @media(max-width: 768px) {
+            .card { padding: 24px; }
+            .avatar { width: 90px; height: 90px; }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="card profile">
-<img src="wallpapers/avatar.jpg" class="avatar">
-<div class="profile-text">
-<h1>AT Design <span class="verify"><i class="fa-solid fa-circle-check"></i></span></h1>
-<div class="subtitle">Android Developer • UI Asset Designer</div>
-</div>
-</div>
+    <div class="card profile">
+        <div class="avatar-container">
+            <img src="wallpapers/avatar.jpg" class="avatar" alt="AT Design">
+        </div>
+        <h1>AT Design <span class="verify"><i class="fa-solid fa-circle-check"></i></span></h1>
+        <div class="subtitle">Android Developer • UI Asset Designer</div>
+    </div>
 
-<div class="card wallpaper-wrapper">
-<h2 style="font-size:16px;margin-bottom:15px;">Featured Wallpapers</h2>
+    <div class="card">
+        <div class="section-title">Wall of the day</div>
+        
+        <div class="wallpaper-container">
+            <img src="wallpapers/wallpaper1.png" class="slide active" alt="Wallpaper">
+            <img src="wallpapers/wallpaper2.png" class="slide" alt="Wallpaper">
+            <img src="wallpapers/wallpaper3.png" class="slide" alt="Wallpaper">
+            <img src="wallpapers/wallpaper4.png" class="slide" alt="Wallpaper">
+        </div>
 
-<img src="wallpapers/wallpaper1.png" class="slide active">
-<img src="wallpapers/wallpaper2.png" class="slide">
-<img src="wallpapers/wallpaper3.png" class="slide">
-<img src="wallpapers/wallpaper4.png" class="slide">
+        <div class="controls-wrapper">
+            <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+            <a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="btn-primary">
+                <i class="fa-solid fa-cloud-arrow-down" style="margin-right: 6px;"></i> Download
+            </a>
+            <button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
 
-<div class="nav-container">
-<button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-<button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-</div>
+    <div class="card">
+        <div class="section-title">My Apps & Work</div>
+        <div class="links-wrapper">
+            <a href="#" class="premium-link" target="_blank">
+                <div class="link-info">
+                    <i class="fa-brands fa-google-play"></i> App One Name
+                </div>
+                <i class="fa-solid fa-chevron-right arrow"></i>
+            </a>
+            
+            <a href="#" class="premium-link" target="_blank">
+                <div class="link-info">
+                    <i class="fa-brands fa-google-play"></i> App Two Name
+                </div>
+                <i class="fa-solid fa-chevron-right arrow"></i>
+            </a>
 
-<a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="button">
-Download Current
-</a>
-</div>
+            <a href="#" class="premium-link" target="_blank">
+                <div class="link-info">
+                    <i class="fa-solid fa-store"></i> Gumroad Assets
+                </div>
+                <i class="fa-solid fa-chevron-right arrow"></i>
+            </a>
 
-<div class="card">
-<h2 style="margin-bottom:15px;font-size:16px;">My Apps</h2>
-<div class="apps">
-<a href="PUT_PLAYSTORE_LINK_HERE" class="app-card" target="_blank">App One</a>
-<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Two</a>
-<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Three</a>
-<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Four</a>
-</div>
-</div>
+            <a href="#" class="premium-link" target="_blank">
+                <div class="link-info">
+                    <i class="fa-solid fa-mug-hot"></i> Buy me a coffee
+                </div>
+                <i class="fa-solid fa-chevron-right arrow"></i>
+            </a>
+        </div>
+    </div>
 
-<div class="card">
-<div class="social-title">Follow Us for News & Giveaways</div>
-<div class="social-icons">
-<a href="PUT_X_LINK_HERE" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-<a href="PUT_THREADS_LINK_HERE" target="_blank"><i class="fa-brands fa-threads"></i></a>
-<a href="PUT_INSTAGRAM_LINK_HERE" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-<a href="PUT_TELEGRAM_LINK_HERE" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-</div>
-</div>
+    <div class="card" style="padding: 20px;">
+        <div class="social-icons">
+            <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-threads"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+    </div>
 
 </div>
 
 <script>
-const slides=document.querySelectorAll(".slide");
-const downloadBtn=document.getElementById("downloadBtn");
-let current=Math.floor(Date.now()/(1000*60*60*24))%slides.length;
-showSlide(current);
+    const slides = document.querySelectorAll(".slide");
+    const downloadBtn = document.getElementById("downloadBtn");
+    
+    // حساب الـ Index بناءً على اليوم عشان تتغير كل 24 ساعة
+    let current = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % slides.length;
+    showSlide(current);
 
-function showSlide(index){
-slides.forEach(slide=>slide.classList.remove("active"));
-slides[index].classList.add("active");
-downloadBtn.href=slides[index].src;
-}
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+        downloadBtn.href = slides[index].src;
+    }
 
-function nextSlide(){
-current=(current+1)%slides.length;
-showSlide(current);
-}
+    function nextSlide() {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+    }
 
-function prevSlide(){
-current=(current-1+slides.length)%slides.length;
-showSlide(current);
-}
+    function prevSlide() {
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+    }
 </script>
 
 </body>
