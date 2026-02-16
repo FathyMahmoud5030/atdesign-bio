@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -20,83 +21,32 @@ min-height:100vh;
 display:flex;
 justify-content:center;
 padding:40px 15px;
-overflow-x:hidden;
-transition:0.4s;
-}
-
-/* FLOATING BACKGROUND */
-
-body::before{
-content:"";
-position:fixed;
-width:600px;
-height:600px;
-background:radial-gradient(circle,#4facfe55,#00f2fe22);
-filter:blur(120px);
-top:-200px;
-left:-200px;
-animation:float 12s infinite alternate ease-in-out;
-z-index:-1;
-}
-
-@keyframes float{
-from{transform:translate(0,0);}
-to{transform:translate(200px,150px);}
-}
-
-/* AUTO THEME */
-
-@media (prefers-color-scheme: dark){
-body{
-min-height:100vh;
-display:flex;
-justify-content:center;
-padding:40px 15px;
-overflow-x:hidden;
 background:
-radial-gradient(circle at 20% 30%, #4facfe33, transparent 40%),
-radial-gradient(circle at 80% 70%, #00f2fe33, transparent 40%),
+radial-gradient(circle at 20% 30%, #4facfe22, transparent 40%),
+radial-gradient(circle at 80% 70%, #00f2fe22, transparent 40%),
 linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
 }
-.card{
-background:rgba(255,255,255,0.07);
-border:1px solid rgba(255,255,255,0.1);
-}
-}
-
-@media (prefers-color-scheme: light){
-body{
-background:#f1f5f9;
-color:#111;
-}
-.card{
-background:rgba(255,255,255,0.8);
-border:1px solid rgba(255,255,255,0.9);
-}
-}
 
 /* CONTAINER */
-
 .container{
 width:100%;
 max-width:1100px;
 }
 
-/* CARD BASE */
-
+/* CARD */
 .card{
+background:rgba(255,255,255,0.06);
 backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,0.1);
 border-radius:30px;
 padding:30px;
 margin-bottom:30px;
-box-shadow:0 20px 50px rgba(0,0,0,0.15);
+box-shadow:0 20px 50px rgba(0,0,0,0.25);
 position:relative;
-overflow:hidden;
 }
 
 /* Animated Gradient Border */
-
 .card::before{
 content:"";
 position:absolute;
@@ -113,8 +63,7 @@ z-index:-1;
 100%{background-position:300%;}
 }
 
-/* PROFILE SECTION */
-
+/* PROFILE */
 .profile{
 display:flex;
 align-items:center;
@@ -137,7 +86,6 @@ gap:10px;
 
 .verify{
 color:#4facfe;
-font-size:18px;
 }
 
 .subtitle{
@@ -145,26 +93,49 @@ opacity:0.8;
 margin-top:6px;
 }
 
-/* FEATURED WALLPAPER */
-
-.featured{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-align-items:center;
+/* WALLPAPER SLIDER */
+.wallpaper-wrapper{
+text-align:center;
 }
 
-.featured img{
+.slider{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+}
+
+.slide{
+display:none;
+max-width:450px;
 width:100%;
 border-radius:25px;
 }
 
-/* DOWNLOAD BUTTON */
+.slide.active{
+display:block;
+}
+
+.nav-btn{
+width:50px;
+height:50px;
+border:none;
+border-radius:50%;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+color:white;
+font-size:20px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-btn:hover{
+transform:scale(1.15);
+}
 
 .button{
 display:inline-block;
-margin-top:15px;
-padding:14px 25px;
+margin-top:20px;
+padding:14px 28px;
 border-radius:50px;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
 color:white;
@@ -178,10 +149,9 @@ transform:scale(1.07);
 }
 
 /* APPS GRID */
-
 .apps{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 gap:20px;
 }
 
@@ -198,7 +168,6 @@ transform:translateY(-6px);
 }
 
 /* SOCIAL */
-
 .social-title{
 text-align:center;
 margin-bottom:20px;
@@ -229,28 +198,19 @@ text-decoration:none;
 transform:scale(1.2);
 }
 
-/* MOBILE OPTIMIZATION */
-
+/* MOBILE */
 @media(max-width:768px){
-
 .profile{
 flex-direction:column;
 text-align:center;
 }
-
-.featured{
-grid-template-columns:1fr;
-}
-
 .card{
 padding:22px;
 }
-
 .avatar{
 width:110px;
 height:110px;
 }
-
 }
 </style>
 </head>
@@ -268,14 +228,24 @@ height:110px;
 </div>
 </div>
 
-<!-- FEATURED WALLPAPER -->
-<div class="card featured">
-<div>
-<h2>Featured Wallpaper</h2>
-<p>Premium Abstract Collection</p>
-<a href="wallpapers/wallpaper1.png" download class="button">Download</a>
+<!-- WALLPAPER SECTION -->
+<div class="card wallpaper-wrapper">
+<h2>Featured Wallpapers</h2>
+
+<div class="slider">
+<button class="nav-btn" onclick="prevSlide()">❮</button>
+
+<img src="wallpapers/wallpaper1.png" class="slide active">
+<img src="wallpapers/wallpaper2.png" class="slide">
+<img src="wallpapers/wallpaper3.png" class="slide">
+<img src="wallpapers/wallpaper4.png" class="slide">
+
+<button class="nav-btn" onclick="nextSlide()">❯</button>
 </div>
-<img src="wallpapers/wallpaper1.png">
+
+<a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="button">
+Download Current
+</a>
 </div>
 
 <!-- APPS GRID -->
@@ -283,10 +253,21 @@ height:110px;
 <h2 style="margin-bottom:20px;">My Apps</h2>
 <div class="apps">
 
-<div class="app-card">App One</div>
-<div class="app-card">App Two</div>
-<div class="app-card">App Three</div>
-<div class="app-card">App Four</div>
+<a href="PUT_YOUR_PLAYSTORE_LINK_HERE" class="app-card" target="_blank">
+App One
+</a>
+
+<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">
+App Two
+</a>
+
+<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">
+App Three
+</a>
+
+<a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">
+App Four
+</a>
 
 </div>
 </div>
@@ -296,15 +277,55 @@ height:110px;
 <div class="social-title">Follow Us for News & Giveaways</div>
 <div class="social-icons">
 
-<a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-<a href="#"><i class="fa-brands fa-threads"></i></a>
-<a href="#"><i class="fa-brands fa-instagram"></i></a>
-<a href="#"><i class="fa-brands fa-telegram"></i></a>
+<a href="PUT_X_LINK_HERE" target="_blank">
+<i class="fa-brands fa-x-twitter"></i>
+</a>
+
+<a href="PUT_THREADS_LINK_HERE" target="_blank">
+<i class="fa-brands fa-threads"></i>
+</a>
+
+<a href="PUT_INSTAGRAM_LINK_HERE" target="_blank">
+<i class="fa-brands fa-instagram"></i>
+</a>
+
+<a href="PUT_TELEGRAM_LINK_HERE" target="_blank">
+<i class="fa-brands fa-telegram"></i>
+</a>
 
 </div>
 </div>
 
 </div>
+
+<script>
+
+const slides = document.querySelectorAll(".slide");
+const downloadBtn = document.getElementById("downloadBtn");
+let current = 0;
+
+/* اختيار خلفية حسب اليوم (تتغير كل 24 ساعة) */
+const todayIndex = Math.floor(Date.now() / (1000*60*60*24)) % slides.length;
+current = todayIndex;
+showSlide(current);
+
+function showSlide(index){
+slides.forEach(slide => slide.classList.remove("active"));
+slides[index].classList.add("active");
+downloadBtn.href = slides[index].src;
+}
+
+function nextSlide(){
+current = (current + 1) % slides.length;
+showSlide(current);
+}
+
+function prevSlide(){
+current = (current - 1 + slides.length) % slides.length;
+showSlide(current);
+}
+
+</script>
 
 </body>
 </html>
