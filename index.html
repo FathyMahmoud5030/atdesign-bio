@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
 
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -16,80 +15,73 @@ box-sizing:border-box;
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
 }
 
+/* Smooth Scroll Physics */
+html{
+scroll-behavior:smooth;
+}
+
 body{
 min-height:100vh;
 display:flex;
 justify-content:center;
-padding:60px 20px;
-background:#0f172a;
+padding:80px 20px;
+background:#0c111b;
 color:white;
 overflow-x:hidden;
 }
 
-/* Subtle Apple Background */
+/* Subtle Edge Lighting */
 body::before{
 content:"";
 position:fixed;
-width:700px;
-height:700px;
-background:radial-gradient(circle,#4facfe22,transparent 60%);
-top:-250px;
+width:800px;
+height:800px;
+background:radial-gradient(circle,#4facfe14,transparent 60%);
+top:-300px;
 right:-200px;
+filter:blur(140px);
 z-index:-1;
-filter:blur(120px);
 }
 
 /* Container */
 .container{
 width:100%;
-max-width:900px;
-animation:fadeIn 1.2s ease forwards;
-opacity:0;
+max-width:880px;
 }
 
-@keyframes fadeIn{
-to{opacity:1;}
-}
-
-/* Card */
+/* Liquid Glass Card */
 .card{
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(30px);
-border-radius:26px;
-padding:30px;
-margin-bottom:30px;
-transition:all 0.35s ease;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(40px) saturate(160%);
+-webkit-backdrop-filter:blur(40px) saturate(160%);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:22px;
+padding:28px;
+margin-bottom:32px;
+transition:all 0.4s cubic-bezier(.25,.8,.25,1);
 position:relative;
 }
 
-/* Hover Depth Effect */
-.card:hover{
-transform:translateY(-8px) scale(1.01);
-box-shadow:0 25px 60px rgba(0,0,0,0.4);
-}
-
-/* Soft Glow Border */
+/* Ultra Soft Border Glow */
 .card::after{
 content:"";
 position:absolute;
 inset:0;
-border-radius:26px;
-padding:1px;
-background:linear-gradient(90deg,#4facfe,#00f2fe,#4facfe);
-background-size:200%;
-animation:borderMove 6s linear infinite;
--webkit-mask:
-linear-gradient(#000 0 0) content-box,
-linear-gradient(#000 0 0);
--webkit-mask-composite:xor;
-mask-composite:exclude;
+border-radius:22px;
+background:linear-gradient(120deg,#4facfe20,#00f2fe10,#4facfe20);
+opacity:0;
+transition:opacity 0.4s ease;
 pointer-events:none;
-opacity:0.6;
 }
 
-@keyframes borderMove{
-0%{background-position:0%;}
-100%{background-position:200%;}
+.card:hover::after{
+opacity:1;
+}
+
+/* Hover Depth */
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 30px 80px rgba(0,0,0,0.45);
 }
 
 /* Profile */
@@ -100,27 +92,28 @@ gap:20px;
 }
 
 .avatar{
-width:110px;
-height:110px;
+width:100px;
+height:100px;
 border-radius:50%;
 object-fit:cover;
 }
 
 .profile-text h1{
-font-size:26px;
+font-size:24px;
 display:flex;
 align-items:center;
-gap:8px;
+gap:6px;
+font-weight:600;
 }
 
 .verify{
-font-size:14px;
+font-size:13px;
 color:#4facfe;
 }
 
 .subtitle{
-opacity:0.7;
-font-size:14px;
+opacity:0.65;
+font-size:13px;
 margin-top:4px;
 }
 
@@ -133,7 +126,7 @@ text-align:center;
 display:none;
 width:100%;
 max-width:420px;
-border-radius:20px;
+border-radius:18px;
 margin:auto;
 opacity:0;
 transition:opacity 0.5s ease;
@@ -144,56 +137,58 @@ display:block;
 opacity:1;
 }
 
+/* Navigation */
 .nav-container{
-margin-top:18px;
+margin-top:20px;
 display:flex;
 justify-content:center;
-gap:15px;
+gap:14px;
 }
 
 .nav-btn{
-width:42px;
-height:42px;
+width:40px;
+height:40px;
 border-radius:50%;
-border:none;
-background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.05);
 color:white;
 cursor:pointer;
 transition:all 0.3s ease;
 }
 
 .nav-btn:hover{
-background:rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.12);
 transform:scale(1.15);
 }
 
+/* Button */
 .button{
 display:inline-block;
 margin-top:18px;
-padding:12px 22px;
-border-radius:30px;
+padding:10px 20px;
+border-radius:22px;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
 color:white;
 text-decoration:none;
-font-weight:600;
+font-weight:500;
 transition:all 0.3s ease;
 }
 
 .button:hover{
-transform:scale(1.07);
+transform:scale(1.05);
 }
 
 /* Apps */
 .apps{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
+gap:14px;
 }
 
 .app-card{
-background:rgba(255,255,255,0.05);
-padding:18px;
-border-radius:18px;
+background:rgba(255,255,255,0.04);
+padding:16px;
+border-radius:16px;
 text-align:center;
 text-decoration:none;
 color:white;
@@ -201,40 +196,40 @@ transition:all 0.3s ease;
 }
 
 .app-card:hover{
+background:rgba(255,255,255,0.08);
 transform:translateY(-6px);
-background:rgba(255,255,255,0.1);
 }
 
 /* Social */
 .social-title{
 text-align:center;
 margin-bottom:18px;
-font-size:15px;
-opacity:0.8;
+font-size:14px;
+opacity:0.7;
 }
 
 .social-icons{
 display:flex;
 justify-content:center;
-gap:18px;
+gap:16px;
 }
 
 .social-icons a{
-width:45px;
-height:45px;
+width:42px;
+height:42px;
 display:flex;
 align-items:center;
 justify-content:center;
 border-radius:50%;
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.05);
 color:white;
-font-size:18px;
+font-size:17px;
 transition:all 0.3s ease;
 text-decoration:none;
 }
 
 .social-icons a:hover{
-background:rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.15);
 transform:scale(1.15);
 }
 
@@ -248,8 +243,8 @@ text-align:center;
 padding:22px;
 }
 .avatar{
-width:90px;
-height:90px;
+width:80px;
+height:80px;
 }
 }
 </style>
@@ -259,7 +254,6 @@ height:90px;
 
 <div class="container">
 
-<!-- PROFILE -->
 <div class="card profile">
 <img src="wallpapers/avatar.jpg" class="avatar">
 <div class="profile-text">
@@ -268,9 +262,8 @@ height:90px;
 </div>
 </div>
 
-<!-- WALLPAPER -->
 <div class="card wallpaper-wrapper">
-<h2 style="font-size:18px;">Featured Wallpapers</h2>
+<h2 style="font-size:16px;margin-bottom:15px;">Featured Wallpapers</h2>
 
 <img src="wallpapers/wallpaper1.png" class="slide active">
 <img src="wallpapers/wallpaper2.png" class="slide">
@@ -287,29 +280,23 @@ Download Current
 </a>
 </div>
 
-<!-- APPS -->
 <div class="card">
-<h2 style="margin-bottom:15px;font-size:18px;">My Apps</h2>
+<h2 style="margin-bottom:15px;font-size:16px;">My Apps</h2>
 <div class="apps">
-
 <a href="PUT_PLAYSTORE_LINK_HERE" class="app-card" target="_blank">App One</a>
 <a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Two</a>
 <a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Three</a>
 <a href="PUT_APP_LINK_HERE" class="app-card" target="_blank">App Four</a>
-
 </div>
 </div>
 
-<!-- SOCIAL -->
 <div class="card">
 <div class="social-title">Follow Us for News & Giveaways</div>
 <div class="social-icons">
-
 <a href="PUT_X_LINK_HERE" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
 <a href="PUT_THREADS_LINK_HERE" target="_blank"><i class="fa-brands fa-threads"></i></a>
 <a href="PUT_INSTAGRAM_LINK_HERE" target="_blank"><i class="fa-brands fa-instagram"></i></a>
 <a href="PUT_TELEGRAM_LINK_HERE" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-
 </div>
 </div>
 
@@ -318,22 +305,22 @@ Download Current
 <script>
 const slides = document.querySelectorAll(".slide");
 const downloadBtn = document.getElementById("downloadBtn");
-let current = Math.floor(Date.now() / (1000*60*60*24)) % slides.length;
+let current = Math.floor(Date.now()/(1000*60*60*24))%slides.length;
 showSlide(current);
 
 function showSlide(index){
-slides.forEach(slide => slide.classList.remove("active"));
+slides.forEach(slide=>slide.classList.remove("active"));
 slides[index].classList.add("active");
-downloadBtn.href = slides[index].src;
+downloadBtn.href=slides[index].src;
 }
 
 function nextSlide(){
-current = (current + 1) % slides.length;
+current=(current+1)%slides.length;
 showSlide(current);
 }
 
 function prevSlide(){
-current = (current - 1 + slides.length) % slides.length;
+current=(current-1+slides.length)%slides.length;
 showSlide(current);
 }
 </script>
