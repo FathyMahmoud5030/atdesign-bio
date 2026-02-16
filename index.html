@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
   margin:0;
   padding:0;
@@ -20,10 +18,17 @@ body{
   min-height:100vh;
   display:flex;
   justify-content:center;
-  align-items:center;
+  padding:40px 20px;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   background-size:300% 300%;
   animation:gradientMove 15s ease infinite;
+  color:white;
+  transition:.3s;
+}
+
+body.light{
+  background:#f2f4f7;
+  color:#111;
 }
 
 @keyframes gradientMove{
@@ -33,88 +38,137 @@ body{
 }
 
 .container{
-  width:95%;
-  max-width:500px;
-  padding:30px;
-  border-radius:30px;
+  width:100%;
+  max-width:700px;
+}
+
+.glass{
   backdrop-filter:blur(25px);
   background:rgba(255,255,255,0.08);
   border:1px solid rgba(255,255,255,0.2);
+  border-radius:30px;
+  padding:30px;
   box-shadow:0 15px 40px rgba(0,0,0,0.5);
-  text-align:center;
-  color:white;
-}
-
-.profile{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  margin:0 auto 15px;
-  background:linear-gradient(135deg,#ffffff30,#ffffff10);
-  border:1px solid rgba(255,255,255,0.3);
-}
-
-h1{
-  font-weight:600;
-  margin-bottom:5px;
-}
-
-p{
-  font-size:14px;
-  opacity:.8;
   margin-bottom:25px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
+body.light .glass{
+  background:rgba(255,255,255,0.6);
+  border:1px solid rgba(0,0,0,0.1);
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-.card{
-  padding:18px;
+.profile{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  margin:0 auto 20px;
+  background:url('https://raw.githubusercontent.com/FathyMahmoud5030/atdesign-bio/refs/heads/main/wallpapers/fathy%20avtar.jpg') center/cover;
+  border:3px solid rgba(255,255,255,0.4);
+}
+
+h1{
+  text-align:center;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.brand-text{
+  text-align:center;
+  font-size:14px;
+  line-height:1.6;
+  opacity:.9;
+}
+
+.toggle{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:10px 15px;
+  border-radius:20px;
+  border:none;
+  cursor:pointer;
+  background:#ffffff20;
+  color:white;
+  backdrop-filter:blur(10px);
+}
+
+body.light .toggle{
+  background:#00000010;
+  color:black;
+}
+
+.wallpaper-img{
+  width:100%;
+  border-radius:20px;
+  margin-top:20px;
+}
+
+.download-btn{
+  display:inline-block;
+  margin-top:15px;
+  padding:10px 20px;
   border-radius:20px;
   text-decoration:none;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
   color:white;
-  backdrop-filter:blur(15px);
-  background:rgba(255,255,255,0.1);
-  border:1px solid rgba(255,255,255,0.25);
-  transition:.3s ease;
   font-size:14px;
+  transition:.3s;
 }
 
-.card:hover{
-  transform:translateY(-6px);
-  background:rgba(255,255,255,0.18);
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+.download-btn:hover{
+  transform:translateY(-3px);
 }
 
-@media(max-width:480px){
-  .grid{
-    grid-template-columns:1fr;
-  }
+.section-title{
+  font-weight:600;
+  margin-bottom:10px;
 }
-
 </style>
 </head>
 
 <body>
 
+<button class="toggle" onclick="toggleMode()">Toggle Mode</button>
+
 <div class="container">
 
-  <div class="profile"></div>
+  <div class="glass">
+    <div class="profile"></div>
+    <h1>AT Design</h1>
+    <div class="brand-text">
+      Android Developer & UI Asset Designer<br>
+      Premium Wallpapers • Icons • Widgets<br>
+      Android & iOS
+    </div>
+  </div>
 
-  <h1>AT Design</h1>
-  <p>Wallpaper • Icons • Widgets Designer</p>
-
-  <div class="grid">
-    <a href="#" class="card">Google Play</a>
-    <a href="#" class="card">Top App</a>
-    <a href="#" class="card">Gumroad</a>
-    <a href="#" class="card">Ko-fi</a>
+  <div class="glass">
+    <div class="section-title">Today’s Wallpaper</div>
+    <img id="todayWallpaper" class="wallpaper-img">
+    <br>
+    <a id="downloadLink" class="download-btn" target="_blank">Download</a>
   </div>
 
 </div>
+
+<script>
+
+function toggleMode(){
+  document.body.classList.toggle("light");
+}
+
+const totalWallpapers = 31; // عدد الصور اللي هتحطهم
+const today = new Date();
+const day = today.getDate();
+const wallpaperNumber = day % totalWallpapers || totalWallpapers;
+
+const imageUrl = `https://raw.githubusercontent.com/FathyMahmoud5030/atdesign-bio/main/wallpapers/wallpaper${wallpaperNumber}.jpg`;
+
+document.getElementById("todayWallpaper").src = imageUrl;
+document.getElementById("downloadLink").href = imageUrl;
+
+</script>
 
 </body>
 </html>
