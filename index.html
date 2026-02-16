@@ -23,7 +23,7 @@
             
             --text-main: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.6);
-            --theme-icon: '\f185'; /* Sun icon */
+            --theme-icon: '\f185';
         }
 
         :root[data-theme="light"] {
@@ -39,7 +39,7 @@
             
             --text-main: #1a1f36;
             --text-muted: rgba(26, 31, 54, 0.6);
-            --theme-icon: '\f186'; /* Moon icon */
+            --theme-icon: '\f186';
         }
 
         :root {
@@ -80,185 +80,87 @@
             position: relative;
         }
 
-        /* === Theme Toggle === */
         .theme-toggle {
-            position: absolute;
-            top: -20px;
-            right: 0;
-            background: var(--liquid-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--liquid-border-top);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            cursor: pointer;
-            box-shadow: var(--liquid-shadow-out);
-            z-index: 100;
+            position: absolute; top: -20px; right: 0;
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--liquid-border-top); width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer;
+            box-shadow: var(--liquid-shadow-out); z-index: 100;
         }
+        .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
 
-        .theme-toggle::before {
-            content: var(--theme-icon);
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            font-size: 18px;
-        }
-
-        /* === Profile === */
+        /* === Profile & Glowing Avatar === */
         .profile-section { text-align: center; }
+        
+        /* ده الـ Wrapper الجديد للأنيميشن */
+        .avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+        }
+
+        /* حلقة التوهج الأزرق المتحركة */
+        .avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%;
+            background: var(--primary); /* اللون الأزرق المشع */
+            z-index: -1;
+            filter: blur(15px);
+            animation: glowPulse 2s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.9; }
+        }
+
         .avatar {
-            width: 120px; height: 120px;
+            width: 100%; height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--bg-base);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            margin-bottom: 15px;
+            border: 4px solid var(--bg-base); /* بوردر بيفصل الصورة عن التوهج */
+            position: relative;
+            z-index: 1;
         }
+
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .verify-badge { color: var(--primary); font-size: 18px; }
 
-        /* === Liquid Glass Class === */
         .liquid-card {
-            background: var(--liquid-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-top: 1px solid var(--liquid-border-top);
-            border-left: 1px solid var(--liquid-border-top);
-            border-bottom: 1px solid var(--liquid-border-bottom);
-            border-right: 1px solid var(--liquid-border-bottom);
-            border-radius: var(--squircle-radius);
-            box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
-            position: relative;
-            overflow: hidden;
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
+            border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom);
+            border-radius: var(--squircle-radius); box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
+            position: relative; overflow: hidden;
         }
 
-        /* === Wallpaper Showcase === */
-        .wallpaper-frame {
-            width: 100%;
-            aspect-ratio: 9/16;
-            padding: 10px; /* Padding to make glass visible around image */
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .image-container {
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .slide {
-            position: absolute; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 0.8s ease;
-        }
+        .wallpaper-frame { width: 100%; aspect-ratio: 9/16; padding: 10px; display: flex; flex-direction: column; }
+        .image-container { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; position: relative; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease; }
         .slide.active { opacity: 1; }
+        .controls { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 10; }
+        .ctrl-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .download-btn { height: 44px; padding: 0 25px; border-radius: 22px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 
-        .controls {
-            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 15px; z-index: 10;
-        }
-        .ctrl-btn {
-            width: 44px; height: 44px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.2);
-            display: flex; justify-content: center; align-items: center; cursor: pointer;
-        }
-        .download-btn {
-            height: 44px; padding: 0 25px; border-radius: 22px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; text-decoration: none; font-weight: 600;
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        /* === Apps & Links Grid (The New Layout) === */
-        .links-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* عمودين متساويين */
-            gap: 16px;
-        }
-
-        .full-width {
-            grid-column: 1 / -1; /* يأخذ عرض العمودين */
-        }
-
-        .app-link {
-            text-decoration: none;
-            color: var(--text-main);
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        /* للروابط اللي بتاخد نص المساحة، بنخليها عمودية عشان المساحة */
-        .half-width {
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-            padding: 24px 12px;
-            gap: 12px;
-        }
-
-        .app-link:hover {
-            transform: translateY(-4px) scale(1.02);
-        }
-
-        /* تصميم أيقونة/صورة الرابط */
-        .app-icon-wrapper {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            background: var(--bg-base);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .half-width .app-icon-wrapper {
-            width: 55px; height: 55px;
-        }
-
-        .app-icon-wrapper img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
+        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .full-width { grid-column: 1 / -1; }
+        .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 24px 12px; gap: 12px; }
+        .app-link:hover { transform: translateY(-4px) scale(1.02); }
         
-        /* في حال مفيش صورة وحطينا أيقونة خطية */
-        .app-icon-wrapper i {
-            font-size: 24px; color: var(--primary);
-        }
+        .app-icon-wrapper { width: 50px; height: 50px; border-radius: 14px; background: var(--bg-base); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
+        .half-width .app-icon-wrapper { width: 55px; height: 55px; }
+        .app-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .app-icon-wrapper i { font-size: 24px; color: var(--primary); }
+        .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; }
+        .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
 
-        .app-text {
-            font-weight: 600;
-            font-size: 15px;
-            line-height: 1.3;
-        }
-        .app-subtext {
-            font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px;
-        }
-
-        /* === Social Dock === */
-        .social-dock {
-            display: flex; justify-content: center; gap: 15px; padding: 20px;
-        }
-        .social-btn {
-            width: 48px; height: 48px; border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-main); font-size: 22px; text-decoration: none;
-            background: rgba(128, 128, 128, 0.1); transition: all 0.3s;
-        }
-        .social-btn:hover {
-            background: var(--primary); color: white; transform: translateY(-5px);
-        }
+        .social-dock { display: flex; justify-content: center; gap: 15px; padding: 20px; }
+        .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
+        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
     </style>
 </head>
 
@@ -269,7 +171,9 @@
         <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
 
         <header class="profile-section">
-            <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
+            <div class="avatar-wrapper">
+                <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
+            </div>
             <h1 class="profile-name">AT Design <i class="fa-solid fa-circle-check verify-badge"></i></h1>
             <p style="color: var(--text-muted); margin-top: 5px;">Android Developer • UI Asset Designer</p>
         </header>
@@ -317,14 +221,14 @@
                 <div class="app-text">My Apps on Ko-fi</div>
             </a>
 
-            <a href="paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
+            <a href="https://paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper" style="color: #00457C;">
                     <i class="fa-brands fa-paypal"></i>
                 </div>
                 <div class="app-text">PayPal</div>
             </a>
 
-            <a href="YOUR_KOFI_SUPPORT_LINK" class="liquid-card app-link half-width" target="_blank">
+            <a href="https://ko-fi.com/androidtools4u" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper" style="color: #FF5E5B;">
                     <i class="fa-solid fa-mug-hot"></i>
                 </div>
@@ -343,14 +247,11 @@
     </div>
 
     <script>
-        // === Theme Engine ===
         function initTheme() {
-            // 1. تحقق لو المستخدم اختار ثيم قبل كدة وحفظناه
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
             } else {
-                // 2. لو مفيش، اقرأ وضع الجهاز التلقائي (ويندوز/موبايل)
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
             }
@@ -363,7 +264,6 @@
             localStorage.setItem('theme', newTheme);
         }
 
-        // استمع لتغيرات النظام لو المستخدم غير الثيم من إعدادات الموبايل وهو فاتح الموقع
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             if (!localStorage.getItem('theme')) {
                 document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
@@ -372,12 +272,9 @@
 
         initTheme();
 
-        // === 24-Hour Wallpaper Logic ===
         const slides = document.querySelectorAll(".slide");
         const downloadBtn = document.getElementById("downloadBtn");
         
-        // الدالة دي بتحسب عدد الأيام اللي مرت من تاريخ 1/1/1970
-        // ولأننا بنقسم على slides.length، النتيجة هتتغير تلقائياً كل 24 ساعة بالضبط (بتوقيت جرينتش)
         const daysSinceEpoch = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
         let current = daysSinceEpoch % slides.length;
         
