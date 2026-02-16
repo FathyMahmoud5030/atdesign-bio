@@ -2,390 +2,479 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT Design | Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AT Design | Premium Portfolio</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #4facfe;
-            --secondary: #00f2fe;
-            --bg-color: #0b0f19;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.05);
-            --hover-bg: rgba(255, 255, 255, 0.08);
+            /* ألوان البراند */
+            --primary-accent: #00d2ff; /* لون لبني مشع */
+            --secondary-accent: #3a7bd5;
+            --bg-dark: #050810; /* خلفية داكنة جداً */
+            
+            /* إعدادات الزجاج */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --glass-blur: blur(25px);
+            
+            /* ألوان النصوص */
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             min-height: 100vh;
+            background-color: var(--bg-dark);
+            /* خلفية متدرجة معقدة لعمق أكبر */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(58, 123, 213, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
             display: flex;
             justify-content: center;
-            padding: 50px 20px;
-            background: var(--bg-color);
-            color: white;
+            align-items: flex-start;
+            padding: 60px 20px;
             overflow-x: hidden;
         }
 
-        /* إضاءة خلفية ناعمة جداً */
-        body::before {
-            content: "";
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(79, 172, 254, 0.15), transparent 60%);
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            filter: blur(120px);
-            z-index: -1;
-        }
-
-        .container {
+        /* الكونتينر الرئيسي - رفيع زي الموبايل */
+        .main-container {
             width: 100%;
-            max-width: 500px; /* مقاس مثالي للـ Bio Links */
+            max-width: 480px; /* العرض المثالي */
             display: flex;
             flex-direction: column;
-            gap: 24px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Profile Section */
-        .profile {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar-container {
+            gap: 35px;
             position: relative;
-            padding: 4px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: 2;
+        }
+
+        /* === أنيميشن الدخول === */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUpAnim 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.7s; }
+
+        @keyframes fadeUpAnim {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === البروفايل === */
+        .profile-section {
+            text-align: center;
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        /* حلقة مضيئة خلف الصورة */
+        .avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
             border-radius: 50%;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            opacity: 0.5;
+            filter: blur(15px);
+            z-index: -1;
+            animation: pulseGlow 3s infinite alternate;
         }
 
         .avatar {
-            width: 110px;
-            height: 110px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--bg-color);
+            border: 3px solid var(--bg-dark); /* عشان نفصل الصورة عن الخلفية */
         }
 
-        .profile h1 {
-            font-size: 22px;
-            font-weight: 600;
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .verify {
-            font-size: 16px;
-            color: var(--primary);
+        .verify-badge {
+            color: var(--primary-accent);
+            font-size: 18px;
+            filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.5));
         }
 
-        .subtitle {
-            opacity: 0.7;
-            font-size: 14px;
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 15px;
             font-weight: 300;
         }
 
-        /* Wallpaper Section */
-        .section-title {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
-        }
-
-        .wallpaper-container {
+        /* === قسم الخلفيات (التعديل الجذري هنا) === */
+        .wallpaper-showcase {
             position: relative;
             width: 100%;
-            max-width: 280px;
-            margin: 0 auto;
-            border-radius: 24px;
+            /* لغينا الكارت الخارجي عشان الخلفية تتنفس */
+        }
+
+        .section-header {
+            text-align: center;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .wallpaper-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9 / 16; /* نسبة طولية مثالية للموبايل */
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            /* ظل ناعم جداً يدي عمق */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* طبقة تلميع فوق الصورة */
+        .wallpaper-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5, 8, 16, 0.4) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .slide {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            border-radius: 24px;
+            height: 100%;
+            object-fit: cover;
             opacity: 0;
-            transform: scale(1.05);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: scale(1.1); /* تبدأ مكبرة */
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
         }
 
         .slide.active {
-            display: block;
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1); /* ترجع لحجمها الطبيعي */
         }
 
-        .controls-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .nav-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid var(--card-border);
-            background: var(--card-bg);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nav-btn:hover {
-            background: var(--hover-bg);
-            transform: scale(1.1);
-        }
-
-        .btn-primary {
-            padding: 12px 24px;
+        /* شريط التحكم العائم */
+        .floating-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            height: 60px;
+            background: rgba(15, 20, 35, 0.6); /* أغمق قليلاً لتباين أفضل */
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
             border-radius: 30px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
-        }
-
-        /* Apps Links (Premium Stacked Style) */
-        .links-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .premium-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
+            padding: 0 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 5;
         }
 
-        .premium-link .link-info {
+        .ctrl-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-weight: 500;
+            justify-content: center;
+        }
+
+        .ctrl-btn:hover {
+            background: var(--glass-bg);
+            color: var(--primary-accent);
+        }
+
+        .download-main-btn {
+            flex-grow: 1;
+            height: 44px;
+            margin: 0 10px;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
             font-size: 15px;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .premium-link .link-info i {
-            font-size: 20px;
-            opacity: 0.9;
-            color: var(--primary);
+        .download-main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
         }
 
-        .premium-link .arrow {
-            opacity: 0.5;
-            transition: transform 0.3s ease;
-        }
-
-        .premium-link:hover {
-            background: var(--hover-bg);
-            border-color: rgba(255,255,255,0.15);
-            transform: translateX(5px);
-        }
-
-        .premium-link:hover .arrow {
-            transform: translateX(4px);
-            opacity: 1;
-            color: var(--secondary);
-        }
-
-        /* Social Icons */
-        .social-icons {
+        /* === قسم الروابط والتطبيقات === */
+        .links-stack {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .social-icons a {
-            width: 48px;
-            height: 48px;
+        .glass-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير لمعان عند الهوفر */
+        .glass-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .glass-link:hover::before {
+            left: 100%;
+        }
+
+        .glass-link:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: rgba(0, 210, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px -10px rgba(0, 210, 255, 0.2);
+        }
+
+        .link-content {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .link-icon {
+            font-size: 22px;
+            color: var(--primary-accent);
+            /* خلفية صغيرة للأيقونة */
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 14px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: white;
-            font-size: 20px;
-            transition: all 0.3s ease;
+            background: rgba(0, 210, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .link-text {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .link-arrow {
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .glass-link:hover .link-arrow {
+            transform: translateX(5px);
+            color: var(--primary-accent);
+        }
+
+        /* === السوشيال ميديا === */
+        .social-dock {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 22px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        .social-icons a:hover {
-            background: var(--primary);
-            color: #fff;
-            transform: translateY(-5px) rotate(5deg);
-            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
-            border-color: transparent;
+        .social-btn:hover {
+            background: var(--primary-accent);
+            color: white;
+            transform: translateY(-5px) rotate(8deg);
+            box-shadow: 0 10px 20px -5px rgba(0, 210, 255, 0.4);
         }
 
-        @media(max-width: 768px) {
-            .card { padding: 24px; }
-            .avatar { width: 90px; height: 90px; }
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; filter: blur(15px); }
+            100% { opacity: 0.6; filter: blur(25px); }
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="main-container">
 
-    <div class="card profile">
-        <div class="avatar-container">
-            <img src="wallpapers/avatar.jpg" class="avatar" alt="AT Design">
-        </div>
-        <h1>AT Design <span class="verify"><i class="fa-solid fa-circle-check"></i></span></h1>
-        <div class="subtitle">Android Developer • UI Asset Designer</div>
-    </div>
+        <header class="profile-section fade-up">
+            <div class="avatar-wrapper">
+                <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
+            </div>
+            <h1 class="profile-name">AT Design <i class="fa-solid fa-circle-check verify-badge"></i></h1>
+            <p class="profile-bio">Crafting polished Android experiences & UI Assets</p>
+        </header>
 
-    <div class="card">
-        <div class="section-title">Wall of the day</div>
-        
-        <div class="wallpaper-container">
-            <img src="wallpapers/wallpaper1.png" class="slide active" alt="Wallpaper">
-            <img src="wallpapers/wallpaper2.png" class="slide" alt="Wallpaper">
-            <img src="wallpapers/wallpaper3.png" class="slide" alt="Wallpaper">
-            <img src="wallpapers/wallpaper4.png" class="slide" alt="Wallpaper">
-        </div>
+        <section class="wallpaper-showcase fade-up delay-1">
+            <div class="section-header">Daily Featured Wall</div>
+            
+            <div class="wallpaper-frame">
+                <img src="wallpapers/wallpaper1.png" class="slide active" alt="Wallpaper">
+                <img src="wallpapers/wallpaper2.png" class="slide" alt="Wallpaper">
+                <img src="wallpapers/wallpaper3.png" class="slide" alt="Wallpaper">
+                <img src="wallpapers/wallpaper4.png" class="slide" alt="Wallpaper">
 
-        <div class="controls-wrapper">
-            <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-            <a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="btn-primary">
-                <i class="fa-solid fa-cloud-arrow-down" style="margin-right: 6px;"></i> Download
-            </a>
-            <button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-    </div>
+                <div class="floating-controls">
+                    <button class="ctrl-btn" onclick="prevSlide()">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    
+                    <a id="downloadBtn" href="wallpapers/wallpaper1.png" download class="download-main-btn">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download
+                    </a>
 
-    <div class="card">
-        <div class="section-title">My Apps & Work</div>
-        <div class="links-wrapper">
-            <a href="#" class="premium-link" target="_blank">
-                <div class="link-info">
-                    <i class="fa-brands fa-google-play"></i> App One Name
+                    <button class="ctrl-btn" onclick="nextSlide()">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+            </div>
+        </section>
+
+        <section class="links-stack fade-up delay-2">
+            <a href="LINK_HERE" target="_blank" class="glass-link">
+                <div class="link-content">
+                    <div class="link-icon"><i class="fa-brands fa-google-play"></i></div>
+                    <span class="link-text">Icon Pack on Play Store</span>
+                </div>
+                <i class="fa-solid fa-chevron-right link-arrow"></i>
             </a>
             
-            <a href="#" class="premium-link" target="_blank">
-                <div class="link-info">
-                    <i class="fa-brands fa-google-play"></i> App Two Name
+            <a href="LINK_HERE" target="_blank" class="glass-link">
+                <div class="link-content">
+                    <div class="link-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <span class="link-text">Premium UI Kits (Gumroad)</span>
                 </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+                <i class="fa-solid fa-chevron-right link-arrow"></i>
             </a>
 
-            <a href="#" class="premium-link" target="_blank">
-                <div class="link-info">
-                    <i class="fa-solid fa-store"></i> Gumroad Assets
+            <a href="LINK_HERE" target="_blank" class="glass-link">
+                <div class="link-content">
+                    <div class="link-icon" style="color: #FFDD00;"><i class="fa-solid fa-mug-hot"></i></div>
+                    <span class="link-text">Support my work (Ko-fi)</span>
                 </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+                <i class="fa-solid fa-chevron-right link-arrow"></i>
             </a>
+        </section>
 
-            <a href="#" class="premium-link" target="_blank">
-                <div class="link-info">
-                    <i class="fa-solid fa-mug-hot"></i> Buy me a coffee
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
-            </a>
-        </div>
+        <footer class="fade-up delay-3" style="margin-bottom: 20px;">
+            <div class="social-dock">
+                <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </footer>
+
     </div>
 
-    <div class="card" style="padding: 20px;">
-        <div class="social-icons">
-            <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-threads"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    const slides = document.querySelectorAll(".slide");
-    const downloadBtn = document.getElementById("downloadBtn");
-    
-    // حساب الـ Index بناءً على اليوم عشان تتغير كل 24 ساعة
-    let current = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % slides.length;
-    showSlide(current);
-
-    function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove("active"));
-        slides[index].classList.add("active");
-        downloadBtn.href = slides[index].src;
-    }
-
-    function nextSlide() {
-        current = (current + 1) % slides.length;
+    <script>
+        const slides = document.querySelectorAll(".slide");
+        const downloadBtn = document.getElementById("downloadBtn");
+        
+        // نفس المنطق: تغيير الخلفية كل 24 ساعة
+        let current = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % slides.length;
         showSlide(current);
-    }
 
-    function prevSlide() {
-        current = (current - 1 + slides.length) % slides.length;
-        showSlide(current);
-    }
-</script>
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove("active"));
+            slides[index].classList.add("active");
+            // تحديث رابط التحميل
+            downloadBtn.href = slides[index].src;
+        }
+
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+        }
+
+        function prevSlide() {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlide(current);
+        }
+    </script>
 
 </body>
 </html>
