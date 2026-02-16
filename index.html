@@ -22,23 +22,25 @@
             --liquid-shadow-in: inset 0 2px 10px rgba(255, 255, 255, 0.05);
             
             --text-main: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.6);
+            --text-muted: rgba(255, 255, 255, 0.7); /* أوضح قليلاً في الدارك */
             --theme-icon: '\f185';
         }
 
         :root[data-theme="light"] {
-            --bg-base: #f0f4f8;
-            --bg-gradient-1: rgba(0, 153, 255, 0.1);
+            --bg-base: #eef2f6; /* لون خلفية أغمق سنة صغيرة لإبراز الكروت */
+            --bg-gradient-1: rgba(0, 153, 255, 0.12);
             --bg-gradient-2: rgba(0, 210, 255, 0.15);
             
-            --liquid-bg: rgba(255, 255, 255, 0.5);
-            --liquid-border-top: rgba(255, 255, 255, 0.8);
-            --liquid-border-bottom: rgba(0, 0, 0, 0.05);
-            --liquid-shadow-out: 0 20px 40px rgba(0, 0, 0, 0.08);
-            --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.5);
+            /* تعديل مهم: خلفية صلبة أكثر لقراءة ممتازة */
+            --liquid-bg: rgba(255, 255, 255, 0.85); 
+            --liquid-border-top: rgba(255, 255, 255, 1);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.04);
+            --liquid-shadow-out: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.8);
             
-            --text-main: #1a1f36;
-            --text-muted: rgba(26, 31, 54, 0.6);
+            /* تعديل الألوان لتباين أقوى */
+            --text-main: #0a0d14; /* أسود صريح */
+            --text-muted: #4a5568; /* رصاصي داكن صلب */
             --theme-icon: '\f186';
         }
 
@@ -55,7 +57,7 @@
             box-sizing: border-box;
             font-family: 'Outfit', sans-serif;
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
         }
 
         body {
@@ -89,27 +91,21 @@
         }
         .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
 
-        /* === Profile & Glowing Avatar === */
+        /* === Profile === */
         .profile-section { text-align: center; }
         
         .avatar-wrapper {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px auto;
+            position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto;
         }
-
         .avatar-wrapper::before {
             content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
             border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px);
             animation: glowPulse 2s infinite alternate;
         }
-
         @keyframes glowPulse {
             0% { transform: scale(0.95); opacity: 0.5; }
             100% { transform: scale(1.1); opacity: 0.9; }
         }
-
         .avatar {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
             border: 4px solid var(--bg-base); position: relative; z-index: 1;
@@ -118,35 +114,13 @@
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .verify-badge { color: var(--primary); font-size: 18px; }
 
-        /* === Bio Style (تحديث البايو بشكل احترافي) === */
-        .profile-bio {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 10px;
-        }
-        .bio-main {
-            font-size: 15px;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-        .bio-sub {
-            font-size: 14px;
-            color: var(--primary);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        .bio-tags {
-            font-size: 13px;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-top: 2px;
-        }
+        .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+        .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
+        .bio-sub { font-size: 14px; color: var(--primary); font-weight: 600; letter-spacing: 0.5px; }
+        .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
         .bio-tags i { font-size: 15px; }
 
+        /* === Shared Liquid Card === */
         .liquid-card {
             background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
@@ -156,64 +130,19 @@
         }
 
         /* === Wallpaper Widget === */
-        .wall-widget {
-            display: flex;
-            padding: 18px;
-            gap: 18px;
-            align-items: center;
-        }
-
-        .wall-preview {
-            width: 120px;
-            height: 180px;
-            flex-shrink: 0;
-            border-radius: 18px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border: 1px solid var(--liquid-border-top);
-        }
-
-        .wall-preview::after {
-            content: ''; position: absolute; inset: 0;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none;
-        }
-
-        .slide {
-            position: absolute; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 0.6s ease;
-        }
+        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; }
+        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
+        .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
         .slide.active { opacity: 1; }
-
-        .wall-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex-grow: 1;
-            height: 170px;
-        }
-
+        .wall-info { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 170px; }
         .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
         .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
-
         .wall-actions { display: flex; flex-direction: column; gap: 10px; }
-
-        .widget-btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px;
-            font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center;
-            gap: 8px; transition: transform 0.2s, box-shadow 0.2s;
-        }
+        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
         .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
-
         .widget-nav { display: flex; gap: 10px; }
-
-        .widget-icon-btn {
-            flex: 1; height: 42px; border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--liquid-border-top);
-            color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center;
-            transition: all 0.2s;
-        }
+        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--liquid-border-top); color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
         .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
 
         /* === Apps & Links Grid === */
@@ -221,13 +150,29 @@
         .full-width { grid-column: 1 / -1; }
         .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 24px 12px; gap: 12px; }
-        .app-link:hover { transform: translateY(-4px) scale(1.02); }
         
-        .app-icon-wrapper { width: 50px; height: 50px; border-radius: 14px; background: var(--bg-base); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
+        .app-link:hover { transform: translateY(-4px) scale(1.02); }
+        /* أنيميشن الأيقونة عند اللمس */
+        .app-link:hover .app-icon-wrapper { transform: scale(1.1); }
+        
+        .app-icon-wrapper { 
+            width: 50px; height: 50px; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; flex-shrink: 0; 
+            transition: transform 0.3s ease;
+        }
         .half-width .app-icon-wrapper { width: 55px; height: 55px; }
         .app-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .app-icon-wrapper i { font-size: 24px; color: var(--primary); }
-        .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; }
+        .app-icon-wrapper i { font-size: 24px; }
+
+        /* === Brand Colors & Tints (الروح الجديدة للأيقونات) === */
+        .brand-play { background: rgba(0, 210, 255, 0.15); color: #00d2ff; }
+        .brand-gumroad { background: rgba(255, 42, 133, 0.15); color: #ff2a85; }
+        .brand-kofi { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; }
+        .brand-paypal { background: rgba(0, 112, 186, 0.15); color: #0070ba; }
+        .brand-apple { background: rgba(130, 130, 130, 0.15); color: var(--text-main); } /* يتغير للأسود في الفاتح والأبيض في الغامق */
+
+        .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--text-main); }
         .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
 
         .social-dock { display: flex; justify-content: center; gap: 15px; padding: 20px; }
@@ -254,7 +199,7 @@
                 <span class="bio-tags">
                     <span><i class="fa-brands fa-android" style="color: #3DDC84;"></i> Android</span>
                     •
-                    <span><i class="fa-brands fa-apple" style="color: #A2AAAD;"></i> iOS</span>
+                    <span><i class="fa-brands fa-apple" style="color: var(--text-main);"></i> iOS</span>
                 </span>
             </div>
         </header>
@@ -289,7 +234,7 @@
         <div class="links-grid">
             
             <a href="https://play.google.com/store/apps/dev?id=5213352977383623076" class="liquid-card app-link full-width" target="_blank">
-                <div class="app-icon-wrapper">
+                <div class="app-icon-wrapper brand-play">
                     <img src="your-app-icon.png" alt="App Icon" onerror="this.style.display='none'">
                     <i class="fa-brands fa-google-play"></i>
                 </div>
@@ -301,28 +246,29 @@
             </a>
 
             <a href="https://androidtools4u.gumroad.com/" class="liquid-card app-link half-width" target="_blank">
-                <div class="app-icon-wrapper">
+                <div class="app-icon-wrapper brand-gumroad">
                     <i class="fa-solid fa-layer-group"></i> 
                 </div>
                 <div class="app-text">Gumroad</div>
             </a>
 
             <a href="https://ko-fi.com/androidtools4u/shop" class="liquid-card app-link half-width" target="_blank">
-                <div class="app-icon-wrapper">
+                <div class="app-icon-wrapper brand-kofi">
                     <i class="fa-solid fa-box-open"></i>
                 </div>
                 <div class="app-text">My Apps on Ko-fi</div>
             </a>
 
             <a href="https://paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
-                <div class="app-icon-wrapper" style="color: #00457C;">
+                <div class="app-icon-wrapper brand-paypal">
                     <i class="fa-brands fa-paypal"></i>
                 </div>
                 <div class="app-text">PayPal</div>
             </a>
 
             <a href="https://apps.apple.com/us/app/wallspot-4k-wallpapers/id6746551004" class="liquid-card app-link half-width" target="_blank">
-                <div class="app-icon-wrapper" style="color: #A2AAAD;"> <i class="fa-brands fa-apple"></i>
+                <div class="app-icon-wrapper brand-apple">
+                    <i class="fa-brands fa-apple"></i>
                 </div>
                 <div class="app-text">WallSpot on iOS</div>
             </a>
