@@ -4,9 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg-light: linear-gradient(135deg,#e0e7ff,#f8fafc);
+  --bg-dark: linear-gradient(135deg,#0f172a,#1e293b);
+  --card-light: rgba(255,255,255,0.55);
+  --card-dark: rgba(255,255,255,0.08);
+  --text-light: #111;
+  --text-dark: #fff;
+}
+
 *{
   margin:0;
   padding:0;
@@ -18,157 +28,153 @@ body{
   min-height:100vh;
   display:flex;
   justify-content:center;
-  padding:40px 20px;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  background-size:300% 300%;
-  animation:gradientMove 15s ease infinite;
-  color:white;
-  transition:.3s;
+  align-items:center;
+  padding:20px;
+  background:var(--bg-light);
+  transition:0.4s ease;
 }
 
-body.light{
-  background:#f2f4f7;
-  color:#111;
-}
-
-@keyframes gradientMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+/* AUTO DARK MODE */
+@media (prefers-color-scheme: dark){
+  body{
+    background:var(--bg-dark);
+  }
 }
 
 .container{
   width:100%;
-  max-width:700px;
+  max-width:420px;
+  display:flex;
+  flex-direction:column;
+  gap:25px;
 }
 
-.glass{
-  backdrop-filter:blur(25px);
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.2);
+/* GLASS CARD */
+.card{
+  padding:25px;
   border-radius:30px;
-  padding:30px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.5);
-  margin-bottom:25px;
-}
-
-body.light .glass{
-  background:rgba(255,255,255,0.6);
-  border:1px solid rgba(0,0,0,0.1);
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
-
-.profile{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  margin:0 auto 20px;
-  background:url('https://raw.githubusercontent.com/FathyMahmoud5030/atdesign-bio/refs/heads/main/wallpapers/fathy%20avtar.jpg') center/cover;
-  border:3px solid rgba(255,255,255,0.4);
-}
-
-h1{
+  backdrop-filter:blur(25px);
+  background:var(--card-light);
+  border:1px solid rgba(255,255,255,0.4);
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
   text-align:center;
+  transition:0.3s ease;
+}
+
+@media (prefers-color-scheme: dark){
+  .card{
+    background:var(--card-dark);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 15px 40px rgba(0,0,0,0.5);
+    color:var(--text-dark);
+  }
+}
+
+.card:hover{
+  transform:translateY(-6px);
+}
+
+/* PROFILE */
+.profile img{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:15px;
+  border:4px solid rgba(255,255,255,0.6);
+}
+
+.profile h1{
   font-weight:700;
   margin-bottom:10px;
 }
 
-.brand-text{
-  text-align:center;
+.profile p{
   font-size:14px;
-  line-height:1.6;
-  opacity:.9;
+  opacity:0.8;
 }
 
-.toggle{
-  position:fixed;
-  top:20px;
-  right:20px;
-  padding:10px 15px;
-  border-radius:20px;
-  border:none;
-  cursor:pointer;
-  background:#ffffff20;
-  color:white;
-  backdrop-filter:blur(10px);
-}
-
-body.light .toggle{
-  background:#00000010;
-  color:black;
-}
-
-.wallpaper-img{
+/* WALLPAPER */
+.wallpaper img{
   width:100%;
-  border-radius:20px;
-  margin-top:20px;
+  border-radius:18px;
+  margin:15px 0;
 }
 
-.download-btn{
+.button{
   display:inline-block;
-  margin-top:15px;
-  padding:10px 20px;
+  padding:12px 25px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s ease;
+}
+
+.button:hover{
+  transform:scale(1.05);
+}
+
+/* LINKS */
+.links a{
+  display:block;
+  margin:10px 0;
+  padding:14px;
   border-radius:20px;
   text-decoration:none;
-  background:linear-gradient(135deg,#00c6ff,#0072ff);
-  color:white;
-  font-size:14px;
-  transition:.3s;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.4);
+  color:#111;
+  font-weight:500;
+  transition:0.3s ease;
 }
 
-.download-btn:hover{
-  transform:translateY(-3px);
+@media (prefers-color-scheme: dark){
+  .links a{
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+  }
 }
 
-.section-title{
-  font-weight:600;
-  margin-bottom:10px;
+.links a:hover{
+  transform:translateY(-4px);
 }
 </style>
 </head>
 
 <body>
 
-<button class="toggle" onclick="toggleMode()">Toggle Mode</button>
-
 <div class="container">
 
-  <div class="glass">
-    <div class="profile"></div>
+  <!-- PROFILE -->
+  <div class="card profile">
+    <img src="wallpapers/fathy-avatar.jpg" alt="Avatar">
     <h1>AT Design</h1>
-    <div class="brand-text">
-      Android Developer & UI Asset Designer<br>
-      Premium Wallpapers • Icons • Widgets<br>
-      Android & iOS
-    </div>
+    <p>Android Developer & UI Asset Designer<br>
+    Premium Wallpapers • Icons • Widgets</p>
   </div>
 
-  <div class="glass">
-    <div class="section-title">Today’s Wallpaper</div>
-    <img id="todayWallpaper" class="wallpaper-img">
-    <br>
-    <a id="downloadLink" class="download-btn" target="_blank">Download</a>
+  <!-- TODAY WALLPAPER -->
+  <div class="card wallpaper">
+    <h2>Today’s Wallpaper</h2>
+    <img src="wallpapers/wallpaper1.png" alt="Wallpaper">
+    <a href="wallpapers/wallpaper1.png" download class="button">
+      Download Wallpaper
+    </a>
+  </div>
+
+  <!-- LINKS -->
+  <div class="card links">
+    <h2>My Links</h2>
+    <a href="#">Google Play</a>
+    <a href="#">Top App</a>
+    <a href="#">Gumroad</a>
+    <a href="#">Ko-fi</a>
+    <a href="#">Instagram</a>
   </div>
 
 </div>
-
-<script>
-
-function toggleMode(){
-  document.body.classList.toggle("light");
-}
-
-const totalWallpapers = 31; // عدد الصور اللي هتحطهم
-const today = new Date();
-const day = today.getDate();
-const wallpaperNumber = day % totalWallpapers || totalWallpapers;
-
-const imageUrl = `https://raw.githubusercontent.com/FathyMahmoud5030/atdesign-bio/main/wallpapers/wallpaper${wallpaperNumber}.jpg`;
-
-document.getElementById("todayWallpaper").src = imageUrl;
-document.getElementById("downloadLink").href = imageUrl;
-
-</script>
 
 </body>
 </html>
