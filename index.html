@@ -118,6 +118,35 @@
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .verify-badge { color: var(--primary); font-size: 18px; }
 
+        /* === Bio Style (تحديث البايو بشكل احترافي) === */
+        .profile-bio {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .bio-main {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .bio-sub {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .bio-tags {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 2px;
+        }
+        .bio-tags i { font-size: 15px; }
+
         .liquid-card {
             background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
@@ -126,7 +155,7 @@
             position: relative; overflow: hidden;
         }
 
-        /* === Wallpaper Widget (التصميم الجديد المدمج) === */
+        /* === Wallpaper Widget === */
         .wall-widget {
             display: flex;
             padding: 18px;
@@ -136,7 +165,7 @@
 
         .wall-preview {
             width: 120px;
-            height: 180px; /* طول مناسب لا يأخذ حيز كبير */
+            height: 180px;
             flex-shrink: 0;
             border-radius: 18px;
             overflow: hidden;
@@ -145,7 +174,6 @@
             border: 1px solid var(--liquid-border-top);
         }
 
-        /* تأثير ظل داخلي خفيف فوق الصورة لزيادة العمق */
         .wall-preview::after {
             content: ''; position: absolute; inset: 0;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none;
@@ -168,11 +196,7 @@
         .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
         .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
 
-        .wall-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .wall-actions { display: flex; flex-direction: column; gap: 10px; }
 
         .widget-btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -180,13 +204,9 @@
             font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center;
             gap: 8px; transition: transform 0.2s, box-shadow 0.2s;
         }
-        .widget-btn-primary:hover {
-            transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3);
-        }
+        .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
 
-        .widget-nav {
-            display: flex; gap: 10px;
-        }
+        .widget-nav { display: flex; gap: 10px; }
 
         .widget-icon-btn {
             flex: 1; height: 42px; border-radius: 14px;
@@ -195,7 +215,6 @@
             transition: all 0.2s;
         }
         .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
-
 
         /* === Apps & Links Grid === */
         .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -228,11 +247,19 @@
                 <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
             </div>
             <h1 class="profile-name">AT Design <i class="fa-solid fa-circle-check verify-badge"></i></h1>
-            <p style="color: var(--text-muted); margin-top: 5px;">Android Developer • UI Asset Designer</p>
+            
+            <div class="profile-bio">
+                <span class="bio-main">Android Developer & UI Asset Designer</span>
+                <span class="bio-sub">Premium Wallpapers • Icons • Widgets</span>
+                <span class="bio-tags">
+                    <span><i class="fa-brands fa-android" style="color: #3DDC84;"></i> Android</span>
+                    •
+                    <span><i class="fa-brands fa-apple" style="color: #A2AAAD;"></i> iOS</span>
+                </span>
+            </div>
         </header>
 
         <div class="liquid-card wall-widget">
-            
             <div class="wall-preview">
                 <img src="wallpapers/wallpaper1.png" class="slide active">
                 <img src="wallpapers/wallpaper2.png" class="slide">
@@ -257,7 +284,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="links-grid">
@@ -295,11 +321,10 @@
                 <div class="app-text">PayPal</div>
             </a>
 
-            <a href="https://ko-fi.com/androidtools4u" class="liquid-card app-link half-width" target="_blank">
-                <div class="app-icon-wrapper" style="color: #FF5E5B;">
-                    <i class="fa-solid fa-mug-hot"></i>
+            <a href="https://apps.apple.com/us/app/wallspot-4k-wallpapers/id6746551004" class="liquid-card app-link half-width" target="_blank">
+                <div class="app-icon-wrapper" style="color: #A2AAAD;"> <i class="fa-brands fa-apple"></i>
                 </div>
-                <div class="app-text">Support on Ko-fi</div>
+                <div class="app-text">WallSpot on iOS</div>
             </a>
 
         </div>
