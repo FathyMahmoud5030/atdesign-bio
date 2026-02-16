@@ -19,132 +19,230 @@ body{
 min-height:100vh;
 display:flex;
 justify-content:center;
-padding:50px 15px;
-transition:0.4s ease;
+padding:40px 15px;
+overflow-x:hidden;
+transition:0.4s;
+}
+
+/* FLOATING BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#4facfe55,#00f2fe22);
+filter:blur(120px);
+top:-200px;
+left:-200px;
+animation:float 12s infinite alternate ease-in-out;
+z-index:-1;
+}
+
+@keyframes float{
+from{transform:translate(0,0);}
+to{transform:translate(200px,150px);}
 }
 
 /* AUTO THEME */
 
 @media (prefers-color-scheme: dark){
 body{
-background:radial-gradient(circle at top left,#1f2937,#0f172a);
+background:#0f172a;
 color:white;
 }
 .card{
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.15);
+background:rgba(255,255,255,0.07);
+border:1px solid rgba(255,255,255,0.1);
 }
 }
 
 @media (prefers-color-scheme: light){
 body{
-background:linear-gradient(135deg,#eef2ff,#f8fafc);
+background:#f1f5f9;
 color:#111;
 }
 .card{
-background:rgba(255,255,255,0.65);
-border:1px solid rgba(255,255,255,0.8);
+background:rgba(255,255,255,0.8);
+border:1px solid rgba(255,255,255,0.9);
 }
 }
+
+/* CONTAINER */
 
 .container{
 width:100%;
-max-width:430px;
+max-width:1100px;
 }
 
-/* PREMIUM GLASS CARD */
+/* CARD BASE */
 
 .card{
 backdrop-filter:blur(25px);
-border-radius:28px;
+border-radius:30px;
 padding:30px;
-margin-bottom:28px;
-box-shadow:0 15px 40px rgba(0,0,0,0.15);
-transition:0.4s;
+margin-bottom:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.15);
+position:relative;
+overflow:hidden;
 }
 
-.card:hover{
-transform:translateY(-4px);
+/* Animated Gradient Border */
+
+.card::before{
+content:"";
+position:absolute;
+inset:-2px;
+border-radius:32px;
+background:linear-gradient(45deg,#4facfe,#00f2fe,#8e2de2,#4facfe);
+background-size:300%;
+animation:borderMove 8s linear infinite;
+z-index:-1;
 }
 
-/* AVATAR */
+@keyframes borderMove{
+0%{background-position:0%;}
+100%{background-position:300%;}
+}
+
+/* PROFILE SECTION */
+
+.profile{
+display:flex;
+align-items:center;
+gap:25px;
+}
 
 .avatar{
-width:130px;
-height:130px;
+width:140px;
+height:140px;
 border-radius:50%;
 object-fit:cover;
-display:block;
-margin:0 auto 18px;
-box-shadow:0 0 25px rgba(79,172,254,0.5);
 }
 
-h1{
-text-align:center;
-font-weight:700;
-font-size:28px;
-margin-bottom:6px;
+.profile-text h1{
+font-size:32px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.verify{
+color:#4facfe;
+font-size:18px;
 }
 
 .subtitle{
-text-align:center;
-font-size:14px;
 opacity:0.8;
-margin-bottom:20px;
+margin-top:6px;
 }
 
-/* SOCIAL SECTION */
+/* FEATURED WALLPAPER */
+
+.featured{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+align-items:center;
+}
+
+.featured img{
+width:100%;
+border-radius:25px;
+}
+
+/* DOWNLOAD BUTTON */
+
+.button{
+display:inline-block;
+margin-top:15px;
+padding:14px 25px;
+border-radius:50px;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+color:white;
+text-decoration:none;
+font-weight:600;
+transition:0.3s;
+}
+
+.button:hover{
+transform:scale(1.07);
+}
+
+/* APPS GRID */
+
+.apps{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:20px;
+}
+
+.app-card{
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,0.08);
+text-align:center;
+transition:0.3s;
+}
+
+.app-card:hover{
+transform:translateY(-6px);
+}
+
+/* SOCIAL */
 
 .social-title{
 text-align:center;
+margin-bottom:20px;
 font-weight:600;
-margin-bottom:18px;
-font-size:15px;
-opacity:0.8;
 }
 
 .social-icons{
 display:flex;
 justify-content:center;
-gap:18px;
+gap:20px;
 }
 
 .social-icons a{
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 display:flex;
 align-items:center;
 justify-content:center;
 border-radius:50%;
-font-size:20px;
-color:white;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
+color:white;
+font-size:22px;
 transition:0.3s;
 text-decoration:none;
-box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
 .social-icons a:hover{
-transform:scale(1.15);
+transform:scale(1.2);
 }
 
-/* LINKS SECTION */
+/* MOBILE OPTIMIZATION */
 
-.link-btn{
-display:block;
+@media(max-width:768px){
+
+.profile{
+flex-direction:column;
 text-align:center;
-padding:14px;
-border-radius:50px;
-text-decoration:none;
-font-weight:600;
-margin-bottom:15px;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-color:white;
-transition:0.3s;
 }
 
-.link-btn:hover{
-transform:scale(1.05);
+.featured{
+grid-template-columns:1fr;
+}
+
+.card{
+padding:22px;
+}
+
+.avatar{
+width:110px;
+height:110px;
+}
+
 }
 </style>
 </head>
@@ -154,59 +252,48 @@ transform:scale(1.05);
 <div class="container">
 
 <!-- PROFILE -->
-<div class="card">
-<img src="wallpapers/avatar.jpg" class="avatar" alt="Avatar">
-<h1>AT Design</h1>
-<p class="subtitle">
-Android Developer • UI Asset Designer<br>
-Premium Wallpapers • Icons • Widgets
-</p>
+<div class="card profile">
+<img src="wallpapers/avatar.jpg" class="avatar">
+<div class="profile-text">
+<h1>AT Design <span class="verify"><i class="fa-solid fa-circle-check"></i></span></h1>
+<div class="subtitle">Android Developer • UI Asset Designer</div>
+</div>
 </div>
 
-<!-- MAIN LINKS -->
-<div class="card">
-
-<a href="https://play.google.com/store/apps/dev?id=YOUR_ID" class="link-btn" target="_blank">
-My Apps on Google Play
-</a>
-
-<a href="https://gumroad.com/YOURNAME" class="link-btn" target="_blank">
-Gumroad Store
-</a>
-
-<a href="https://ko-fi.com/YOURNAME" class="link-btn" target="_blank">
-Support Me on Ko-fi
-</a>
-
+<!-- FEATURED WALLPAPER -->
+<div class="card featured">
+<div>
+<h2>Featured Wallpaper</h2>
+<p>Premium Abstract Collection</p>
+<a href="wallpapers/wallpaper1.png" download class="button">Download</a>
+</div>
+<img src="wallpapers/wallpaper1.png">
 </div>
 
-<!-- SOCIAL SECTION -->
+<!-- APPS GRID -->
 <div class="card">
+<h2 style="margin-bottom:20px;">My Apps</h2>
+<div class="apps">
 
-<div class="social-title">
-Follow Us for News & Giveaways
+<div class="app-card">App One</div>
+<div class="app-card">App Two</div>
+<div class="app-card">App Three</div>
+<div class="app-card">App Four</div>
+
+</div>
 </div>
 
+<!-- SOCIAL -->
+<div class="card">
+<div class="social-title">Follow Us for News & Giveaways</div>
 <div class="social-icons">
 
-<a href="https://x.com/YOURNAME" target="_blank">
-<i class="fa-brands fa-x-twitter"></i>
-</a>
-
-<a href="https://threads.net/@YOURNAME" target="_blank">
-<i class="fa-brands fa-threads"></i>
-</a>
-
-<a href="https://instagram.com/YOURNAME" target="_blank">
-<i class="fa-brands fa-instagram"></i>
-</a>
-
-<a href="https://t.me/YOURCHANNEL" target="_blank">
-<i class="fa-brands fa-telegram"></i>
-</a>
+<a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+<a href="#"><i class="fa-brands fa-threads"></i></a>
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="#"><i class="fa-brands fa-telegram"></i></a>
 
 </div>
-
 </div>
 
 </div>
