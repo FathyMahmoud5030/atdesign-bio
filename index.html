@@ -22,8 +22,8 @@ display:flex;
 justify-content:center;
 padding:40px 15px;
 background:
-radial-gradient(circle at 20% 30%, #4facfe22, transparent 40%),
-radial-gradient(circle at 80% 70%, #00f2fe22, transparent 40%),
+radial-gradient(circle at 15% 20%, #4facfe22, transparent 40%),
+radial-gradient(circle at 85% 80%, #00f2fe22, transparent 40%),
 linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
 }
@@ -33,16 +33,39 @@ width:100%;
 max-width:1100px;
 }
 
-/* CARD */
+/* CARD BASE */
 .card{
 background:rgba(255,255,255,0.06);
-backdrop-filter:blur(25px);
-border:2px solid;
-border-image:linear-gradient(45deg,#4facfe,#00f2fe,#8e2de2) 1;
+backdrop-filter:blur(20px);
 border-radius:28px;
 padding:28px;
 margin-bottom:28px;
-box-shadow:0 20px 50px rgba(0,0,0,0.25);
+position:relative;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+}
+
+/* Soft Animated Border (Horizontal Only) */
+.card::before{
+content:"";
+position:absolute;
+inset:0;
+padding:1.5px;
+border-radius:28px;
+background:linear-gradient(90deg,#4facfe,#00f2fe,#8e2de2,#4facfe);
+background-size:200% 100%;
+animation:borderFlow 6s linear infinite;
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+pointer-events:none;
+}
+
+@keyframes borderFlow{
+0%{background-position:0% 0;}
+100%{background-position:200% 0;}
 }
 
 /* PROFILE */
@@ -60,7 +83,7 @@ object-fit:cover;
 }
 
 .profile-text h1{
-font-size:24px; /* أصغر */
+font-size:26px;
 display:flex;
 align-items:center;
 gap:8px;
@@ -68,13 +91,13 @@ gap:8px;
 
 .verify{
 color:#4facfe;
-font-size:14px; /* أصغر */
+font-size:16px;
 }
 
 .subtitle{
 opacity:0.75;
 margin-top:4px;
-font-size:14px; /* أصغر */
+font-size:14px;
 }
 
 /* WALLPAPER */
@@ -88,6 +111,7 @@ max-width:420px;
 width:100%;
 border-radius:22px;
 margin:auto;
+transition:opacity 0.4s ease;
 }
 
 .slide.active{
@@ -268,7 +292,7 @@ const slides = document.querySelectorAll(".slide");
 const downloadBtn = document.getElementById("downloadBtn");
 let current = 0;
 
-/* تغيير تلقائي كل 24 ساعة */
+/* تغيير خلفية كل 24 ساعة */
 const todayIndex = Math.floor(Date.now() / (1000*60*60*24)) % slides.length;
 current = todayIndex;
 showSlide(current);
