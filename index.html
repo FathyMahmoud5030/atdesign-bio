@@ -92,7 +92,6 @@
         /* === Profile & Glowing Avatar === */
         .profile-section { text-align: center; }
         
-        /* ده الـ Wrapper الجديد للأنيميشن */
         .avatar-wrapper {
             position: relative;
             width: 120px;
@@ -100,15 +99,9 @@
             margin: 0 auto 20px auto;
         }
 
-        /* حلقة التوهج الأزرق المتحركة */
         .avatar-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -5px; left: -5px; right: -5px; bottom: -5px;
-            border-radius: 50%;
-            background: var(--primary); /* اللون الأزرق المشع */
-            z-index: -1;
-            filter: blur(15px);
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px);
             animation: glowPulse 2s infinite alternate;
         }
 
@@ -118,12 +111,8 @@
         }
 
         .avatar {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--bg-base); /* بوردر بيفصل الصورة عن التوهج */
-            position: relative;
-            z-index: 1;
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--bg-base); position: relative; z-index: 1;
         }
 
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -137,14 +126,78 @@
             position: relative; overflow: hidden;
         }
 
-        .wallpaper-frame { width: 100%; aspect-ratio: 9/16; padding: 10px; display: flex; flex-direction: column; }
-        .image-container { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; position: relative; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease; }
-        .slide.active { opacity: 1; }
-        .controls { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 10; }
-        .ctrl-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        .download-btn { height: 44px; padding: 0 25px; border-radius: 22px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        /* === Wallpaper Widget (التصميم الجديد المدمج) === */
+        .wall-widget {
+            display: flex;
+            padding: 18px;
+            gap: 18px;
+            align-items: center;
+        }
 
+        .wall-preview {
+            width: 120px;
+            height: 180px; /* طول مناسب لا يأخذ حيز كبير */
+            flex-shrink: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--liquid-border-top);
+        }
+
+        /* تأثير ظل داخلي خفيف فوق الصورة لزيادة العمق */
+        .wall-preview::after {
+            content: ''; position: absolute; inset: 0;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none;
+        }
+
+        .slide {
+            position: absolute; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transition: opacity 0.6s ease;
+        }
+        .slide.active { opacity: 1; }
+
+        .wall-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            height: 170px;
+        }
+
+        .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
+        .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
+
+        .wall-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .widget-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px;
+            font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            gap: 8px; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .widget-btn-primary:hover {
+            transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .widget-nav {
+            display: flex; gap: 10px;
+        }
+
+        .widget-icon-btn {
+            flex: 1; height: 42px; border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--liquid-border-top);
+            color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: all 0.2s;
+        }
+        .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
+
+
+        /* === Apps & Links Grid === */
         .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .full-width { grid-column: 1 / -1; }
         .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
@@ -178,19 +231,33 @@
             <p style="color: var(--text-muted); margin-top: 5px;">Android Developer • UI Asset Designer</p>
         </header>
 
-        <div class="liquid-card wallpaper-frame">
-            <div class="image-container">
+        <div class="liquid-card wall-widget">
+            
+            <div class="wall-preview">
                 <img src="wallpapers/wallpaper1.png" class="slide active">
                 <img src="wallpapers/wallpaper2.png" class="slide">
                 <img src="wallpapers/wallpaper3.png" class="slide">
                 <img src="wallpapers/wallpaper4.png" class="slide">
+            </div>
+
+            <div class="wall-info">
+                <div class="wall-header">
+                    <h3>Wall of the Day</h3>
+                    <p>Changes automatically every 24h</p>
+                </div>
                 
-                <div class="controls">
-                    <button class="ctrl-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-                    <a id="downloadBtn" href="#" download class="download-btn"><i class="fa-solid fa-download"></i> Download</a>
-                    <button class="ctrl-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="wall-actions">
+                    <a id="downloadBtn" href="#" download class="widget-btn-primary">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Now
+                    </a>
+                    
+                    <div class="widget-nav">
+                        <button class="widget-icon-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="widget-icon-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <div class="links-grid">
