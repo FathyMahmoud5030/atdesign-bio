@@ -4,88 +4,115 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AT Design</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
 
-body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  background-size: 300% 300%;
-  animation: gradientMove 12s ease infinite;
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  background-size:300% 300%;
+  animation:gradientMove 15s ease infinite;
 }
 
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
-.container {
-  width: 95%;
-  max-width: 420px;
-  padding: 25px;
-  border-radius: 25px;
-  backdrop-filter: blur(20px);
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  text-align: center;
-  color: white;
+.container{
+  width:95%;
+  max-width:500px;
+  padding:30px;
+  border-radius:30px;
+  backdrop-filter:blur(25px);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+  text-align:center;
+  color:white;
 }
 
-h1 {
-  font-weight: 600;
-  margin-bottom: 10px;
+.profile{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:0 auto 15px;
+  background:linear-gradient(135deg,#ffffff30,#ffffff10);
+  border:1px solid rgba(255,255,255,0.3);
 }
 
-p {
-  font-weight: 300;
-  margin-bottom: 25px;
-  font-size: 14px;
-  opacity: 0.8;
+h1{
+  font-weight:600;
+  margin-bottom:5px;
 }
 
-.card {
-  display: block;
-  margin: 12px 0;
-  padding: 14px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: white;
-  backdrop-filter: blur(15px);
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.25);
-  transition: 0.3s ease;
+p{
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:25px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.18);
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
+
+.card{
+  padding:18px;
+  border-radius:20px;
+  text-decoration:none;
+  color:white;
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.25);
+  transition:.3s ease;
+  font-size:14px;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  background:rgba(255,255,255,0.18);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+@media(max-width:480px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
+  <div class="profile"></div>
+
   <h1>AT Design</h1>
   <p>Wallpaper • Icons • Widgets Designer</p>
 
-  <a href="#" class="card">Google Play</a>
-  <a href="#" class="card">Top App</a>
-  <a href="#" class="card">Gumroad</a>
-  <a href="#" class="card">Ko-fi</a>
-  <a href="#" class="card">Instagram</a>
+  <div class="grid">
+    <a href="#" class="card">Google Play</a>
+    <a href="#" class="card">Top App</a>
+    <a href="#" class="card">Gumroad</a>
+    <a href="#" class="card">Ko-fi</a>
+  </div>
 
 </div>
 
