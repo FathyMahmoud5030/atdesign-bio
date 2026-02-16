@@ -23,7 +23,7 @@
             
             --text-main: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.7);
-            --text-accent: #00d2ff; /* اللون الفاتح المشع للدارك مود */
+            --text-accent: #00d2ff;
             --theme-icon: '\f185';
         }
 
@@ -40,7 +40,7 @@
             
             --text-main: #0a0d14;
             --text-muted: #4a5568;
-            --text-accent: #005bb5; /* أزرق داكن قوي عشان يكون مقروء على الأبيض */
+            --text-accent: #005bb5;
             --theme-icon: '\f186';
         }
 
@@ -111,17 +111,20 @@
             border: 4px solid var(--bg-base); position: relative; z-index: 1;
         }
 
-        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
         
-        /* علامة التوثيق بقت بتاخد اللون المخصص اللي بيتغير حسب الثيم */
-        .verify-badge { color: var(--text-accent); font-size: 18px; }
+        /* تعديل كلاس التوثيق عشان يظبط حجم الفيكتور الجديد */
+        .verify-badge { 
+            color: var(--text-accent); 
+            width: 24px; 
+            height: 24px; 
+            fill: currentColor;
+            flex-shrink: 0;
+        }
 
         .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
-        
-        /* لون الكلمة دي بقى بيتغير من الفاتح للغامق حسب وضع الشاشة */
         .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
-        
         .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
         .bio-tags i { font-size: 15px; }
 
@@ -195,7 +198,13 @@
             <div class="avatar-wrapper">
                 <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
             </div>
-            <h1 class="profile-name">AT Design <i class="fa-solid fa-circle-check verify-badge"></i></h1>
+            
+            <h1 class="profile-name">
+                AT Design 
+                <svg class="verify-badge" viewBox="0 0 24 24" aria-label="Verified">
+                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path>
+                </svg>
+            </h1>
             
             <div class="profile-bio">
                 <span class="bio-main">Android Developer & UI Asset Designer</span>
