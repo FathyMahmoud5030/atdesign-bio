@@ -113,6 +113,7 @@
 
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
         
+        /* تعديل كلاس التوثيق عشان يظبط حجم الفيكتور الجديد */
         .verify-badge { 
             color: var(--text-accent); 
             width: 24px; 
@@ -360,15 +361,17 @@
                     if(data.links && data.links.length > 0) {
                         container.innerHTML = ''; // مسح رسالة التحميل
                         
-                        // هنا بنلف على الروابط كلها
-                        data.links.forEach((link, index) => {
+                        // هنا بنلف على الروابط كلها اللي اتسجلت في الأدمن
+                        data.links.forEach((link) => {
                             const brandClass = getBrandClass(link.icon);
                             const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
+                            
+                            // تحديد الحجم بناءً على اللي اختارته في الأدمن بانل
+                            const layoutClass = (link.layout === 'full') ? 'full-width' : 'half-width';
 
-                            // لو ده أول رابط (Index 0) -> هياخد كلاس full-width وتصميمه بالعرض
-                            if(index === 0) {
+                            if(link.layout === 'full') {
                                 container.innerHTML += `
-                                    <a href="${link.url}" class="liquid-card app-link full-width" target="_blank">
+                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank">
                                         ${badgeHTML}
                                         <div class="app-icon-wrapper ${brandClass}">
                                             <i class="${link.icon}"></i>
@@ -380,11 +383,9 @@
                                         <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: var(--text-muted);"></i>
                                     </a>
                                 `;
-                            } 
-                            // لو أي رابط تاني (Index 1, 2, 3...) -> هياخد كلاس half-width ويكون مربع
-                            else {
+                            } else {
                                 container.innerHTML += `
-                                    <a href="${link.url}" class="liquid-card app-link half-width" target="_blank">
+                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank">
                                         ${badgeHTML}
                                         <div class="app-icon-wrapper ${brandClass}">
                                             <i class="${link.icon}"></i>
