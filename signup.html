@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join CraftBio | Claim Your Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #050810;
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ff2a85;
+            --glass-bg: rgba(20, 25, 40, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            /* خلفية متحركة وفخمة */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 210, 255, 0.15), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(255, 42, 133, 0.15), transparent 25%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* لمسة جمالية علوية */
+        .auth-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .brand-logo { font-size: 28px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .brand-logo span { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; margin-left: 5px; }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; transition: 0.3s; }
+        
+        .input-field {
+            width: 100%; padding: 16px 16px 16px 45px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            color: white; font-size: 15px; outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 15px rgba(0, 210, 255, 0.15); }
+        .input-field:focus + i { color: var(--primary); }
+
+        .username-preview {
+            font-size: 12px; color: var(--text-muted); margin-top: 8px; margin-left: 5px;
+            display: flex; align-items: center; gap: 5px; opacity: 0; transition: 0.3s;
+        }
+        .username-preview.active { opacity: 1; }
+        .username-preview span { color: var(--primary); font-weight: 600; }
+
+        .btn-primary {
+            width: 100%; padding: 16px; margin-top: 10px;
+            border-radius: 16px; border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            position: relative; overflow: hidden;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .login-link { margin-top: 25px; font-size: 14px; color: var(--text-muted); }
+        .login-link a { color: var(--primary); text-decoration: none; font-weight: 600; transition: 0.2s; }
+        .login-link a:hover { color: var(--accent); }
+
+        #errorMsg { color: #ff5e5b; font-size: 13px; margin-bottom: 15px; display: none; background: rgba(255, 94, 91, 0.1); padding: 10px; border-radius: 10px; }
+        
+        /* Loading Spinner */
+        .spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; margin: 0 auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="brand-logo">Craft<span>Bio</span></div>
+        <p class="subtitle">Claim your unique link & start crafting.</p>
+
+        <div id="errorMsg"></div>
+
+        <div class="input-group">
+            <label>Choose Username</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-at"></i>
+                <input type="text" id="username" class="input-field" placeholder="username" autocomplete="off">
+            </div>
+            <div class="username-preview" id="urlPreview">
+                craftbio.app/<span>username</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrapper">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" id="email" class="input-field" placeholder="hello@example.com">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" class="input-field" placeholder="••••••••">
+            </div>
+        </div>
+
+        <button class="btn-primary" id="signupBtn">
+            <span id="btnText">Create My Page</span>
+            <div class="spinner" id="btnLoader"></div>
+        </button>
+
+        <div class="login-link">
+            Already have a CraftBio? <a href="admin.html">Login here</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // ⚠️ هام جداً: حط مفتاح فايربيز بتاعك هنا
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
+            authDomain: "atdesign-portfolio.firebaseapp.com",
+            projectId: "atdesign-portfolio",
+            storageBucket: "atdesign-portfolio.firebasestorage.app",
+            messagingSenderId: "893862249348",
+            appId: "1:893862249348:web:50d3e683bba425eb1953d1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // التعامل مع واجهة المستخدم
+        const usernameInput = document.getElementById('username');
+        const urlPreview = document.getElementById('urlPreview');
+        const signupBtn = document.getElementById('signupBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // 1. Live Username Validation (عشان اليوزر يشوف رابطه وهو بيكتب)
+        usernameInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().replace(/\s+/g, ''); // حروف صغيرة وبدون مسافات
+            e.target.value = val;
+            
+            if(val.length > 0) {
+                urlPreview.classList.add('active');
+                urlPreview.innerHTML = `craftbio.app/<span>${val}</span>`;
+            } else {
+                urlPreview.classList.remove('active');
+            }
+        });
+
+        // 2. زرار التسجيل وبناء الداتا
+        signupBtn.addEventListener('click', async () => {
+            const username = usernameInput.value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Basic Validation
+            if(username.length < 3) return showError("Username must be at least 3 chars!");
+            if(!email || !password) return showError("Please fill all fields.");
+
+            setLoading(true);
+
+            try {
+                // A. الأول نتأكد إن اسم المستخدم مش محجوز
+                const userDocRef = doc(db, "users", username);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    throw new Error("Username is already taken! Try another one.");
+                }
+
+                // B. لو الاسم تمام، نعمل الحساب (Auth)
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // C. دلوقتي نبني الداتا بيز الافتراضية للمستخدم الجديد (Magic Step 🪄)
+                // دي الداتا اللي هتسمح للـ admin.html يشتغل فوراً
+                const newUserData = {
+                    uid: user.uid,
+                    email: email,
+                    username: username,
+                    profile: {
+                        name: "CraftBio Creator",
+                        avatar: "https://cdn-icons-png.flaticon.com/512/847/847969.png", // صورة افتراضية
+                        bioMain: "Digital Creator",
+                        bioSub: "Welcome to my space",
+                        plan: "free"
+                    },
+                    links: [], // مصفوفة فاضية يضيف فيها براحته
+                    socials: [],
+                    settings: {
+                        theme: "dark",
+                        createdAt: new Date().toISOString()
+                    }
+                };
+
+                // حفظ الداتا في كولكشن "users" باسم المستخدم
+                await setDoc(userDocRef, newUserData);
+
+                // حفظ اسم المستخدم في الـ LocalStorage عشان نستخدمه في التوجيه
+                localStorage.setItem("craft_username", username);
+
+                // D. توجيه لصفحة الأدمن
+                window.location.href = "admin.html";
+
+            } catch (error) {
+                console.error(error);
+                let msg = error.message;
+                if(msg.includes("email-already-in-use")) msg = "Email is already registered.";
+                showError(msg);
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        function showError(msg) {
+            errorMsg.innerText = msg;
+            errorMsg.style.display = 'block';
+        }
+
+        function setLoading(isLoading) {
+            if(isLoading) {
+                document.getElementById('btnText').style.display = 'none';
+                document.getElementById('btnLoader').style.display = 'block';
+                signupBtn.disabled = true;
+            } else {
+                document.getElementById('btnText').style.display = 'block';
+                document.getElementById('btnLoader').style.display = 'none';
+                signupBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
