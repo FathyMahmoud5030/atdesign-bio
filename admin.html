@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* نفس متغيرات الثيم الأساسي للحفاظ على الهوية */
         :root[data-theme="dark"] {
             --bg-base: #050810; --bg-gradient-1: rgba(0, 210, 255, 0.15); --bg-gradient-2: rgba(58, 123, 213, 0.1);
             --liquid-bg: rgba(20, 25, 40, 0.4); --liquid-border-top: rgba(255, 255, 255, 0.15);
@@ -24,7 +23,6 @@
         .header h2 { font-size: 24px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .header h2 i { color: var(--primary); }
         
-        /* Form Styles */
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
         .input-group input { width: 100%; padding: 15px; border-radius: 14px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 15px; outline: none; transition: border 0.3s; }
@@ -33,13 +31,16 @@
         .btn-primary { width: 100%; padding: 15px; border-radius: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
 
-        /* Sections Visibility */
         #dashboard-section { display: none; } /* مخفي لحد ما تسجل دخول */
         
-        .dashboard-grid { display: grid; gap: 15px; margin-bottom: 20px; }
-        .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 25px 0; }
+        .dashboard-grid { display: grid; gap: 15px; margin-bottom: 20px; max-height: 50vh; overflow-y: auto; padding-right: 10px;}
+        .dashboard-grid::-webkit-scrollbar { width: 6px; }
+        .dashboard-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
         .logout-btn { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; border: 1px solid rgba(255, 94, 91, 0.3); margin-top: 15px; }
         .logout-btn:hover { background: #ff5e5b; color: white; }
+        
+        #loadingMsg { text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 15px; display: none;}
     </style>
 </head>
 <body>
@@ -50,6 +51,8 @@
             <p style="color: var(--text-muted); margin-top: 5px; font-size: 14px;">Secure access for AT Design</p>
         </div>
         
+        <div id="loginError" style="color: #ff5e5b; text-align: center; margin-bottom: 10px; font-size: 14px;"></div>
+
         <div class="input-group">
             <label>Admin Email</label>
             <input type="email" id="adminEmail" placeholder="Enter your email">
@@ -58,7 +61,7 @@
             <label>Password</label>
             <input type="password" id="adminPassword" placeholder="Enter password">
         </div>
-        <button class="btn-primary" onclick="login()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        <button class="btn-primary" id="loginBtn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
     </div>
 
     <div class="glass-panel" id="dashboard-section">
@@ -67,41 +70,117 @@
             <p style="color: var(--text-muted); margin-top: 5px; font-size: 14px;">Update your links instantly</p>
         </div>
 
+        <div id="loadingMsg">Saving Data...</div>
+
         <div class="dashboard-grid">
             <div class="input-group">
                 <label><i class="fa-brands fa-google-play"></i> Play Store Link</label>
                 <input type="url" id="playstoreLink" placeholder="https://play.google.com/...">
             </div>
-            
             <div class="input-group">
                 <label><i class="fa-solid fa-layer-group"></i> Gumroad Link</label>
                 <input type="url" id="gumroadLink" placeholder="https://gumroad.com/...">
             </div>
-
+            <div class="input-group">
+                <label><i class="fa-solid fa-box-open"></i> Ko-fi Apps Link</label>
+                <input type="url" id="kofiLink" placeholder="https://ko-fi.com/...">
+            </div>
+            <div class="input-group">
+                <label><i class="fa-brands fa-paypal"></i> PayPal Link</label>
+                <input type="url" id="paypalLink" placeholder="https://paypal.me/...">
+            </div>
             <div class="input-group">
                 <label><i class="fa-brands fa-apple"></i> WallSpot (iOS) Link</label>
                 <input type="url" id="iosLink" placeholder="https://apps.apple.com/...">
             </div>
         </div>
 
-        <button class="btn-primary" onclick="saveData()"><i class="fa-solid fa-cloud-arrow-up"></i> Save Updates</button>
-        <button class="btn-primary logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        <button class="btn-primary" id="saveBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Save Updates</button>
+        <button class="btn-primary logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
 
-    <script>
-        // هنا هنكتب كود الجافاسكربت الخاص بـ Firebase بعد ما تجيب الإعدادات
-        function login() {
-            // مؤقتاً عشان تتخيل الشكل، بيخفي اللوجين ويظهر الداشبورد
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'block';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // مفتاحك اللي إنت جبته
+        const firebaseConfig = {
+          apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
+          authDomain: "atdesign-portfolio.firebaseapp.com",
+          projectId: "atdesign-portfolio",
+          storageBucket: "atdesign-portfolio.firebasestorage.app",
+          messagingSenderId: "893862249348",
+          appId: "1:893862249348:web:50d3e683bba425eb1953d1",
+          measurementId: "G-Y1WH7V3SPW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // واجهة المستخدم
+        const loginSec = document.getElementById('login-section');
+        const dashSec = document.getElementById('dashboard-section');
+        
+        // جلب البيانات من الداتا بيز لعرضها
+        async function loadLinks() {
+            const docRef = doc(db, "settings", "links");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('playstoreLink').value = data.playstore || "";
+                document.getElementById('gumroadLink').value = data.gumroad || "";
+                document.getElementById('kofiLink').value = data.kofi || "";
+                document.getElementById('paypalLink').value = data.paypal || "";
+                document.getElementById('iosLink').value = data.ios || "";
+            }
         }
-        function logout() {
-            document.getElementById('login-section').style.display = 'block';
-            document.getElementById('dashboard-section').style.display = 'none';
-        }
-        function saveData() {
-            alert("Data saved successfully!");
-        }
+
+        // مراقبة حالة تسجيل الدخول
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginSec.style.display = 'none';
+                dashSec.style.display = 'block';
+                loadLinks(); // أول ما يدخل يجيب الروابط القديمة
+            } else {
+                loginSec.style.display = 'block';
+                dashSec.style.display = 'none';
+            }
+        });
+
+        // زرار الدخول
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPassword').value;
+            signInWithEmailAndPassword(auth, email, pass)
+                .catch((error) => {
+                    document.getElementById('loginError').innerText = "Wrong Email or Password!";
+                });
+        });
+
+        // زرار الخروج
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // زرار الحفظ
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            document.getElementById('loadingMsg').style.display = 'block';
+            try {
+                await setDoc(doc(db, "settings", "links"), {
+                    playstore: document.getElementById('playstoreLink').value,
+                    gumroad: document.getElementById('gumroadLink').value,
+                    kofi: document.getElementById('kofiLink').value,
+                    paypal: document.getElementById('paypalLink').value,
+                    ios: document.getElementById('iosLink').value
+                });
+                document.getElementById('loadingMsg').innerText = "Saved Successfully ✅";
+                setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
+            } catch (e) {
+                alert("Error saving: " + e.message);
+            }
+        });
     </script>
 </body>
 </html>
