@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
+        /* === Theme Variables === */
         :root[data-theme="dark"] {
             --bg-base: #050810; --bg-gradient-1: rgba(0, 210, 255, 0.15); --bg-gradient-2: rgba(58, 123, 213, 0.1);
             --liquid-bg: rgba(20, 25, 40, 0.4); --liquid-border-top: rgba(255, 255, 255, 0.15); --liquid-border-bottom: rgba(0, 0, 0, 0.5);
@@ -49,11 +50,11 @@
             border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
             border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom);
             border-radius: var(--squircle-radius); box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
-            position: relative; overflow: visible; /* ⚠️ التعديل المهم هنا عشان البادج */
+            position: relative; overflow: visible; 
         }
 
         /* Wallpaper Widget */
-        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; overflow: hidden; /* الويدجت محتاجه hidden عشان الصورة متطلعش بره */}
+        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; overflow: hidden;}
         .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
         .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
@@ -81,12 +82,12 @@
         .half-width .app-icon-wrapper { width: 55px; height: 55px; }
         .app-icon-wrapper i { font-size: 24px; }
 
-        /* ستايل البادج (تم إصلاح الموقع والتصميم ليتطابق مع طلبك) */
+        /* ستايل البادج المميز */
         .badge { 
             position: absolute; 
             top: -12px; 
             right: 15px; 
-            background: linear-gradient(135deg, #ff416c, #ff4b2b); /* لون أحمر/بينك مشع زي التريند */
+            background: linear-gradient(135deg, #ff416c, #ff4b2b); 
             color: white; 
             padding: 4px 12px; 
             border-radius: 12px; 
@@ -110,7 +111,7 @@
         .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
 
         /* Social Dock */
-        .social-dock { display: none; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; overflow: hidden; }
+        .social-dock { display: none; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; }
         .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
     </style>
@@ -295,7 +296,7 @@
                                     <i class="${social.icon}"></i>
                                 </a>`;
                         });
-                        socialContainer.style.display = 'flex'; // إظهار الدوك لو فيه روابط
+                        socialContainer.style.display = 'flex'; // إظهار الدوك
                     }
                 }
             } catch (error) {
