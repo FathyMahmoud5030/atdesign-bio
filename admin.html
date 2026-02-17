@@ -183,14 +183,14 @@
         window.draggedIdx = null;
         window.userDocRef = null; 
 
-        // 💡 رفع الصورة لـ Cloudinary بدلاً من Firebase
+        // 💡 رفع الصورة لـ Cloudinary باستخدام بياناتك
         document.getElementById('avatarUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // ⚠️ حط الـ Cloud Name والـ Upload Preset بتوعك هنا
-            const cloudName = "هنا_الـ_CLOUD_NAME_بتاعك"; 
-            const uploadPreset = "هنا_الـ_UPLOAD_PRESET_بتاعك"; 
+            // تم وضع بياناتك هنا مباشرة لتعمل فوراً
+            const cloudName = "dyszr2eog"; 
+            const uploadPreset = "craftbio_preset"; 
             
             const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
             
@@ -226,9 +226,14 @@
                     document.getElementById('loadingMsg').style.display = 'block';
                     setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
                 } else {
-                    alert("Upload failed. Make sure your Upload Preset is set to 'Unsigned'.");
+                    alert("Upload failed. Make sure your Upload Preset is set to 'Unsigned' in Cloudinary Settings.");
                     progressText.style.display = 'none';
                 }
+            };
+
+            xhr.onerror = function() {
+                alert("Network error occurred while uploading. Please check your internet connection.");
+                progressText.style.display = 'none';
             };
 
             xhr.send(formData);
