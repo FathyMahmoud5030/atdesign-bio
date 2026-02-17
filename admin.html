@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT Design | Pro Admin Dashboard</title>
+    <title>CraftBio | Pro Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -61,7 +61,7 @@
 <body>
 
     <div class="glass-panel" id="login-section">
-        <div class="header"><h2><i class="fa-solid fa-lock"></i> Admin Login</h2></div>
+        <div class="header"><h2><i class="fa-solid fa-lock"></i> CraftBio Login</h2></div>
         <div id="loginError" style="color: #ff5e5b; text-align: center; margin-bottom: 10px; font-size: 14px;"></div>
         <div class="input-group"><input type="email" id="adminEmail" placeholder="Email"></div>
         <div class="input-group"><input type="password" id="adminPassword" placeholder="Password"></div>
@@ -69,20 +69,20 @@
     </div>
 
     <div class="glass-panel" id="dashboard-section">
-        <div class="header"><h2><i class="fa-solid fa-sliders"></i> Master Dashboard</h2></div>
+        <div class="header"><h2><i class="fa-solid fa-sliders"></i> My CraftBio</h2></div>
         <div id="loadingMsg">Saving Data...</div>
 
         <div class="section-title">👤 Profile Settings</div>
-        <div class="input-group"><label>Avatar Image URL</label><input type="url" id="profileAvatar" placeholder="wallpapers/avatar.jpg"></div>
-        <div class="input-group"><label>Display Name</label><input type="text" id="profileName" placeholder="e.g. AT Design"></div>
-        <div class="input-group"><label>Main Bio</label><input type="text" id="profileBioMain" placeholder="e.g. Android Developer"></div>
-        <div class="input-group"><label>Sub Bio (Colored)</label><input type="text" id="profileBioSub" placeholder="e.g. Premium UI Assets"></div>
+        <div class="input-group"><label>Avatar Image URL</label><input type="url" id="profileAvatar" placeholder="https://..."></div>
+        <div class="input-group"><label>Display Name</label><input type="text" id="profileName" placeholder="Your Name"></div>
+        <div class="input-group"><label>Main Bio</label><input type="text" id="profileBioMain" placeholder="What do you do?"></div>
+        <div class="input-group"><label>Sub Bio (Colored)</label><input type="text" id="profileBioSub" placeholder="Tags or secondary info"></div>
 
-        <div class="section-title">🔗 Apps Manager (Drag to Reorder)</div>
+        <div class="section-title">🔗 Links Manager (Drag to Reorder)</div>
         <div class="links-list" id="linksListContainer"></div>
 
         <div class="add-box" id="addLinkBox">
-            <h3 style="font-size: 15px; margin-bottom: 15px;" id="addBoxTitle">+ Add / Edit App Link</h3>
+            <h3 style="font-size: 15px; margin-bottom: 15px;" id="addBoxTitle">+ Add / Edit Link</h3>
             <div class="input-group"><input type="text" id="newTitle" placeholder="Link Title"></div>
             <div class="input-group"><input type="text" id="newSubtext" placeholder="Subtext (Optional)"></div>
             <div class="input-group"><input type="url" id="newUrl" placeholder="URL"></div>
@@ -113,7 +113,7 @@
                     <option value="half">■ Half Width (مربع صغير)</option>
                 </select>
             </div>
-            <button class="btn-primary" id="addNewBtn" style="background: rgba(255,255,255,0.1);">Save App Link</button>
+            <button class="btn-primary" id="addNewBtn" style="background: rgba(255,255,255,0.1);">Save Link</button>
         </div>
 
         <div class="section-title">🌍 Social Media Links</div>
@@ -149,7 +149,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        // 💡 التعديل هنا: ضفنا collection و query و where للبحث عن المستخدم الصح
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
@@ -167,13 +169,16 @@
         let myLinks = [];
         let mySocialLinks = [];
         window.draggedIdx = null;
+        
+        // 💡 متغير بيحفظ "مسار" الداتا بيز الخاص بالمستخدم اللي دخل
+        window.userDocRef = null; 
 
         // Apps
         window.renderAdminLinks = function() {
             const container = document.getElementById('linksListContainer');
             container.innerHTML = '';
             if(myLinks.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:gray; font-size:13px; padding:10px;">No app links added.</div>';
+                container.innerHTML = '<div style="text-align:center; color:gray; font-size:13px; padding:10px;">No links added.</div>';
                 return;
             }
             myLinks.forEach((link, index) => {
@@ -189,8 +194,8 @@
                             </div>
                         </div>
                         <div class="action-btns">
-                            <button class="edit-btn" onclick="editLink(${index})" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                            <button class="delete-btn" onclick="removeLink(${index})" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                            <button class="edit-btn" onclick="editLink(${index})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="delete-btn" onclick="removeLink(${index})"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -216,7 +221,7 @@
             });
         }
 
-        // Apps Drag & Drop
+        // Drag & Drop
         window.dragStart = function(index) { window.draggedIdx = index; }
         window.allowDrop = function(e) { e.preventDefault(); }
         window.dragEnter = function(e) { e.currentTarget.style.border = "1px dashed var(--primary)"; }
@@ -245,12 +250,15 @@
             myLinks.splice(index, 1);
             window.renderAdminLinks();
             
-            document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit App Link</span>";
+            document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit Link</span>";
             document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 💡 دالة تحميل الداتا بقت ذكية بتشتغل بناءً على الـ userDocRef اللي اتحدد
         async function loadData() {
-            const docSnap = await getDoc(doc(db, "settings", "master_data"));
+            if (!window.userDocRef) return; // لو مفيش مسار، متعملش حاجة
+            
+            const docSnap = await getDoc(window.userDocRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 document.getElementById('profileAvatar').value = data.profile?.avatar || "";
@@ -259,19 +267,42 @@
                 document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
                 myLinks = data.links || [];
                 mySocialLinks = data.socialLinks || [];
+            } else {
+                // تصفير الخانات لو اليوزر جديد ولسه داتابيزه فاضية
+                document.getElementById('profileAvatar').value = "";
+                document.getElementById('profileName').value = "";
+                document.getElementById('profileBioMain').value = "";
+                document.getElementById('profileBioSub').value = "";
+                myLinks = [];
+                mySocialLinks = [];
             }
             window.renderAdminLinks();
             window.renderAdminSocialLinks();
         }
 
-        onAuthStateChanged(auth, (user) => {
+        // 💡 مراقبة تسجيل الدخول وتحديد مسار المستخدم
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
-                loadData();
+                
+                // هنا السحر: بندور في كولكشن المستخدمين الجداد الأول
+                const q = query(collection(db, "users"), where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    // لو لقيناه في كولكشن (users) -> ده مستخدم تبع CraftBio الجديد
+                    window.userDocRef = doc(db, "users", querySnapshot.docs[0].id);
+                } else {
+                    // لو ملقيناهوش -> يبقى ده الحساب القديم بتاعك إنت يا هندسة (master_data)
+                    window.userDocRef = doc(db, "settings", "master_data");
+                }
+                
+                loadData(); // حمل الداتا من المسار اللي لقيته
             } else {
                 document.getElementById('login-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
+                window.userDocRef = null;
             }
         });
 
@@ -294,8 +325,8 @@
                 myLinks.push({ title, subtext, url, icon, badge, layout });
                 window.renderAdminLinks();
                 document.getElementById('newTitle').value = ''; document.getElementById('newSubtext').value = ''; document.getElementById('newUrl').value = '';
-                document.getElementById('addBoxTitle').innerText = "+ Add / Edit App Link";
-            } else { alert("App Title and URL are required!"); }
+                document.getElementById('addBoxTitle').innerText = "+ Add / Edit Link";
+            } else { alert("Title and URL are required!"); }
         });
 
         // Add Social
@@ -309,8 +340,10 @@
             } else { alert("Social URL is required!"); }
         });
 
-        // SAVE ALL
+        // 💡 حفظ الداتا في المسار الصح بتاع المستخدم الحالي
         document.getElementById('saveBtn').addEventListener('click', async () => {
+            if (!window.userDocRef) return;
+            
             document.getElementById('loadingMsg').style.display = 'block';
             const profileData = {
                 avatar: document.getElementById('profileAvatar').value,
@@ -320,11 +353,13 @@
             };
             
             try {
-                await setDoc(doc(db, "settings", "master_data"), { 
+                // استخدمنا merge: true عشان لو اليوزر جديد منمسحش بيانات الحساب زي الـ username
+                await setDoc(window.userDocRef, { 
                     profile: profileData, 
                     links: myLinks,
                     socialLinks: mySocialLinks 
-                });
+                }, { merge: true });
+                
                 document.getElementById('loadingMsg').innerText = "Saved Successfully ✅";
                 setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
             } catch (e) {
