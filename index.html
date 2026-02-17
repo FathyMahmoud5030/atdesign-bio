@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AT Design | Premium Portfolio</title>
+    <title>CraftBio | Premium Portfolio</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -27,22 +27,14 @@
             --theme-icon: '\f185';
         }
 
-        /* 💡 التعديلات السحرية للـ Light Mode هنا */
         :root[data-theme="light"] {
-            --bg-base: #e4ebf1; /* خلفية أغمق سنة صغيرة لإبراز الكروت الزجاجية */
-            
-            /* تقوية الألوان عشان تظهر من ورا الزجاج بوضوح */
+            --bg-base: #e4ebf1; 
             --bg-gradient-1: rgba(0, 153, 255, 0.25); 
             --bg-gradient-2: rgba(0, 210, 255, 0.3);
             
-            /* شفافية 45% بدلاً من 85% ليعمل تأثير الزجاج بشكل حقيقي */
             --liquid-bg: rgba(255, 255, 255, 0.45); 
-            
-            /* حواف زجاجية لامعة */
             --liquid-border-top: rgba(255, 255, 255, 0.9); 
             --liquid-border-bottom: rgba(255, 255, 255, 0.3);
-            
-            /* ظل خارجي للعمق، وظل داخلي قوي لإبراز سماكة الزجاج */
             --liquid-shadow-out: 0 20px 40px rgba(10, 20, 40, 0.08); 
             --liquid-shadow-in: inset 0 0 20px rgba(255, 255, 255, 0.8);
             
@@ -61,19 +53,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; }
         
-        body { 
-            min-height: 100vh; 
-            background-color: var(--bg-base); 
-            background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); 
-            background-attachment: fixed; 
-            color: var(--text-main); 
-            display: flex; 
-            justify-content: center; 
-            padding: 40px 20px; 
-        }
-        
+        body { min-height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); background-attachment: fixed; color: var(--text-main); display: flex; justify-content: center; padding: 40px 20px; }
         .main-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 28px; position: relative; }
-        
         .theme-toggle { position: absolute; top: -20px; right: 0; background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--liquid-border-top); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; box-shadow: var(--liquid-shadow-out); z-index: 100; transition: all 0.3s ease; }
         .theme-toggle:hover { transform: scale(1.1); }
         .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
@@ -104,7 +85,7 @@
             border-radius: var(--squircle-radius); 
             box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
             position: relative; 
-            overflow: visible; 
+            overflow: visible; /* لكي يظهر البادج بالخارج */
             transition: all 0.5s ease;
         }
 
@@ -169,6 +150,10 @@
         .social-dock { display: none; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; }
         .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
+        
+        /* العلامة المائية لمنصة CraftBio */
+        .watermark { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.7; }
+        .watermark a { color: var(--primary); text-decoration: none; font-weight: 600; }
     </style>
 </head>
 
@@ -180,28 +165,23 @@
 
         <header class="profile-section">
             <div class="avatar-wrapper">
-                <img src="wallpapers/avatar.jpg" id="renderAvatar" alt="AT Design" class="avatar">
+                <img src="wallpapers/avatar.jpg" id="renderAvatar" alt="Profile Avatar" class="avatar">
             </div>
             
             <h1 class="profile-name">
-                <span id="renderName">AT Design</span> 
+                <span id="renderName">Loading...</span> 
                 <svg class="verify-badge" viewBox="0 0 24 24" aria-label="Verified">
                     <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path>
                 </svg>
             </h1>
             
             <div class="profile-bio">
-                <span class="bio-main" id="renderBioMain">Android Developer & UI Asset Designer</span>
-                <span class="bio-sub" id="renderBioSub">Premium Wallpapers • Icons • Widgets</span>
-                <span class="bio-tags">
-                    <span><i class="fa-brands fa-android" style="color: #3DDC84;"></i> Android</span>
-                    •
-                    <span><i class="fa-brands fa-apple" style="color: var(--text-main);"></i> iOS</span>
-                </span>
+                <span class="bio-main" id="renderBioMain">Please wait</span>
+                <span class="bio-sub" id="renderBioSub">Connecting to CraftBio...</span>
             </div>
         </header>
 
-        <div class="liquid-card wall-widget">
+        <div class="liquid-card wall-widget" id="wallpaperWidget">
             <div class="wall-preview">
                 <img src="wallpapers/wallpaper1.png" class="slide active">
                 <img src="wallpapers/wallpaper2.png" class="slide">
@@ -226,10 +206,14 @@
         </div>
 
         <div class="links-grid" id="renderLinksContainer">
-            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">Loading your amazing apps...</div>
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">Loading links...</div>
         </div>
 
         <div class="liquid-card social-dock" id="renderSocialContainer">
+        </div>
+
+        <div class="watermark">
+            Crafted by <a href="signup.html">CraftBio</a>
         </div>
 
     </div>
@@ -268,6 +252,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // مفاتيح فايربيز بتاعتك
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
             authDomain: "atdesign-portfolio.firebaseapp.com",
@@ -292,7 +277,19 @@
 
         async function fetchAndRenderData() {
             try {
-                const docRef = doc(db, "settings", "master_data");
+                // 💡 السحر هنا: بنقرا اسم المستخدم من الرابط
+                const urlParams = new URLSearchParams(window.location.search);
+                const usernameFromURL = urlParams.get('u');
+
+                let docRef;
+                if (usernameFromURL) {
+                    // لو الرابط فيه اسم مستخدم (?u=ahmed)، هات بياناته
+                    docRef = doc(db, "users", usernameFromURL);
+                } else {
+                    // لو الرابط فاضي، هات بياناتك إنت كواجهة أساسية
+                    docRef = doc(db, "settings", "master_data");
+                }
+
                 const docSnap = await getDoc(docRef);
                 
                 if (docSnap.exists()) {
@@ -339,6 +336,8 @@
                                     </a>`;
                             }
                         });
+                    } else {
+                        linksContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">No links added yet.</div>';
                     }
 
                     // 3. تحديث السوشيال ميديا
@@ -351,8 +350,19 @@
                                     <i class="${social.icon}"></i>
                                 </a>`;
                         });
-                        socialContainer.style.display = 'flex'; // إظهار الدوك
+                        socialContainer.style.display = 'flex';
+                    } else {
+                        socialContainer.style.display = 'none';
                     }
+                    
+                } else {
+                    // لو حد كتب اسم مستخدم غلط في الرابط
+                    document.getElementById('renderName').innerText = "User Not Found";
+                    document.getElementById('renderBioMain').innerText = "This CraftBio profile doesn't exist.";
+                    document.getElementById('renderBioSub').innerText = "";
+                    document.getElementById('renderLinksContainer').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #ff5e5b; font-size: 14px;">Please check the link and try again.</div>';
+                    document.getElementById('renderSocialContainer').style.display = 'none';
+                    document.getElementById('wallpaperWidget').style.display = 'none'; // نخفي الويدجت لو اليوزر مش موجود
                 }
             } catch (error) {
                 console.log("Error loading data:", error);
