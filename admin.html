@@ -189,8 +189,8 @@
                             </div>
                         </div>
                         <div class="action-btns">
-                            <button class="edit-btn" onclick="editLink(${index})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="delete-btn" onclick="removeLink(${index})"><i class="fa-solid fa-trash"></i></button>
+                            <button class="edit-btn" onclick="editLink(${index})" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                            <button class="delete-btn" onclick="removeLink(${index})" title="Delete"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -258,7 +258,7 @@
                 document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
                 document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
                 myLinks = data.links || [];
-                mySocialLinks = data.socialLinks || []; // تحميل السوشيال
+                mySocialLinks = data.socialLinks || [];
             }
             window.renderAdminLinks();
             window.renderAdminSocialLinks();
@@ -320,7 +320,6 @@
             };
             
             try {
-                // حفظ الروابط الأساسية وروابط السوشيال
                 await setDoc(doc(db, "settings", "master_data"), { 
                     profile: profileData, 
                     links: myLinks,
