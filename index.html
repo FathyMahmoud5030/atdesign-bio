@@ -4,85 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AT Design | Premium Portfolio</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
+        /* === Theme Variables === */
         :root[data-theme="dark"] {
-            --bg-base: #050810; --bg-gradient-1: rgba(0, 210, 255, 0.15); --bg-gradient-2: rgba(58, 123, 213, 0.1);
-            --liquid-bg: rgba(20, 25, 40, 0.4); --liquid-border-top: rgba(255, 255, 255, 0.15);
-            --liquid-border-bottom: rgba(0, 0, 0, 0.5); --liquid-shadow-out: 0 20px 40px rgba(0, 0, 0, 0.6); --liquid-shadow-in: inset 0 2px 10px rgba(255, 255, 255, 0.05);
-            --text-main: #ffffff; --text-muted: rgba(255, 255, 255, 0.7); --text-accent: #00d2ff; --theme-icon: '\f185';
+            --bg-base: #050810;
+            --bg-gradient-1: rgba(0, 210, 255, 0.15);
+            --bg-gradient-2: rgba(58, 123, 213, 0.1);
+            
+            --liquid-bg: rgba(20, 25, 40, 0.4);
+            --liquid-border-top: rgba(255, 255, 255, 0.15);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.5);
+            --liquid-shadow-out: 0 20px 40px rgba(0, 0, 0, 0.6);
+            --liquid-shadow-in: inset 0 2px 10px rgba(255, 255, 255, 0.05);
+            
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --text-accent: #00d2ff;
+            --theme-icon: '\f185';
         }
+
         :root[data-theme="light"] {
-            --bg-base: #eef2f6; --bg-gradient-1: rgba(0, 153, 255, 0.12); --bg-gradient-2: rgba(0, 210, 255, 0.15);
-            --liquid-bg: rgba(255, 255, 255, 0.85); --liquid-border-top: rgba(255, 255, 255, 1);
-            --liquid-border-bottom: rgba(0, 0, 0, 0.04); --liquid-shadow-out: 0 15px 35px rgba(0, 0, 0, 0.06); --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.8);
-            --text-main: #0a0d14; --text-muted: #4a5568; --text-accent: #005bb5; --theme-icon: '\f186';
+            --bg-base: #eef2f6;
+            --bg-gradient-1: rgba(0, 153, 255, 0.12);
+            --bg-gradient-2: rgba(0, 210, 255, 0.15);
+            
+            --liquid-bg: rgba(255, 255, 255, 0.85); 
+            --liquid-border-top: rgba(255, 255, 255, 1);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.04);
+            --liquid-shadow-out: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.8);
+            
+            --text-main: #0a0d14;
+            --text-muted: #4a5568;
+            --text-accent: #005bb5;
+            --theme-icon: '\f186';
         }
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --glass-blur: blur(24px); --squircle-radius: 28px; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: background-color 0.5s ease, color 0.5s ease; }
-        body { min-height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); background-attachment: fixed; color: var(--text-main); display: flex; justify-content: center; padding: 40px 20px; }
-        
-        .main-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 28px; position: relative; }
-        
-        .theme-toggle { position: absolute; top: -20px; right: 0; background: var(--liquid-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--liquid-border-top); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--liquid-shadow-out); z-index: 100; }
-        .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --glass-blur: blur(24px);
+            --squircle-radius: 28px;
+        }
 
-        /* Profile Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute; top: -20px; right: 0;
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--liquid-border-top); width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer;
+            box-shadow: var(--liquid-shadow-out); z-index: 100;
+        }
+        .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
+
+        /* === Profile === */
         .profile-section { text-align: center; }
-        .avatar-wrapper { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
-        .avatar-wrapper::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px); animation: glowPulse 2s infinite alternate; }
-        @keyframes glowPulse { 0% { transform: scale(0.95); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.9; } }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); position: relative; z-index: 1; }
         
+        .avatar-wrapper {
+            position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto;
+        }
+        .avatar-wrapper::before {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px);
+            animation: glowPulse 2s infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.9; }
+        }
+        .avatar {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--bg-base); position: relative; z-index: 1;
+        }
+
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .verify-badge { color: var(--text-accent); width: 24px; height: 24px; fill: currentColor; }
+        
+        .verify-badge { 
+            color: var(--text-accent); 
+            width: 24px; 
+            height: 24px; 
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
         .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
-        .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; }
+        .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
+        .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
+        .bio-tags i { font-size: 15px; }
 
-        .liquid-card { background: var(--liquid-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top); border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom); border-radius: var(--squircle-radius); box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in); position: relative; overflow: hidden; }
+        /* === Shared Liquid Card === */
+        .liquid-card {
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
+            border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom);
+            border-radius: var(--squircle-radius); box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
+            position: relative; overflow: hidden;
+        }
 
-        /* Links Grid */
-        .links-grid { display: grid; grid-template-columns: 1fr; gap: 16px; } /* خليناها صفوف عشان تستوعب الوصف والبادج براحتها */
-        .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s; position: relative; }
-        .app-link:hover { transform: translateY(-4px) scale(1.02); }
-        .app-icon-wrapper { width: 50px; height: 50px; border-radius: 14px; background: rgba(128,128,128,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-main); font-size: 24px; }
-        .app-text { font-weight: 600; font-size: 15px; }
-        .app-subtext { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-        
-        .badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #ff5e5b, #ff2a85); color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; box-shadow: 0 4px 10px rgba(255, 94, 91, 0.4); border: 1px solid rgba(255,255,255,0.2); }
-
-        /* Wallpaper section (Static for now as requested) */
+        /* === Wallpaper Widget === */
         .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; }
-        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s; }
+        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
+        .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
         .slide.active { opacity: 1; }
-        .wall-info { display: flex; flex-direction: column; justify-content: space-between; height: 170px; }
-        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 12px; border-radius: 14px; text-decoration: none; text-align: center; font-weight: 600; }
+        .wall-info { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 170px; }
+        .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
+        .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
+        .wall-actions { display: flex; flex-direction: column; gap: 10px; }
+        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
+        .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
         .widget-nav { display: flex; gap: 10px; }
-        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128,128,128,0.1); border: none; color: var(--text-main); cursor: pointer; }
+        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--liquid-border-top); color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
+
+        /* === Apps & Links Grid === */
+        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .full-width { grid-column: 1 / -1; }
+        .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; }
+        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 24px 12px; gap: 12px; }
+        
+        .app-link:hover { transform: translateY(-4px) scale(1.02); }
+        .app-link:hover .app-icon-wrapper { transform: scale(1.1); }
+        
+        .app-icon-wrapper { 
+            width: 50px; height: 50px; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; flex-shrink: 0; 
+            transition: transform 0.3s ease;
+        }
+        .half-width .app-icon-wrapper { width: 55px; height: 55px; }
+        .app-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .app-icon-wrapper i { font-size: 24px; }
+
+        /* ستايل البادج (Trending/New) */
+        .badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #ff5e5b, #ff2a85); color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; box-shadow: 0 4px 10px rgba(255, 94, 91, 0.4); border: 1px solid rgba(255,255,255,0.2); z-index: 2; }
+        .half-width .badge { right: auto; left: 50%; transform: translateX(-50%); top: -10px; } /* توسيط البادج في المربعات الصغيرة */
+
+        /* === Brand Colors & Tints === */
+        .brand-play { background: rgba(0, 210, 255, 0.15); color: #00d2ff; }
+        .brand-gumroad { background: rgba(255, 42, 133, 0.15); color: #ff2a85; }
+        .brand-kofi { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; }
+        .brand-paypal { background: rgba(0, 112, 186, 0.15); color: #0070ba; }
+        .brand-apple { background: rgba(130, 130, 130, 0.15); color: var(--text-main); } 
+        .brand-default { background: rgba(128, 128, 128, 0.15); color: var(--text-main); }
+
+        .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--text-main); }
+        .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+
+        .social-dock { display: flex; justify-content: center; gap: 15px; padding: 20px; }
+        .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
+        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
     </style>
 </head>
 
 <body>
 
     <div class="main-container">
+
         <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
 
         <header class="profile-section">
             <div class="avatar-wrapper">
-                <img src="wallpapers/avatar.jpg" id="renderAvatar" class="avatar">
+                <img src="wallpapers/avatar.jpg" id="renderAvatar" alt="AT Design" class="avatar">
             </div>
+            
             <h1 class="profile-name">
-                <span id="renderName">Loading...</span> 
-                <svg class="verify-badge" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path></svg>
+                <span id="renderName">AT Design</span> 
+                <svg class="verify-badge" viewBox="0 0 24 24" aria-label="Verified">
+                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path>
+                </svg>
             </h1>
+            
             <div class="profile-bio">
-                <span class="bio-main" id="renderBioMain">Please wait...</span>
-                <span class="bio-sub" id="renderBioSub"></span>
+                <span class="bio-main" id="renderBioMain">Android Developer & UI Asset Designer</span>
+                <span class="bio-sub" id="renderBioSub">Premium Wallpapers • Icons • Widgets</span>
+                <span class="bio-tags">
+                    <span><i class="fa-brands fa-android" style="color: #3DDC84;"></i> Android</span>
+                    •
+                    <span><i class="fa-brands fa-apple" style="color: var(--text-main);"></i> iOS</span>
+                </span>
             </div>
         </header>
 
@@ -93,10 +228,18 @@
                 <img src="wallpapers/wallpaper3.png" class="slide">
                 <img src="wallpapers/wallpaper4.png" class="slide">
             </div>
+
             <div class="wall-info">
-                <div><h3 style="font-size:18px;">Wall of the Day</h3><p style="font-size:13px; color:var(--text-muted);">Changes every 24h</p></div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <a id="downloadBtn" href="#" download class="widget-btn-primary"><i class="fa-solid fa-download"></i> Download</a>
+                <div class="wall-header">
+                    <h3>Wall of the Day</h3>
+                    <p>Changes automatically every 24h</p>
+                </div>
+                
+                <div class="wall-actions">
+                    <a id="downloadBtn" href="#" download class="widget-btn-primary">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Now
+                    </a>
+                    
                     <div class="widget-nav">
                         <button class="widget-icon-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
                         <button class="widget-icon-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
@@ -106,35 +249,67 @@
         </div>
 
         <div class="links-grid" id="renderLinksContainer">
-            <div style="text-align:center; padding: 20px; color: var(--text-muted);">Loading links...</div>
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">Loading your amazing apps...</div>
         </div>
+
+        <div class="liquid-card social-dock">
+            <a href="https://x.com/AndroidTools3" class="social-btn" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/android_tools4u" class="social-btn" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://t.me/androidtools4walls" class="social-btn" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.threads.com/@android_tools4u" class="social-btn" target="_blank"><i class="fa-brands fa-threads"></i></a>
+        </div>
+
     </div>
 
     <script>
         function initTheme() {
-            const saved = localStorage.getItem('theme');
-            document.documentElement.setAttribute('data-theme', saved ? saved : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            }
         }
+
         function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const newTheme = current === 'dark' ? 'light' : 'dark';
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+        });
+
         initTheme();
 
         const slides = document.querySelectorAll(".slide");
         const downloadBtn = document.getElementById("downloadBtn");
-        let current = Math.floor(Date.now() / 86400000) % slides.length;
         
+        const daysSinceEpoch = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+        let current = daysSinceEpoch % slides.length;
+        
+        showSlide(current);
+
         function showSlide(index) {
-            slides.forEach(s => s.classList.remove("active"));
+            slides.forEach(slide => slide.classList.remove("active"));
             slides[index].classList.add("active");
             downloadBtn.href = slides[index].src;
         }
-        function nextSlide() { current = (current + 1) % slides.length; showSlide(current); }
-        function prevSlide() { current = (current - 1 + slides.length) % slides.length; showSlide(current); }
-        showSlide(current);
+
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+        }
+
+        function prevSlide() {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlide(current);
+        }
     </script>
 
     <script type="module">
@@ -153,13 +328,26 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function renderPage() {
+        // دالة لاختيار لون البراند بناءً على الأيقونة
+        function getBrandClass(iconName) {
+            if(!iconName) return 'brand-default';
+            if(iconName.includes('google-play')) return 'brand-play';
+            if(iconName.includes('layer-group')) return 'brand-gumroad';
+            if(iconName.includes('apple')) return 'brand-apple';
+            if(iconName.includes('paypal')) return 'brand-paypal';
+            if(iconName.includes('box-open')) return 'brand-kofi';
+            return 'brand-default';
+        }
+
+        async function fetchAndRenderData() {
             try {
-                const docSnap = await getDoc(doc(db, "settings", "master_data"));
+                const docRef = doc(db, "settings", "master_data");
+                const docSnap = await getDoc(docRef);
+                
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     
-                    // Render Profile
+                    // تحديث البروفايل لو فيه داتا
                     if(data.profile) {
                         if(data.profile.avatar) document.getElementById('renderAvatar').src = data.profile.avatar;
                         if(data.profile.name) document.getElementById('renderName').innerText = data.profile.name;
@@ -167,33 +355,54 @@
                         if(data.profile.bioSub) document.getElementById('renderBioSub').innerText = data.profile.bioSub;
                     }
 
-                    // Render Links
+                    // تحديث الروابط
                     const container = document.getElementById('renderLinksContainer');
-                    container.innerHTML = '';
                     if(data.links && data.links.length > 0) {
-                        data.links.forEach(link => {
-                            container.innerHTML += `
-                                <a href="${link.url}" class="liquid-card app-link" target="_blank">
-                                    ${link.badge ? `<div class="badge">${link.badge}</div>` : ''}
-                                    <div class="app-icon-wrapper"><i class="${link.icon}"></i></div>
-                                    <div>
+                        container.innerHTML = ''; // مسح رسالة التحميل
+                        
+                        // هنا بنلف على الروابط كلها
+                        data.links.forEach((link, index) => {
+                            const brandClass = getBrandClass(link.icon);
+                            const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
+
+                            // لو ده أول رابط (Index 0) -> هياخد كلاس full-width وتصميمه بالعرض
+                            if(index === 0) {
+                                container.innerHTML += `
+                                    <a href="${link.url}" class="liquid-card app-link full-width" target="_blank">
+                                        ${badgeHTML}
+                                        <div class="app-icon-wrapper ${brandClass}">
+                                            <i class="${link.icon}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="app-text">${link.title}</div>
+                                            ${link.subtext ? `<div class="app-subtext">${link.subtext}</div>` : ''}
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: var(--text-muted);"></i>
+                                    </a>
+                                `;
+                            } 
+                            // لو أي رابط تاني (Index 1, 2, 3...) -> هياخد كلاس half-width ويكون مربع
+                            else {
+                                container.innerHTML += `
+                                    <a href="${link.url}" class="liquid-card app-link half-width" target="_blank">
+                                        ${badgeHTML}
+                                        <div class="app-icon-wrapper ${brandClass}">
+                                            <i class="${link.icon}"></i>
+                                        </div>
                                         <div class="app-text">${link.title}</div>
-                                        ${link.subtext ? `<div class="app-subtext">${link.subtext}</div>` : ''}
-                                    </div>
-                                    <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: var(--text-muted);"></i>
-                                </a>
-                            `;
+                                    </a>
+                                `;
+                            }
                         });
-                    } else {
-                        container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted);">No links available yet.</div>';
                     }
                 }
             } catch (error) {
-                console.log("Error loading data:", error);
+                console.log("Error loading data from Firebase:", error);
             }
         }
 
-        renderPage();
+        fetchAndRenderData();
     </script>
+
 </body>
 </html>
