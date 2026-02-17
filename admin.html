@@ -82,7 +82,8 @@
                 <button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; background: rgba(255,255,255,0.1); border: 1px dashed var(--primary); color: var(--primary);" onclick="document.getElementById('avatarUpload').click()">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
                 </button>
-                <input type="hidden" id="profileAvatar"> </div>
+                <input type="hidden" id="profileAvatar"> 
+            </div>
             <div id="uploadProgress" style="font-size: 13px; color: var(--primary); margin-top: 8px; display: none; text-align: right;">Uploading... <span id="uploadPercent">0%</span></div>
         </div>
 
@@ -163,9 +164,7 @@
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
-        // 💡 استدعاء مكتبة الرفع (Storage)
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
-
+        // مفاتيح فايربيز بتاعتك (للتسجيل وقاعدة البيانات)
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
             authDomain: "atdesign-portfolio.firebaseapp.com",
@@ -178,56 +177,65 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app); // تعريف الـ Storage
 
         let myLinks = [];
         let mySocialLinks = [];
         window.draggedIdx = null;
         window.userDocRef = null; 
 
-        // 💡 كود رفع الصورة لـ Firebase Storage
+        // 💡 رفع الصورة لـ Cloudinary بدلاً من Firebase
         document.getElementById('avatarUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // التأكد إن في مستخدم مسجل الدخول عشان نرفع في الفولدر بتاعه
-            if (!auth.currentUser) return alert("Please login first.");
-
-            // إنشاء مسار للصورة: avatars/user_id/اسم_الصورة
-            const storageRef = ref(storage, `avatars/${auth.currentUser.uid}/${file.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+            // ⚠️ حط الـ Cloud Name والـ Upload Preset بتوعك هنا
+            const cloudName = "هنا_الـ_CLOUD_NAME_بتاعك"; 
+            const uploadPreset = "هنا_الـ_UPLOAD_PRESET_بتاعك"; 
+            
+            const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+            
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", uploadPreset);
 
             const progressText = document.getElementById('uploadProgress');
             const percentText = document.getElementById('uploadPercent');
             progressText.style.display = 'block';
 
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    percentText.innerText = Math.round(progress) + '%';
-                },
-                (error) => {
-                    alert("Upload failed: " + error.message);
-                    progressText.style.display = 'none';
-                },
-                () => {
-                    // بعد ما الرفع يخلص، بنجيب الرابط المباشر للصورة
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        document.getElementById('profileAvatar').value = downloadURL; // حفظ الرابط في الخانة المخفية
-                        document.getElementById('avatarPreview').src = downloadURL; // عرض الصورة المصغرة
-                        progressText.style.display = 'none';
-                        
-                        // تنبيه صغير إنه رفع الصورة ومحتاج يدوس Save
-                        document.getElementById('loadingMsg').innerText = "Image Uploaded! Click 'Save & Publish All' to apply.";
-                        document.getElementById('loadingMsg').style.display = 'block';
-                        setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
-                    });
+            // استخدام XMLHttpRequest عشان نقدر نجيب نسبة التحميل (Progress Bar)
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    percentText.innerText = percentComplete + '%';
                 }
-            );
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    const imageUrl = response.secure_url; // ده الرابط المباشر للصورة
+                    
+                    document.getElementById('profileAvatar').value = imageUrl; 
+                    document.getElementById('avatarPreview').src = imageUrl; 
+                    progressText.style.display = 'none';
+                    
+                    document.getElementById('loadingMsg').innerText = "Image Uploaded! Click 'Save & Publish All' to apply.";
+                    document.getElementById('loadingMsg').style.display = 'block';
+                    setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
+                } else {
+                    alert("Upload failed. Make sure your Upload Preset is set to 'Unsigned'.");
+                    progressText.style.display = 'none';
+                }
+            };
+
+            xhr.send(formData);
         });
 
         // ----------------------------------------------------
-        // باقي أكواد الأدمن (بدون تغيير)
+        // باقي أكواد الأدمن
         // ----------------------------------------------------
 
         window.renderAdminLinks = function() {
@@ -312,7 +320,7 @@
                 const data = docSnap.data();
                 const avatarUrl = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                 document.getElementById('profileAvatar').value = avatarUrl;
-                document.getElementById('avatarPreview').src = avatarUrl; // عرض الصورة المخزنة
+                document.getElementById('avatarPreview').src = avatarUrl; 
                 
                 document.getElementById('profileName').value = data.profile?.name || "";
                 document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
