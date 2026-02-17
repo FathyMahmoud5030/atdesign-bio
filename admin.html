@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT Design | Full Admin Dashboard</title>
+    <title>AT Design | Pro Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -34,22 +34,28 @@
 
         #dashboard-section { display: none; }
         
-        .links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        .links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
         .links-list::-webkit-scrollbar { width: 6px; }
         .links-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
         
-        .link-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        .link-item-info { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-        .link-item-info i { font-size: 18px; color: var(--primary); }
+        .link-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; }
+        /* ستايل الماوس عند السحب */
+        .drag-handle { cursor: grab; color: var(--text-muted); font-size: 18px; padding-right: 10px; }
+        .drag-handle:active { cursor: grabbing; color: var(--primary); }
         
-        /* أزرار التعديل والحذف */
+        .link-item-info { display: flex; align-items: center; gap: 10px; font-size: 14px; flex-grow: 1;}
+        .link-item-info .app-icon { font-size: 18px; color: var(--primary); width: 20px; text-align: center;}
+        
         .action-btns { display: flex; gap: 8px; }
-        .edit-btn { background: rgba(0, 210, 255, 0.2); color: var(--primary); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .edit-btn, .delete-btn { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; }
+        .edit-btn { background: rgba(0, 210, 255, 0.2); color: var(--primary); }
         .edit-btn:hover { background: var(--primary); color: white; }
-        .delete-btn { background: rgba(255, 94, 91, 0.2); color: #ff5e5b; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .delete-btn { background: rgba(255, 94, 91, 0.2); color: #ff5e5b; }
         .delete-btn:hover { background: #ff5e5b; color: white; }
         
         .add-box { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.2); }
+        .row-inputs { display: flex; gap: 10px; } /* لتقسيم الخانات جنب بعض */
+        
         #loadingMsg { text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 15px; display: none; }
     </style>
 </head>
@@ -68,49 +74,49 @@
         <div id="loadingMsg">Saving Data...</div>
 
         <div class="section-title">👤 Profile Settings</div>
-        <div class="input-group">
-            <label>Avatar Image URL</label>
-            <input type="url" id="profileAvatar" placeholder="wallpapers/avatar.jpg">
-        </div>
-        <div class="input-group">
-            <label>Display Name</label>
-            <input type="text" id="profileName" placeholder="e.g. AT Design">
-        </div>
-        <div class="input-group">
-            <label>Main Bio</label>
-            <input type="text" id="profileBioMain" placeholder="e.g. Android Developer">
-        </div>
-        <div class="input-group">
-            <label>Sub Bio (Colored)</label>
-            <input type="text" id="profileBioSub" placeholder="e.g. Premium UI Assets">
-        </div>
+        <div class="input-group"><label>Avatar Image URL</label><input type="url" id="profileAvatar" placeholder="wallpapers/avatar.jpg"></div>
+        <div class="input-group"><label>Display Name</label><input type="text" id="profileName" placeholder="e.g. AT Design"></div>
+        <div class="input-group"><label>Main Bio</label><input type="text" id="profileBioMain" placeholder="e.g. Android Developer"></div>
+        <div class="input-group"><label>Sub Bio (Colored)</label><input type="text" id="profileBioSub" placeholder="e.g. Premium UI Assets"></div>
 
-        <div class="section-title">🔗 Links Manager</div>
+        <div class="section-title">🔗 Links Manager (Drag to Reorder)</div>
         <div class="links-list" id="linksListContainer"></div>
 
         <div class="add-box" id="addLinkBox">
-            <h3 style="font-size: 15px; margin-bottom: 15px;" id="addBoxTitle">+ Add New Link</h3>
+            <h3 style="font-size: 15px; margin-bottom: 15px;" id="addBoxTitle">+ Add / Edit Link</h3>
             <div class="input-group"><input type="text" id="newTitle" placeholder="Link Title"></div>
             <div class="input-group"><input type="text" id="newSubtext" placeholder="Subtext (Optional)"></div>
             <div class="input-group"><input type="url" id="newUrl" placeholder="URL"></div>
+            
+            <div class="row-inputs">
+                <div class="input-group" style="flex: 1;">
+                    <select id="newIcon" style="background-color: var(--bg-base);">
+                        <option value="fa-solid fa-globe">🌐 Web</option>
+                        <option value="fa-brands fa-google-play">▶️ Google Play</option>
+                        <option value="fa-solid fa-layer-group">📚 Gumroad</option>
+                        <option value="fa-brands fa-apple">🍏 Apple</option>
+                        <option value="fa-brands fa-paypal">💳 PayPal</option>
+                        <option value="fa-solid fa-box-open">☕ Ko-fi</option>
+                    </select>
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <select id="newBadge" style="background-color: var(--bg-base);">
+                        <option value="">No Badge</option>
+                        <option value="🔥 Trending">🔥 Trending</option>
+                        <option value="✨ New">✨ New</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="input-group">
-                <select id="newIcon" style="background-color: var(--bg-base);">
-                    <option value="fa-solid fa-globe">🌐 Web</option>
-                    <option value="fa-brands fa-google-play">▶️ Google Play</option>
-                    <option value="fa-solid fa-layer-group">📚 Gumroad</option>
-                    <option value="fa-brands fa-apple">🍏 Apple</option>
-                    <option value="fa-brands fa-paypal">💳 PayPal</option>
-                    <option value="fa-solid fa-box-open">☕ Ko-fi</option>
+                <label>Layout Style (شكل الرابط في الموقع)</label>
+                <select id="newLayout" style="background-color: var(--bg-base); border-color: var(--primary);">
+                    <option value="full">▬ Full Width (مستطيل عريض)</option>
+                    <option value="half">■ Half Width (مربع صغير)</option>
                 </select>
             </div>
-            <div class="input-group">
-                <select id="newBadge" style="background-color: var(--bg-base);">
-                    <option value="">No Badge</option>
-                    <option value="🔥 Trending">🔥 Trending</option>
-                    <option value="✨ New">✨ New</option>
-                </select>
-            </div>
-            <button class="btn-primary" id="addNewBtn" style="background: rgba(255,255,255,0.1);">Add to List</button>
+
+            <button class="btn-primary" id="addNewBtn" style="background: rgba(255,255,255,0.1);">Save Link to List</button>
         </div>
 
         <button class="btn-primary" id="saveBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish All</button>
@@ -136,8 +142,10 @@
         const db = getFirestore(app);
 
         let myLinks = [];
+        window.draggedIdx = null; // متغير لحفظ العنصر اللي بيتم سحبه
 
-        function renderAdminLinks() {
+        // دالة رسم الروابط مع خصائص السحب (Drag)
+        window.renderAdminLinks = function() {
             const container = document.getElementById('linksListContainer');
             container.innerHTML = '';
             if(myLinks.length === 0) {
@@ -145,13 +153,20 @@
                 return;
             }
             myLinks.forEach((link, index) => {
+                const layoutTag = link.layout === 'full' ? '▬ Full' : '■ Half';
                 container.innerHTML += `
-                    <div class="link-item">
+                    <div class="link-item" draggable="true" 
+                         ondragstart="dragStart(${index})" 
+                         ondragover="allowDrop(event)" 
+                         ondrop="drop(event, ${index})" 
+                         ondragenter="dragEnter(event)" 
+                         ondragleave="dragLeave(event)">
                         <div class="link-item-info">
-                            <i class="${link.icon}"></i>
+                            <i class="fa-solid fa-grip-vertical drag-handle" title="Drag to reorder"></i>
+                            <i class="${link.icon} app-icon"></i>
                             <div>
                                 <strong>${link.title}</strong>
-                                ${link.badge ? `<span style="color:#ff5e5b; font-size:11px; margin-left:5px;">(${link.badge})</span>` : ''}
+                                <div style="font-size:11px; color:var(--text-muted);">${layoutTag} ${link.badge ? `• <span style="color:#ff5e5b;">${link.badge}</span>` : ''}</div>
                             </div>
                         </div>
                         <div class="action-btns">
@@ -162,30 +177,40 @@
             });
         }
 
-        // دالة مسح الرابط
-        window.removeLink = function(index) {
-            myLinks.splice(index, 1);
-            renderAdminLinks();
+        // --- دوال السحب والإفلات (Drag & Drop) ---
+        window.dragStart = function(index) { window.draggedIdx = index; }
+        window.allowDrop = function(e) { e.preventDefault(); }
+        window.dragEnter = function(e) { e.currentTarget.style.border = "1px dashed var(--primary)"; }
+        window.dragLeave = function(e) { e.currentTarget.style.border = "1px solid rgba(255,255,255,0.1)"; }
+        window.drop = function(e, targetIdx) {
+            e.preventDefault();
+            e.currentTarget.style.border = "1px solid rgba(255,255,255,0.1)";
+            if(window.draggedIdx === targetIdx) return;
+            // إعادة ترتيب المصفوفة
+            const item = myLinks.splice(window.draggedIdx, 1)[0];
+            myLinks.splice(targetIdx, 0, item);
+            window.renderAdminLinks();
         }
 
-        // ✏️ دالة تعديل الرابط الجديدة
+        // دوال الحذف والتعديل
+        window.removeLink = function(index) {
+            myLinks.splice(index, 1);
+            window.renderAdminLinks();
+        }
+
         window.editLink = function(index) {
             const linkToEdit = myLinks[index];
-            
-            // وضع البيانات في المربعات
             document.getElementById('newTitle').value = linkToEdit.title;
             document.getElementById('newSubtext').value = linkToEdit.subtext || '';
             document.getElementById('newUrl').value = linkToEdit.url;
             document.getElementById('newIcon').value = linkToEdit.icon;
             document.getElementById('newBadge').value = linkToEdit.badge || '';
+            document.getElementById('newLayout').value = linkToEdit.layout || 'half';
             
-            // مسح الرابط من القائمة عشان لما تدوس Add ينزل بالتعديل الجديد (بدل ما يتكرر)
             myLinks.splice(index, 1);
-            renderAdminLinks();
+            window.renderAdminLinks();
             
-            // عمل Scroll ناعم لتحت عشان تعدل البيانات
-            document.getElementById('addBoxTitle').innerText = "✏️ Edit Link Details";
-            document.getElementById('addNewBtn').innerText = "Update Link";
+            document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit Link Details</span>";
             document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -199,7 +224,7 @@
                 document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
                 myLinks = data.links || [];
             }
-            renderAdminLinks();
+            window.renderAdminLinks();
         }
 
         onAuthStateChanged(auth, (user) => {
@@ -225,16 +250,15 @@
             const url = document.getElementById('newUrl').value;
             const icon = document.getElementById('newIcon').value;
             const badge = document.getElementById('newBadge').value;
+            const layout = document.getElementById('newLayout').value; // قراءة الستايل المختار
             
             if(title && url) {
-                myLinks.push({ title, subtext, url, icon, badge });
-                renderAdminLinks();
-                // تفريغ المربعات بعد الإضافة
+                myLinks.push({ title, subtext, url, icon, badge, layout }); // حفظ الستايل مع الرابط
+                window.renderAdminLinks();
                 document.getElementById('newTitle').value = '';
                 document.getElementById('newSubtext').value = '';
                 document.getElementById('newUrl').value = '';
                 document.getElementById('addBoxTitle').innerText = "+ Add New Link";
-                document.getElementById('addNewBtn').innerText = "Add to List";
             } else { alert("Title and URL are required!"); }
         });
 
@@ -252,7 +276,7 @@
                 document.getElementById('loadingMsg').innerText = "Saved Successfully ✅";
                 setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
             } catch (e) {
-                alert("Error saving: Make sure Firebase Rules allow writing! " + e.message);
+                alert("Error saving: " + e.message);
                 document.getElementById('loadingMsg').style.display = 'none';
             }
         });
