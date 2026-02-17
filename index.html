@@ -113,7 +113,6 @@
 
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
         
-        /* تعديل كلاس التوثيق عشان يظبط حجم الفيكتور الجديد */
         .verify-badge { 
             color: var(--text-accent); 
             width: 24px; 
@@ -246,7 +245,7 @@
 
         <div class="links-grid">
             
-            <a href="https://play.google.com/store/apps/dev?id=5213352977383623076" class="liquid-card app-link full-width" target="_blank">
+            <a id="link-playstore" href="https://play.google.com/store/apps/dev?id=5213352977383623076" class="liquid-card app-link full-width" target="_blank">
                 <div class="app-icon-wrapper brand-play">
                     <img src="your-app-icon.png" alt="App Icon" onerror="this.style.display='none'">
                     <i class="fa-brands fa-google-play"></i>
@@ -258,28 +257,28 @@
                 <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: var(--text-muted);"></i>
             </a>
 
-            <a href="https://androidtools4u.gumroad.com/" class="liquid-card app-link half-width" target="_blank">
+            <a id="link-gumroad" href="https://androidtools4u.gumroad.com/" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper brand-gumroad">
                     <i class="fa-solid fa-layer-group"></i> 
                 </div>
                 <div class="app-text">Gumroad</div>
             </a>
 
-            <a href="https://ko-fi.com/androidtools4u/shop" class="liquid-card app-link half-width" target="_blank">
+            <a id="link-kofi" href="https://ko-fi.com/androidtools4u/shop" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper brand-kofi">
                     <i class="fa-solid fa-box-open"></i>
                 </div>
                 <div class="app-text">My Apps on Ko-fi</div>
             </a>
 
-            <a href="https://paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
+            <a id="link-paypal" href="https://paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper brand-paypal">
                     <i class="fa-brands fa-paypal"></i>
                 </div>
                 <div class="app-text">PayPal</div>
             </a>
 
-            <a href="https://apps.apple.com/us/app/wallspot-4k-wallpapers/id6746551004" class="liquid-card app-link half-width" target="_blank">
+            <a id="link-ios" href="https://apps.apple.com/us/app/wallspot-4k-wallpapers/id6746551004" class="liquid-card app-link half-width" target="_blank">
                 <div class="app-icon-wrapper brand-apple">
                     <i class="fa-brands fa-apple"></i>
                 </div>
@@ -346,6 +345,47 @@
             current = (current - 1 + slides.length) % slides.length;
             showSlide(current);
         }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // مفتاحك
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
+            authDomain: "atdesign-portfolio.firebaseapp.com",
+            projectId: "atdesign-portfolio",
+            storageBucket: "atdesign-portfolio.firebasestorage.app",
+            messagingSenderId: "893862249348",
+            appId: "1:893862249348:web:50d3e683bba425eb1953d1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // سحب وتحديث الروابط
+        async function fetchAndUpdateLinks() {
+            try {
+                const docRef = doc(db, "settings", "links");
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // لو الداتا موجودة في فايربيز، حطها مكان الروابط القديمة اللي في الموقع
+                    if(data.playstore && document.getElementById('link-playstore')) document.getElementById('link-playstore').href = data.playstore;
+                    if(data.gumroad && document.getElementById('link-gumroad')) document.getElementById('link-gumroad').href = data.gumroad;
+                    if(data.kofi && document.getElementById('link-kofi')) document.getElementById('link-kofi').href = data.kofi;
+                    if(data.paypal && document.getElementById('link-paypal')) document.getElementById('link-paypal').href = data.paypal;
+                    if(data.ios && document.getElementById('link-ios')) document.getElementById('link-ios').href = data.ios;
+                }
+            } catch (error) {
+                console.log("Error loading links from Firebase:", error);
+            }
+        }
+
+        fetchAndUpdateLinks();
     </script>
 
 </body>
