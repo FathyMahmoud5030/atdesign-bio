@@ -24,7 +24,7 @@
         
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none; transition: 0.3s; }
+        .input-group input:not([type="file"]), .input-group select { width: 100%; padding: 12px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none; transition: 0.3s; }
         .input-group input:focus, .input-group select:focus { border-color: var(--primary); }
         
         .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
@@ -73,7 +73,19 @@
         <div id="loadingMsg">Saving Data...</div>
 
         <div class="section-title">👤 Profile Settings</div>
-        <div class="input-group"><label>Avatar Image URL</label><input type="url" id="profileAvatar" placeholder="https://..."></div>
+        
+        <div class="input-group">
+            <label>Profile Avatar</label>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <img id="avatarPreview" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+                <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                <button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; background: rgba(255,255,255,0.1); border: 1px dashed var(--primary); color: var(--primary);" onclick="document.getElementById('avatarUpload').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                </button>
+                <input type="hidden" id="profileAvatar"> </div>
+            <div id="uploadProgress" style="font-size: 13px; color: var(--primary); margin-top: 8px; display: none; text-align: right;">Uploading... <span id="uploadPercent">0%</span></div>
+        </div>
+
         <div class="input-group"><label>Display Name</label><input type="text" id="profileName" placeholder="Your Name"></div>
         <div class="input-group"><label>Main Bio</label><input type="text" id="profileBioMain" placeholder="What do you do?"></div>
         <div class="input-group"><label>Sub Bio (Colored)</label><input type="text" id="profileBioSub" placeholder="Tags or secondary info"></div>
@@ -149,9 +161,10 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        
-        // 💡 التعديل هنا: ضفنا collection و query و where للبحث عن المستخدم الصح
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        // 💡 استدعاء مكتبة الرفع (Storage)
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
@@ -165,15 +178,58 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app); // تعريف الـ Storage
 
         let myLinks = [];
         let mySocialLinks = [];
         window.draggedIdx = null;
-        
-        // 💡 متغير بيحفظ "مسار" الداتا بيز الخاص بالمستخدم اللي دخل
         window.userDocRef = null; 
 
-        // Apps
+        // 💡 كود رفع الصورة لـ Firebase Storage
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // التأكد إن في مستخدم مسجل الدخول عشان نرفع في الفولدر بتاعه
+            if (!auth.currentUser) return alert("Please login first.");
+
+            // إنشاء مسار للصورة: avatars/user_id/اسم_الصورة
+            const storageRef = ref(storage, `avatars/${auth.currentUser.uid}/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            const progressText = document.getElementById('uploadProgress');
+            const percentText = document.getElementById('uploadPercent');
+            progressText.style.display = 'block';
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    percentText.innerText = Math.round(progress) + '%';
+                },
+                (error) => {
+                    alert("Upload failed: " + error.message);
+                    progressText.style.display = 'none';
+                },
+                () => {
+                    // بعد ما الرفع يخلص، بنجيب الرابط المباشر للصورة
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        document.getElementById('profileAvatar').value = downloadURL; // حفظ الرابط في الخانة المخفية
+                        document.getElementById('avatarPreview').src = downloadURL; // عرض الصورة المصغرة
+                        progressText.style.display = 'none';
+                        
+                        // تنبيه صغير إنه رفع الصورة ومحتاج يدوس Save
+                        document.getElementById('loadingMsg').innerText = "Image Uploaded! Click 'Save & Publish All' to apply.";
+                        document.getElementById('loadingMsg').style.display = 'block';
+                        setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
+                    });
+                }
+            );
+        });
+
+        // ----------------------------------------------------
+        // باقي أكواد الأدمن (بدون تغيير)
+        // ----------------------------------------------------
+
         window.renderAdminLinks = function() {
             const container = document.getElementById('linksListContainer');
             container.innerHTML = '';
@@ -201,7 +257,6 @@
             });
         }
 
-        // Socials
         window.renderAdminSocialLinks = function() {
             const container = document.getElementById('socialListContainer');
             container.innerHTML = '';
@@ -221,7 +276,6 @@
             });
         }
 
-        // Drag & Drop
         window.dragStart = function(index) { window.draggedIdx = index; }
         window.allowDrop = function(e) { e.preventDefault(); }
         window.dragEnter = function(e) { e.currentTarget.style.border = "1px dashed var(--primary)"; }
@@ -234,7 +288,6 @@
             window.renderAdminLinks();
         }
 
-        // Removers
         window.removeLink = function(index) { myLinks.splice(index, 1); window.renderAdminLinks(); }
         window.removeSocialLink = function(index) { mySocialLinks.splice(index, 1); window.renderAdminSocialLinks(); }
 
@@ -246,30 +299,29 @@
             document.getElementById('newIcon').value = linkToEdit.icon;
             document.getElementById('newBadge').value = linkToEdit.badge || '';
             document.getElementById('newLayout').value = linkToEdit.layout || 'half';
-            
             myLinks.splice(index, 1);
             window.renderAdminLinks();
-            
             document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit Link</span>";
             document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 💡 دالة تحميل الداتا بقت ذكية بتشتغل بناءً على الـ userDocRef اللي اتحدد
         async function loadData() {
-            if (!window.userDocRef) return; // لو مفيش مسار، متعملش حاجة
-            
+            if (!window.userDocRef) return; 
             const docSnap = await getDoc(window.userDocRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                document.getElementById('profileAvatar').value = data.profile?.avatar || "";
+                const avatarUrl = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+                document.getElementById('profileAvatar').value = avatarUrl;
+                document.getElementById('avatarPreview').src = avatarUrl; // عرض الصورة المخزنة
+                
                 document.getElementById('profileName').value = data.profile?.name || "";
                 document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
                 document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
                 myLinks = data.links || [];
                 mySocialLinks = data.socialLinks || [];
             } else {
-                // تصفير الخانات لو اليوزر جديد ولسه داتابيزه فاضية
                 document.getElementById('profileAvatar').value = "";
+                document.getElementById('avatarPreview').src = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                 document.getElementById('profileName').value = "";
                 document.getElementById('profileBioMain').value = "";
                 document.getElementById('profileBioSub').value = "";
@@ -280,25 +332,18 @@
             window.renderAdminSocialLinks();
         }
 
-        // 💡 مراقبة تسجيل الدخول وتحديد مسار المستخدم
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
-                
-                // هنا السحر: بندور في كولكشن المستخدمين الجداد الأول
                 const q = query(collection(db, "users"), where("uid", "==", user.uid));
                 const querySnapshot = await getDocs(q);
-                
                 if (!querySnapshot.empty) {
-                    // لو لقيناه في كولكشن (users) -> ده مستخدم تبع CraftBio الجديد
                     window.userDocRef = doc(db, "users", querySnapshot.docs[0].id);
                 } else {
-                    // لو ملقيناهوش -> يبقى ده الحساب القديم بتاعك إنت يا هندسة (master_data)
                     window.userDocRef = doc(db, "settings", "master_data");
                 }
-                
-                loadData(); // حمل الداتا من المسار اللي لقيته
+                loadData();
             } else {
                 document.getElementById('login-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
@@ -312,7 +357,6 @@
         });
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-        // Add App
         document.getElementById('addNewBtn').addEventListener('click', () => {
             const title = document.getElementById('newTitle').value;
             const subtext = document.getElementById('newSubtext').value;
@@ -329,7 +373,6 @@
             } else { alert("Title and URL are required!"); }
         });
 
-        // Add Social
         document.getElementById('addSocialBtn').addEventListener('click', () => {
             const url = document.getElementById('newSocialUrl').value;
             const icon = document.getElementById('newSocialIcon').value;
@@ -340,10 +383,8 @@
             } else { alert("Social URL is required!"); }
         });
 
-        // 💡 حفظ الداتا في المسار الصح بتاع المستخدم الحالي
         document.getElementById('saveBtn').addEventListener('click', async () => {
             if (!window.userDocRef) return;
-            
             document.getElementById('loadingMsg').style.display = 'block';
             const profileData = {
                 avatar: document.getElementById('profileAvatar').value,
@@ -353,13 +394,11 @@
             };
             
             try {
-                // استخدمنا merge: true عشان لو اليوزر جديد منمسحش بيانات الحساب زي الـ username
                 await setDoc(window.userDocRef, { 
                     profile: profileData, 
                     links: myLinks,
                     socialLinks: mySocialLinks 
                 }, { merge: true });
-                
                 document.getElementById('loadingMsg').innerText = "Saved Successfully ✅";
                 setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
             } catch (e) {
