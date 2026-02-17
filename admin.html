@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AT Design | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* نفس متغيرات الثيم الأساسي للحفاظ على الهوية */
+        :root[data-theme="dark"] {
+            --bg-base: #050810; --bg-gradient-1: rgba(0, 210, 255, 0.15); --bg-gradient-2: rgba(58, 123, 213, 0.1);
+            --liquid-bg: rgba(20, 25, 40, 0.4); --liquid-border-top: rgba(255, 255, 255, 0.15);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.5); --text-main: #ffffff; --text-muted: rgba(255, 255, 255, 0.7);
+            --primary: #00d2ff; --secondary: #3a7bd5;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { min-height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); background-attachment: fixed; color: var(--text-main); display: flex; justify-content: center; align-items: center; padding: 20px; }
+        
+        .glass-panel { background: var(--liquid-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top); border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom); border-radius: 28px; padding: 40px; width: 100%; max-width: 500px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h2 { font-size: 24px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header h2 i { color: var(--primary); }
+        
+        /* Form Styles */
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .input-group input { width: 100%; padding: 15px; border-radius: 14px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 15px; outline: none; transition: border 0.3s; }
+        .input-group input:focus { border-color: var(--primary); }
+        
+        .btn-primary { width: 100%; padding: 15px; border-radius: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
+
+        /* Sections Visibility */
+        #dashboard-section { display: none; } /* مخفي لحد ما تسجل دخول */
+        
+        .dashboard-grid { display: grid; gap: 15px; margin-bottom: 20px; }
+        .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 25px 0; }
+        .logout-btn { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; border: 1px solid rgba(255, 94, 91, 0.3); margin-top: 15px; }
+        .logout-btn:hover { background: #ff5e5b; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="glass-panel" id="login-section">
+        <div class="header">
+            <h2><i class="fa-solid fa-lock"></i> Admin Login</h2>
+            <p style="color: var(--text-muted); margin-top: 5px; font-size: 14px;">Secure access for AT Design</p>
+        </div>
+        
+        <div class="input-group">
+            <label>Admin Email</label>
+            <input type="email" id="adminEmail" placeholder="Enter your email">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter password">
+        </div>
+        <button class="btn-primary" onclick="login()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </div>
+
+    <div class="glass-panel" id="dashboard-section">
+        <div class="header">
+            <h2><i class="fa-solid fa-sliders"></i> Portfolio Settings</h2>
+            <p style="color: var(--text-muted); margin-top: 5px; font-size: 14px;">Update your links instantly</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="input-group">
+                <label><i class="fa-brands fa-google-play"></i> Play Store Link</label>
+                <input type="url" id="playstoreLink" placeholder="https://play.google.com/...">
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fa-solid fa-layer-group"></i> Gumroad Link</label>
+                <input type="url" id="gumroadLink" placeholder="https://gumroad.com/...">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fa-brands fa-apple"></i> WallSpot (iOS) Link</label>
+                <input type="url" id="iosLink" placeholder="https://apps.apple.com/...">
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="saveData()"><i class="fa-solid fa-cloud-arrow-up"></i> Save Updates</button>
+        <button class="btn-primary logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+
+    <script>
+        // هنا هنكتب كود الجافاسكربت الخاص بـ Firebase بعد ما تجيب الإعدادات
+        function login() {
+            // مؤقتاً عشان تتخيل الشكل، بيخفي اللوجين ويظهر الداشبورد
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
+        }
+        function logout() {
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('dashboard-section').style.display = 'none';
+        }
+        function saveData() {
+            alert("Data saved successfully!");
+        }
+    </script>
+</body>
+</html>
