@@ -19,14 +19,13 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         
-        /* الخلفية الأساسية دافئة عشان تمنع الوميض الأبيض */
+        /* الخلفية الأساسية دافئة لمنع الوميض الأبيض */
         body { background: var(--bg-warm); color: var(--text-main); overflow: hidden; }
 
-        /* === 🚀 ONBOARDING (الافتراضي: ظاهر) === */
+        /* === 🚀 ONBOARDING SCREEN (الافتراضي: ظاهر) === */
         #onboarding-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; z-index: 999;
-            /* تدريج لوني مطابق للسبلاش */
             background: linear-gradient(180deg, #fff0f0 0%, #ffffff 100%);
         }
 
@@ -38,25 +37,25 @@
 
         /* Mockup Design */
         .mockup-container {
-            width: 250px; height: 500px;
+            width: 260px; height: 520px;
             position: relative; margin-bottom: 25px;
         }
         
         .phone-frame {
             width: 100%; height: 100%;
-            border: 10px solid #2d3436; border-radius: 45px;
+            border: 12px solid #2d3436; border-radius: 45px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
             overflow: hidden; position: relative; z-index: 2;
             background: white;
         }
 
-        /* Floating Elements */
+        /* Floating Elements Animation */
         .float-icon {
-            position: absolute; width: 45px; height: 45px;
+            position: absolute; width: 48px; height: 48px;
             background: white; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             display: flex; align-items: center; justify-content: center;
-            font-size: 22px; z-index: 3;
+            font-size: 24px; z-index: 3;
             animation: float 3s ease-in-out infinite;
         }
         .float-1 { top: 20%; left: -25px; color: #E1306C; animation-delay: 0s; }
@@ -84,13 +83,12 @@
         .btn-start:active { transform: scale(0.98); }
         .swiper-pagination-bullet-active { background-color: var(--primary) !important; }
 
-        /* === 👤 PROFILE (الافتراضي: مخفي) === */
+        /* === 👤 PROFILE SCREEN (الافتراضي: مخفي) === */
         #profile-screen { 
             display: none; 
             width: 100%; max-width: 480px; margin: 0 auto; 
             padding: 40px 20px; flex-direction: column; gap: 20px; 
             overflow-y: auto; height: 100vh;
-            /* خلفية البروفايل العادي */
             background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
         }
         
@@ -128,7 +126,7 @@
                 <div class="swiper-slide">
                     <div class="mockup-container">
                         <div class="phone-frame" style="background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%); display:flex; align-items:center; justify-content:center;">
-                            <div style="background:rgba(255,255,255,0.9); padding:15px 25px; border-radius:20px; font-weight:800; color:#333; box-shadow:0 10px 30px rgba(0,0,0,0.2);">Themes 🎨</div>
+                            <div style="background:rgba(255,255,255,0.95); padding:15px 25px; border-radius:20px; font-weight:800; color:#333; box-shadow:0 10px 30px rgba(0,0,0,0.2);">Themes 🎨</div>
                         </div>
                         <div class="float-icon" style="top:50%; right:-30px; background:#00d2ff;"><i class="fa-solid fa-palette" style="color:white;"></i></div>
                     </div>
@@ -204,16 +202,20 @@
             const profileScreen = document.getElementById('profile-screen');
             profileScreen.style.display = 'flex';
             
-            // 🎨 تجهيز البروفايل
+            // 🎨 تجهيز البروفايل (عادي vs موك-آب)
             if (isEmbed) {
-                // لو جوه الموك-آب: خلي الخلفية شفافة وشيل الهوامش
+                // لو جوه الموك-آب: خلي الخلفية شفافة
                 document.body.style.background = "transparent";
                 profileScreen.style.background = "transparent";
-                profileScreen.style.padding = "20px 10px";
+                profileScreen.style.padding = "0"; // شيلنا الهوامش
                 profileScreen.style.height = "auto";
-                profileScreen.querySelector('.profile-name i').style.display = "none"; // اخفاء علامة التوثيق في المصغر
-                // اخفاء الفوتر في المصغر
-                profileScreen.lastElementChild.style.display = "none";
+                
+                // 🔥🔥 تصغير الحجم بنسبة 65% عشان يليق مع شاشة الموك-آب 🔥🔥
+                document.body.style.zoom = "0.65"; 
+
+                // اخفاء العناصر الغير ضرورية
+                profileScreen.querySelector('.profile-name i').style.display = "none"; 
+                profileScreen.lastElementChild.style.display = "none"; // اخفاء الفوتر
             } else {
                 // لو بروفايل عادي: رجع الخلفية الزرقاء
                 document.body.style.overflow = "auto";
