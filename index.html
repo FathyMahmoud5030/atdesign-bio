@@ -70,6 +70,7 @@
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
         .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
 
+        /* Liquid Card Core */
         .liquid-card {
             background: var(--liquid-bg); 
             backdrop-filter: var(--glass-blur); 
@@ -84,6 +85,22 @@
             overflow: visible; 
             transition: all 0.5s ease;
         }
+
+        /* 💡 Wallpaper Widget Style (تمت إعادتها) */
+        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; overflow: hidden;}
+        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
+        .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
+        .slide.active { opacity: 1; }
+        .wall-info { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 170px; }
+        .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
+        .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
+        .wall-actions { display: flex; flex-direction: column; gap: 10px; }
+        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
+        .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
+        .widget-nav { display: flex; gap: 10px; }
+        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--liquid-border-top); color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
 
         .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
         .full-width { grid-column: 1 / -1; }
@@ -157,6 +174,30 @@
             </div>
         </header>
 
+        <div class="liquid-card wall-widget" id="wallpaperWidget">
+            <div class="wall-preview">
+                <img src="wallpapers/wallpaper1.png" class="slide active">
+                <img src="wallpapers/wallpaper2.png" class="slide">
+                <img src="wallpapers/wallpaper3.png" class="slide">
+                <img src="wallpapers/wallpaper4.png" class="slide">
+            </div>
+            <div class="wall-info">
+                <div class="wall-header">
+                    <h3>Wall of the Day</h3>
+                    <p>Changes automatically every 24h</p>
+                </div>
+                <div class="wall-actions">
+                    <a id="downloadBtn" href="#" download class="widget-btn-primary">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Now
+                    </a>
+                    <div class="widget-nav">
+                        <button class="widget-icon-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="widget-icon-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="links-grid" id="renderLinksContainer">
             <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">Loading links...</div>
         </div>
@@ -185,11 +226,26 @@
             if (!localStorage.getItem('theme')) { document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light'); }
         });
         initTheme();
+
+        // 💡 سكريبت تشغيل السلايدر (تمت إعادته)
+        const slides = document.querySelectorAll(".slide");
+        const downloadBtn = document.getElementById("downloadBtn");
+        let current = Math.floor(Date.now() / 86400000) % slides.length;
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove("active"));
+            if(slides[index]) {
+                slides[index].classList.add("active");
+                downloadBtn.href = slides[index].src;
+            }
+        }
+        function nextSlide() { current = (current + 1) % slides.length; showSlide(current); }
+        function prevSlide() { current = (current - 1 + slides.length) % slides.length; showSlide(current); }
+        if(slides.length > 0) showSlide(current);
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // 💡 تم إضافة updateDoc لتحديث الأرقام في قاعدة البيانات
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -204,7 +260,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 💡 دالة تسجيل الضغطات (بتشتغل في الخلفية لما حد يدوس على أي رابط)
+        // دالة تسجيل الضغطات (موجودة وشغالة)
         window.trackClick = async function(index) {
             try {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -215,8 +271,8 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     if (data.links && data.links[index]) {
-                        data.links[index].clicks = (data.links[index].clicks || 0) + 1; // زيادة العداد 1
-                        await updateDoc(docRef, { links: data.links }); // حفظ في فايربيز
+                        data.links[index].clicks = (data.links[index].clicks || 0) + 1; 
+                        await updateDoc(docRef, { links: data.links }); 
                     }
                 }
             } catch (error) {
@@ -266,7 +322,6 @@
                             const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
                             const layoutClass = (link.layout === 'full') ? 'full-width' : 'half-width';
 
-                            // 💡 تم إضافة حدث onclick="trackClick(${index})" للروابط
                             if(link.layout === 'full') {
                                 linksContainer.innerHTML += `
                                     <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank" onclick="trackClick(${index})">
