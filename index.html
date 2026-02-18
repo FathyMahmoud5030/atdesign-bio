@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,25 +8,41 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === 🎨 تصميم Soft UI (زي الصور بالظبط) === */
+        /* === 🎨 THEME VARIABLES === */
         :root {
-            /* الخلفية المتدرجة السماوية */
-            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #f8fafc 100%);
-            
-            --text-main: #0f172a;   /* كحلي غامق */
-            --text-muted: #64748b;  /* رمادي */
-            --card-bg: #ffffff;     /* أبيض ناصع */
-            --primary: #0ea5e9;     /* أزرق للأيقونات */
-            
-            /* الضلال الناعمة */
-            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
-            --shadow-hover: 0 20px 40px -10px rgba(14, 165, 233, 0.15);
-            
-            --card-radius: 28px;    /* زوايا دائرية جداً */
+            --card-radius: 24px;
             --font-family: 'Outfit', sans-serif;
+            --primary: #0ea5e9;
+            --transition: 0.3s ease;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+        /* ☀️ Light Mode (الافتراضي - Soft UI) */
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #f8fafc 100%);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --icon-bg: #e0f2fe;
+            --border-color: rgba(255,255,255,0.8);
+            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 40px -10px rgba(14, 165, 233, 0.15);
+            --theme-icon: '\f186'; /* أيقونة القمر */
+        }
+
+        /* 🌑 Dark Mode (دارك مود ناعم) */
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --icon-bg: rgba(14, 165, 233, 0.15);
+            --border-color: rgba(255,255,255,0.05);
+            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.3);
+            --shadow-hover: 0 20px 40px -10px rgba(0,0,0,0.5);
+            --theme-icon: '\f185'; /* أيقونة الشمس */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; }
         
         body { 
             min-height: 100vh; 
@@ -36,207 +52,118 @@
             overflow-x: hidden; 
         }
 
-        /* إخفاء السكرول بار */
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === الكونتينر الرئيسي === */
-        .main-container { 
-            width: 100%; 
-            max-width: 480px; /* عرض الموبايل المثالي */
-            margin: 0 auto; 
-            padding: 60px 20px 40px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
+        /* === 🌙 Theme Toggle === */
+        .theme-toggle {
+            position: absolute; top: 20px; right: 20px;
+            width: 44px; height: 44px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            z-index: 100;
+            color: var(--text-main);
+            font-size: 18px;
         }
+        .theme-toggle::before { content: var(--theme-icon); font-family: "Font Awesome 6 Free"; font-weight: 900; }
+        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
 
-        /* === الهيدر (صورة وبروفايل) === */
+        /* === Container === */
+        .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 60px 20px 40px; display: flex; flex-direction: column; gap: 20px; position: relative; }
+
+        /* === Header & Glow === */
         .profile-header { text-align: center; margin-bottom: 10px; }
         
         .avatar-wrapper {
-            position: relative; 
-            width: 120px; 
-            height: 120px; 
-            margin: 0 auto 15px;
+            position: relative; width: 120px; height: 120px; margin: 0 auto 15px; z-index: 1;
         }
         
-        .avatar { 
-            width: 100%; 
-            height: 100%; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 5px solid #fff; /* حدود بيضاء عريضة */
-            box-shadow: var(--shadow-soft);
+        /* ✨ تأثير التوهج (The Glow) ✨ */
+        .avatar-wrapper::before {
+            content: ''; position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            border-radius: 50%; z-index: -1;
+            filter: blur(15px); opacity: 0.6;
+            animation: glowPulse 3s infinite alternate;
         }
+        @keyframes glowPulse { 0% { transform: scale(0.95); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.8; } }
 
-        .profile-name { 
-            font-size: 28px; 
-            font-weight: 800; 
-            color: var(--text-main);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            margin-bottom: 8px;
-        }
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--card-bg); }
 
-        .bio-text { 
-            font-size: 15px; 
-            color: var(--text-muted); 
-            font-weight: 500; 
-            line-height: 1.5;
-        }
-        
-        .bio-sub {
-            font-size: 13px;
-            color: var(--primary);
-            font-weight: 700;
-            margin-top: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .profile-name { font-size: 28px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+        .bio-text { font-size: 15px; color: var(--text-muted); font-weight: 500; line-height: 1.5; }
+        .bio-sub { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* === الويدجت (Wall of the Day) === */
+        /* === 🖼️ Wallpaper Widget (With Nav) === */
         .wall-widget {
-            background: var(--card-bg);
-            border-radius: var(--card-radius);
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: var(--shadow-soft);
-            transition: 0.3s;
-            text-decoration: none;
-            color: inherit;
+            background: var(--card-bg); border-radius: var(--card-radius); padding: 15px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: var(--shadow-soft); transition: var(--transition);
+            border: 1px solid var(--border-color);
         }
         .wall-widget:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
         
-        .wall-thumb {
-            width: 70px;
-            height: 100px;
-            border-radius: 16px;
-            object-fit: cover;
-        }
+        .wall-thumb { width: 70px; height: 100px; border-radius: 16px; object-fit: cover; flex-shrink: 0; }
+        
+        .wall-content { flex: 1; }
+        .wall-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
         
         .wall-btn {
-            background: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            display: inline-block;
-            margin-top: 8px;
-            text-decoration: none;
+            background: var(--primary); color: white; padding: 8px 16px; border-radius: 50px;
+            font-size: 13px; font-weight: 700; text-decoration: none; flex: 1; text-align: center;
         }
+        .nav-btn {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: var(--icon-bg); color: var(--primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 12px;
+            transition: 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary); color: white; }
 
-        /* === الكروت والروابط === */
+        /* === Links === */
         .links-container { display: flex; flex-direction: column; gap: 16px; }
         .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
         .link-card {
-            background: var(--card-bg);
-            border-radius: var(--card-radius);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            color: var(--text-main);
-            box-shadow: var(--shadow-soft);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.6);
+            background: var(--card-bg); border-radius: var(--card-radius); padding: 20px;
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: var(--text-main);
+            box-shadow: var(--shadow-soft); transition: var(--transition);
+            border: 1px solid var(--border-color); position: relative;
         }
-        
         .link-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 
-        .half-card {
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-            padding: 30px 15px;
-            gap: 12px;
-        }
-
-        /* أيقونات التطبيقات */
-        .icon-box {
-            width: 50px; height: 50px;
-            background: #e0f2fe; /* خلفية سماوي فاتحة للأيقونة */
-            color: var(--primary);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
+        .half-card { flex-direction: column; text-align: center; justify-content: center; padding: 30px 15px; gap: 12px; }
+        
+        .icon-box { width: 50px; height: 50px; background: var(--icon-bg); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        
         .link-info { flex: 1; overflow: hidden; }
         .link-title { font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .link-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-        /* بادج التريند */
-        .badge {
-            position: absolute;
-            top: -10px; right: 20px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5253);
-            color: white;
-            font-size: 11px; font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(238, 82, 83, 0.3);
-        }
+        .badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(238, 82, 83, 0.3); }
         .half-card .badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
 
-        /* === السوشيال ميديا (Dock) === */
-        .social-dock {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            background: white;
-            padding: 12px 20px;
-            border-radius: 100px;
-            width: fit-content;
-            margin-left: auto; margin-right: auto;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .social-btn {
-            width: 42px; height: 42px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 20px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+        /* === Socials === */
+        .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; background: var(--card-bg); padding: 12px 20px; border-radius: 100px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
+        .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--icon-bg); color: var(--text-muted); font-size: 20px; text-decoration: none; transition: 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* === الفوتر === */
+        /* === Landing Page (No Mockup) === */
+        #home-screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .home-btn { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-hover); }
+        
         .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.8; }
         .footer a { color: var(--text-main); text-decoration: none; font-weight: 700; }
-
-        /* === صفحة الترحيب (بدون موك آب) === */
-        #home-screen {
-            display: none;
-            height: 100vh;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .home-btn {
-            background: var(--primary); color: white; padding: 15px 40px; 
-            border-radius: 50px; text-decoration: none; font-weight: 700; 
-            font-size: 18px; box-shadow: var(--shadow-hover);
-        }
-
     </style>
 </head>
 <body>
+
+    <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
 
     <div id="profile-screen" class="main-container" style="display:none;">
         
@@ -254,29 +181,30 @@
 
         <div id="widget-area" style="display:none;">
             <div class="wall-widget">
-                <img src="wallpapers/wallpaper1.png" class="wall-thumb">
-                <div style="flex:1;">
-                    <h3 style="font-size:16px; margin-bottom:4px; color:var(--text-main);">Wall of the Day</h3>
+                <img src="wallpapers/wallpaper1.png" class="wall-thumb" id="wallImg">
+                <div class="wall-content">
+                    <h3 style="font-size:16px; margin-bottom:2px; color:var(--text-main);">Wall of the Day</h3>
                     <p style="font-size:12px; color:var(--text-muted);">Exclusive 4K Wallpaper</p>
-                    <a href="#" download class="wall-btn">Download</a>
+                    <div class="wall-actions">
+                        <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+                        <a href="#" download id="downloadBtn" class="wall-btn">Download</a>
+                        <button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="links-area" class="links-container"></div>
-
         <div id="social-area" class="social-dock"></div>
 
-        <div class="footer">
-            Crafted by <a href="index.html">CraftBio</a>
-        </div>
+        <div class="footer">Crafted by <a href="index.html">CraftBio</a></div>
     </div>
 
     <div id="home-screen">
-        <h1 style="font-size:3rem; font-weight:800; color:#0f172a; margin-bottom:10px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
-        <p style="color:#64748b; margin-bottom:40px;">Create your bio link in seconds.</p>
+        <h1 style="font-size:3rem; font-weight:800; color:var(--text-main); margin-bottom:10px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
+        <p style="color:var(--text-muted); margin-bottom:40px;">Create your bio link in seconds.</p>
         <a href="signup.html" class="home-btn">Create Yours Free</a>
-        <a href="admin.html" style="margin-top:20px; display:block; color:#64748b; font-weight:600; text-decoration:none;">Login</a>
+        <a href="admin.html" style="margin-top:20px; display:block; color:var(--text-muted); font-weight:600; text-decoration:none;">Login</a>
     </div>
 
     <script type="module">
@@ -304,11 +232,11 @@
             loadData(username);
         } else {
             document.getElementById('home-screen').style.display = 'flex';
+            document.getElementById('themeToggle').style.display = 'none'; // Hide toggle on landing
         }
 
         async function loadData(user) {
             try {
-                // التعامل مع atdesign كـ master
                 let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
                 let colName = (docId === 'master_data') ? 'settings' : 'users';
 
@@ -318,25 +246,22 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // Profile
                     document.getElementById('p_avatar').src = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                     document.getElementById('p_name').innerText = data.profile?.name || "User";
                     document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
                     document.getElementById('p_sub').innerText = data.profile?.bioSub || "";
 
-                    // Widget (Only for atdesign)
                     if (user === 'atdesign' || user === 'master_data') {
                         document.getElementById('widget-area').style.display = 'block';
                     }
 
-                    // Links
                     const linksContainer = document.getElementById('links-area');
                     if (data.links) {
                         let currentRow = null;
                         data.links.forEach((link, idx) => {
                             const isHalf = link.layout === 'half';
                             const badgeHTML = link.badge ? `<span class="badge">${link.badge}</span>` : '';
-                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i>' : '';
+                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="color:var(--text-muted); opacity:0.5;"></i>' : '';
                             const subHTML = (!isHalf && link.subtext) ? `<div class="link-sub">${link.subtext}</div>` : '';
 
                             const cardHTML = `
@@ -368,14 +293,12 @@
                         });
                     }
 
-                    // Socials
                     const socialArea = document.getElementById('social-area');
                     if (data.socialLinks) {
                         data.socialLinks.forEach(s => {
                             socialArea.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
                         });
                     }
-
                 } else {
                     document.getElementById('p_name').innerText = "User not found";
                 }
@@ -392,6 +315,44 @@
                     await updateDoc(ref, { links: links });
                 }
             } catch(e) {}
+        }
+    </script>
+
+    <script>
+        // Theme Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+        // Load Saved Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Wallpaper Logic
+        const wallpapers = [
+            "wallpapers/wallpaper1.png",
+            "wallpapers/wallpaper2.png",
+            "wallpapers/wallpaper3.png",
+            "wallpapers/wallpaper4.png"
+        ];
+        let currentWall = 0;
+        
+        function updateWall() {
+            const img = document.getElementById('wallImg');
+            const btn = document.getElementById('downloadBtn');
+            img.src = wallpapers[currentWall];
+            btn.href = wallpapers[currentWall];
+        }
+        window.nextSlide = function() {
+            currentWall = (currentWall + 1) % wallpapers.length;
+            updateWall();
+        }
+        window.prevSlide = function() {
+            currentWall = (currentWall - 1 + wallpapers.length) % wallpapers.length;
+            updateWall();
         }
     </script>
 </body>
