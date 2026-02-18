@@ -59,7 +59,6 @@
         .theme-toggle:hover { transform: scale(1.1); }
         .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
 
-        /* Profile */
         .profile-section { text-align: center; }
         .avatar-wrapper { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
         .avatar-wrapper::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px); animation: glowPulse 2s infinite alternate; }
@@ -71,7 +70,6 @@
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
         .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
 
-        /* Liquid Card Core */
         .liquid-card {
             background: var(--liquid-bg); 
             backdrop-filter: var(--glass-blur); 
@@ -87,7 +85,6 @@
             transition: all 0.5s ease;
         }
 
-        /* Apps & Links Grid */
         .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
         .full-width { grid-column: 1 / -1; }
         .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; }
@@ -100,7 +97,6 @@
         .half-width .app-icon-wrapper { width: 55px; height: 55px; }
         .app-icon-wrapper i { font-size: 24px; }
 
-        /* ستايل البادج المميز */
         .badge { 
             position: absolute; 
             top: -12px; 
@@ -117,7 +113,6 @@
         }
         .half-width .badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
 
-        /* Brand Colors */
         .brand-play { background: rgba(0, 210, 255, 0.15); color: #00d2ff; }
         .brand-gumroad { background: rgba(255, 42, 133, 0.15); color: #ff2a85; }
         .brand-kofi { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; }
@@ -128,12 +123,10 @@
         .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--text-main); }
         .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
 
-        /* Social Dock */
         .social-dock { display: none; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; }
         .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
         
-        /* العلامة المائية لمنصة CraftBio */
         .watermark { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.7; }
         .watermark a { color: var(--primary); text-decoration: none; font-weight: 600; transition: 0.2s; }
         .watermark a:hover { color: var(--text-main); }
@@ -196,7 +189,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // 💡 تم إضافة updateDoc لتحديث الأرقام في قاعدة البيانات
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
@@ -209,6 +203,26 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // 💡 دالة تسجيل الضغطات (بتشتغل في الخلفية لما حد يدوس على أي رابط)
+        window.trackClick = async function(index) {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const usernameFromURL = urlParams.get('u');
+                const docRef = usernameFromURL ? doc(db, "users", usernameFromURL) : doc(db, "settings", "master_data");
+                
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.links && data.links[index]) {
+                        data.links[index].clicks = (data.links[index].clicks || 0) + 1; // زيادة العداد 1
+                        await updateDoc(docRef, { links: data.links }); // حفظ في فايربيز
+                    }
+                }
+            } catch (error) {
+                console.error("Tracking error", error);
+            }
+        }
 
         function getBrandClass(iconName) {
             if(!iconName) return 'brand-default';
@@ -238,7 +252,6 @@
                     const data = docSnap.data();
                     
                     if(data.profile) {
-                        // لو اليوزر رفع صورة هتتعرض، لو لأ هتفضل الافتراضية
                         if(data.profile.avatar) document.getElementById('renderAvatar').src = data.profile.avatar;
                         if(data.profile.name) document.getElementById('renderName').innerText = data.profile.name;
                         if(data.profile.bioMain) document.getElementById('renderBioMain').innerText = data.profile.bioMain;
@@ -248,14 +261,15 @@
                     const linksContainer = document.getElementById('renderLinksContainer');
                     if(data.links && data.links.length > 0) {
                         linksContainer.innerHTML = ''; 
-                        data.links.forEach((link) => {
+                        data.links.forEach((link, index) => {
                             const brandClass = getBrandClass(link.icon);
                             const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
                             const layoutClass = (link.layout === 'full') ? 'full-width' : 'half-width';
 
+                            // 💡 تم إضافة حدث onclick="trackClick(${index})" للروابط
                             if(link.layout === 'full') {
                                 linksContainer.innerHTML += `
-                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank">
+                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank" onclick="trackClick(${index})">
                                         ${badgeHTML}
                                         <div class="app-icon-wrapper ${brandClass}">
                                             <i class="${link.icon}"></i>
@@ -268,7 +282,7 @@
                                     </a>`;
                             } else {
                                 linksContainer.innerHTML += `
-                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank">
+                                    <a href="${link.url}" class="liquid-card app-link ${layoutClass}" target="_blank" onclick="trackClick(${index})">
                                         ${badgeHTML}
                                         <div class="app-icon-wrapper ${brandClass}">
                                             <i class="${link.icon}"></i>
