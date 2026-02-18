@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraftBio | Pro Dashboard</title>
+    <title>CraftBio | Dashboard & Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -30,11 +30,17 @@
         .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn-primary:hover { transform: translateY(-2px); }
 
-        .section-title { font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin: 25px 0 15px; color: var(--primary); }
+        /* 💡 Google Button Style */
+        .btn-google { width: 100%; padding: 14px; margin-top: 15px; border-radius: 12px; background: white; color: #333; border: none; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        .btn-google:hover { background: #f1f1f1; }
+        .btn-google img { width: 20px; height: 20px; }
 
+        /* 💡 Forgot Password Link */
+        .forgot-pass { display: block; text-align: right; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; text-decoration: none; cursor: pointer; }
+        .forgot-pass:hover { color: var(--primary); }
+
+        .section-title { font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin: 25px 0 15px; color: var(--primary); }
         #dashboard-section { display: none; }
-        
-        /* Share Box */
         .share-box { background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; padding: 15px 20px; display: none; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
         .share-text { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
         .share-text span { font-size: 12px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
@@ -43,31 +49,23 @@
         .copy-btn { background: var(--primary); color: #050810; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
         .copy-btn:hover { background: white; transform: translateY(-2px); }
         .copy-btn.copied { background: #00e676; color: #050810; }
-
-        /* 💡 ستايل عداد الإحصائيات الجديد */
         .stats-badge { background: rgba(0, 210, 255, 0.15); color: var(--primary); padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.2); }
-
         .links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
         .links-list::-webkit-scrollbar { width: 6px; }
         .links-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-        
         .link-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; }
         .drag-handle { cursor: grab; color: var(--text-muted); font-size: 18px; padding-right: 10px; }
         .drag-handle:active { cursor: grabbing; color: var(--primary); }
-        
         .link-item-info { display: flex; align-items: center; gap: 10px; font-size: 14px; flex-grow: 1; overflow: hidden;}
         .link-item-info .app-icon { font-size: 18px; color: var(--primary); width: 20px; text-align: center;}
-        
         .action-btns { display: flex; gap: 8px; align-items: center; }
         .edit-btn, .delete-btn { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; }
         .edit-btn { background: rgba(0, 210, 255, 0.2); color: var(--primary); }
         .edit-btn:hover { background: var(--primary); color: white; }
         .delete-btn { background: rgba(255, 94, 91, 0.2); color: #ff5e5b; }
         .delete-btn:hover { background: #ff5e5b; color: white; }
-        
         .add-box { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.2); }
         .row-inputs { display: flex; gap: 10px; } 
-        
         #loadingMsg { text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 15px; display: none; }
     </style>
 </head>
@@ -76,9 +74,28 @@
     <div class="glass-panel" id="login-section">
         <div class="header"><h2><i class="fa-solid fa-lock"></i> CraftBio Login</h2></div>
         <div id="loginError" style="color: #ff5e5b; text-align: center; margin-bottom: 10px; font-size: 14px;"></div>
-        <div class="input-group"><input type="email" id="adminEmail" placeholder="Email"></div>
+        
+        <div class="input-group"><input type="email" id="adminEmail" placeholder="Email Address"></div>
         <div class="input-group"><input type="password" id="adminPassword" placeholder="Password"></div>
+        
+        <a class="forgot-pass" id="forgotPassBtn">Forgot Password?</a>
+
         <button class="btn-primary" id="loginBtn">Login</button>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin: 20px 0; color: var(--text-muted); font-size: 13px;">
+            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+            OR
+            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+        </div>
+
+        <button class="btn-google" id="googleBtn">
+            <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google">
+            Continue with Google
+        </button>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted);">
+            Don't have an account? <a href="signup.html" style="color: var(--primary);">Sign up</a>
+        </div>
     </div>
 
     <div class="glass-panel" id="dashboard-section">
@@ -90,9 +107,7 @@
                 <span><i class="fa-solid fa-link"></i> Your Public Link</span>
                 <a id="myPublicLink" href="#" target="_blank">craftbio.app/...</a>
             </div>
-            <button class="copy-btn" id="copyLinkBtn">
-                <i class="fa-regular fa-copy"></i> Copy
-            </button>
+            <button class="copy-btn" id="copyLinkBtn"><i class="fa-regular fa-copy"></i> Copy</button>
         </div>
 
         <div class="section-title">👤 Profile Settings</div>
@@ -143,10 +158,9 @@
                 </div>
             </div>
             <div class="input-group">
-                <label>Layout Style</label>
                 <select id="newLayout" style="background-color: var(--bg-base); border-color: var(--primary);">
-                    <option value="full">▬ Full Width (مستطيل عريض)</option>
-                    <option value="half">■ Half Width (مربع صغير)</option>
+                    <option value="full">▬ Full Width</option>
+                    <option value="half">■ Half Width</option>
                 </select>
             </div>
             <button class="btn-primary" id="addNewBtn" style="background: rgba(255,255,255,0.1);">Save Link</button>
@@ -184,7 +198,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        // 💡 إضافة GoogleAuthProvider و sendPasswordResetEmail
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
         const firebaseConfig = {
@@ -204,9 +219,58 @@
         let mySocialLinks = [];
         window.draggedIdx = null;
         window.userDocRef = null; 
-        window.editingClicks = undefined; // 💡 متغير لحفظ عدد الضغطات عند تعديل الرابط
+        window.editingClicks = undefined;
 
-        // Image Upload
+        // 💡 1. Forgot Password Logic
+        document.getElementById('forgotPassBtn').addEventListener('click', () => {
+            const email = prompt("Enter your email address to reset password:");
+            if(email) {
+                sendPasswordResetEmail(auth, email)
+                    .then(() => alert("Password reset link sent to your email! Check your inbox."))
+                    .catch((error) => alert("Error: " + error.message));
+            }
+        });
+
+        // 💡 2. Google Sign-In Logic
+        document.getElementById('googleBtn').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then(async (result) => {
+                    const user = result.user;
+                    // بعد ما يدخل بجوجل، لازم نتأكد هل هو يوزر جديد ولا قديم؟
+                    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+                    const snapshot = await getDocs(q);
+                    
+                    if (snapshot.empty) {
+                        // لو جديد: نكريت ليه داتا بيز ونخترع يوزرنيم من إيميله
+                        const generatedUsername = user.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+                        // تأكد إن اليوزرنيم مش محجوز (للمحترفين ممكن نعمل لوب، هنا هناخد البسيط)
+                        const newDocRef = doc(db, "users", generatedUsername);
+                        
+                        await setDoc(newDocRef, {
+                            uid: user.uid,
+                            email: user.email,
+                            username: generatedUsername,
+                            profile: {
+                                name: user.displayName,
+                                avatar: user.photoURL,
+                                bioMain: "Digital Creator",
+                                bioSub: "Welcome to my CraftBio",
+                                plan: "free"
+                            },
+                            links: [],
+                            socialLinks: []
+                        });
+                        alert(`Welcome! Your username is: ${generatedUsername}`);
+                    }
+                    // لو قديم: هيدخل عادي والـ onAuthStateChanged هتتولى الباقي
+                })
+                .catch((error) => {
+                    document.getElementById('loginError').innerText = error.message;
+                });
+        });
+
+        // Image Upload (Cloudinary)
         document.getElementById('avatarUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -238,146 +302,27 @@
                     document.getElementById('profileAvatar').value = imageUrl; 
                     document.getElementById('avatarPreview').src = imageUrl; 
                     progressText.style.display = 'none';
-                    document.getElementById('loadingMsg').innerText = "Image Uploaded! Click 'Save & Publish All' to apply.";
+                    document.getElementById('loadingMsg').innerText = "Image Uploaded!";
                     document.getElementById('loadingMsg').style.display = 'block';
                     setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
                 } else {
-                    alert("Upload failed. Make sure your Upload Preset is set to 'Unsigned' in Cloudinary Settings.");
+                    alert("Upload failed.");
                     progressText.style.display = 'none';
                 }
             };
             xhr.send(formData);
         });
 
-        // 💡 تحديث العرض عشان يشمل عدد الضغطات
-        window.renderAdminLinks = function() {
-            const container = document.getElementById('linksListContainer');
-            container.innerHTML = '';
-            if(myLinks.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:gray; font-size:13px; padding:10px;">No links added.</div>';
-                return;
-            }
-            myLinks.forEach((link, index) => {
-                const layoutTag = link.layout === 'full' ? '▬ Full' : '■ Half';
-                const clicksCount = link.clicks || 0; // جلب عدد الضغطات
+        // Login with Email
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPassword').value)
+                .catch((error) => document.getElementById('loginError').innerText = error.message);
+        });
 
-                container.innerHTML += `
-                    <div class="link-item" draggable="true" ondragstart="dragStart(${index})" ondragover="allowDrop(event)" ondrop="drop(event, ${index})" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-                        <div class="link-item-info">
-                            <i class="fa-solid fa-grip-vertical drag-handle" title="Drag to reorder"></i>
-                            <i class="${link.icon} app-icon"></i>
-                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">
-                                <strong>${link.title}</strong>
-                                <div style="font-size:11px; color:var(--text-muted);">${layoutTag} ${link.badge ? `• <span style="color:#ff5e5b;">${link.badge}</span>` : ''}</div>
-                            </div>
-                        </div>
-                        <div class="action-btns">
-                            <div class="stats-badge" title="Total Clicks"><i class="fa-solid fa-chart-line"></i> ${clicksCount}</div>
-                            <button class="edit-btn" onclick="editLink(${index})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="delete-btn" onclick="removeLink(${index})"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>`;
-            });
-        }
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-        window.renderAdminSocialLinks = function() {
-            const container = document.getElementById('socialListContainer');
-            container.innerHTML = '';
-            if(mySocialLinks.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:gray; font-size:13px; padding:10px;">No social links added.</div>';
-                return;
-            }
-            mySocialLinks.forEach((link, index) => {
-                container.innerHTML += `
-                    <div class="link-item">
-                        <div class="link-item-info">
-                            <i class="${link.icon} app-icon"></i>
-                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">${link.url}</span>
-                        </div>
-                        <button class="delete-btn" onclick="removeSocialLink(${index})"><i class="fa-solid fa-trash"></i></button>
-                    </div>`;
-            });
-        }
-
-        window.dragStart = function(index) { window.draggedIdx = index; }
-        window.allowDrop = function(e) { e.preventDefault(); }
-        window.dragEnter = function(e) { e.currentTarget.style.border = "1px dashed var(--primary)"; }
-        window.dragLeave = function(e) { e.currentTarget.style.border = "1px solid rgba(255,255,255,0.1)"; }
-        window.drop = function(e, targetIdx) {
-            e.preventDefault(); e.currentTarget.style.border = "1px solid rgba(255,255,255,0.1)";
-            if(window.draggedIdx === targetIdx) return;
-            const item = myLinks.splice(window.draggedIdx, 1)[0];
-            myLinks.splice(targetIdx, 0, item);
-            window.renderAdminLinks();
-        }
-
-        window.removeLink = function(index) { myLinks.splice(index, 1); window.renderAdminLinks(); }
-        window.removeSocialLink = function(index) { mySocialLinks.splice(index, 1); window.renderAdminSocialLinks(); }
-
-        window.editLink = function(index) {
-            const linkToEdit = myLinks[index];
-            document.getElementById('newTitle').value = linkToEdit.title;
-            document.getElementById('newSubtext').value = linkToEdit.subtext || '';
-            document.getElementById('newUrl').value = linkToEdit.url;
-            document.getElementById('newIcon').value = linkToEdit.icon;
-            document.getElementById('newBadge').value = linkToEdit.badge || '';
-            document.getElementById('newLayout').value = linkToEdit.layout || 'half';
-            
-            // 💡 حفظ عدد الضغطات عشان ميضيعش لما نعدل الرابط
-            window.editingClicks = linkToEdit.clicks || 0; 
-            
-            myLinks.splice(index, 1);
-            window.renderAdminLinks();
-            document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit Link</span>";
-            document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function setupShareBox(username) {
-            const baseUrl = window.location.href.split('admin.html')[0];
-            const publicUrl = baseUrl + 'index.html?u=' + username;
-            const linkElement = document.getElementById('myPublicLink');
-            linkElement.href = publicUrl;
-            let displayUrl = publicUrl.replace('https://', '').replace('http://', '');
-            if(displayUrl.length > 35) { displayUrl = displayUrl.substring(0, 35) + '...'; }
-            linkElement.innerText = displayUrl;
-            document.getElementById('shareBox').style.display = 'flex';
-            document.getElementById('copyLinkBtn').onclick = function() {
-                navigator.clipboard.writeText(publicUrl).then(() => {
-                    const btn = document.getElementById('copyLinkBtn');
-                    const originalHTML = '<i class="fa-regular fa-copy"></i> Copy';
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                    btn.classList.add('copied');
-                    setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('copied'); }, 2500);
-                });
-            };
-        }
-
-        async function loadData() {
-            if (!window.userDocRef) return; 
-            const docSnap = await getDoc(window.userDocRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                const avatarUrl = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                document.getElementById('profileAvatar').value = avatarUrl;
-                document.getElementById('avatarPreview').src = avatarUrl; 
-                document.getElementById('profileName').value = data.profile?.name || "";
-                document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
-                document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
-                myLinks = data.links || [];
-                mySocialLinks = data.socialLinks || [];
-            } else {
-                document.getElementById('profileAvatar').value = "";
-                document.getElementById('avatarPreview').src = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                document.getElementById('profileName').value = "";
-                document.getElementById('profileBioMain').value = "";
-                document.getElementById('profileBioSub').value = "";
-                myLinks = [];
-                mySocialLinks = [];
-            }
-            window.renderAdminLinks();
-            window.renderAdminSocialLinks();
-        }
-
+        // Auth Listener (Redirect to Dashboard)
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 document.getElementById('login-section').style.display = 'none';
@@ -400,42 +345,24 @@
             }
         });
 
-        document.getElementById('loginBtn').addEventListener('click', () => {
-            signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPassword').value)
-                .catch(() => document.getElementById('loginError').innerText = "Wrong Email or Password!");
-        });
-        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
-
-        document.getElementById('addNewBtn').addEventListener('click', () => {
-            const title = document.getElementById('newTitle').value;
-            const subtext = document.getElementById('newSubtext').value;
-            const url = document.getElementById('newUrl').value;
-            const icon = document.getElementById('newIcon').value;
-            const badge = document.getElementById('newBadge').value;
-            const layout = document.getElementById('newLayout').value;
-            
-            if(title && url) {
-                // 💡 استرجاع عدد الضغطات لو كنا بنعدل رابط، أو صفر لو ده رابط جديد
-                let currentClicks = window.editingClicks !== undefined ? window.editingClicks : 0;
-                
-                myLinks.push({ title, subtext, url, icon, badge, layout, clicks: currentClicks });
-                
-                window.editingClicks = undefined; // تصفير المتغير
-                window.renderAdminLinks();
-                document.getElementById('newTitle').value = ''; document.getElementById('newSubtext').value = ''; document.getElementById('newUrl').value = '';
-                document.getElementById('addBoxTitle').innerText = "+ Add / Edit Link";
-            } else { alert("Title and URL are required!"); }
-        });
-
-        document.getElementById('addSocialBtn').addEventListener('click', () => {
-            const url = document.getElementById('newSocialUrl').value;
-            const icon = document.getElementById('newSocialIcon').value;
-            if(url) {
-                mySocialLinks.push({ url, icon });
-                window.renderAdminSocialLinks();
-                document.getElementById('newSocialUrl').value = '';
-            } else { alert("Social URL is required!"); }
-        });
+        // Data Loading & Saving Logic (Same as before)
+        async function loadData() {
+            if (!window.userDocRef) return; 
+            const docSnap = await getDoc(window.userDocRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const avatarUrl = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+                document.getElementById('profileAvatar').value = avatarUrl;
+                document.getElementById('avatarPreview').src = avatarUrl; 
+                document.getElementById('profileName').value = data.profile?.name || "";
+                document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
+                document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
+                myLinks = data.links || [];
+                mySocialLinks = data.socialLinks || [];
+            }
+            window.renderAdminLinks();
+            window.renderAdminSocialLinks();
+        }
 
         document.getElementById('saveBtn').addEventListener('click', async () => {
             if (!window.userDocRef) return;
@@ -446,7 +373,6 @@
                 bioMain: document.getElementById('profileBioMain').value,
                 bioSub: document.getElementById('profileBioSub').value
             };
-            
             try {
                 await setDoc(window.userDocRef, { 
                     profile: profileData, 
@@ -459,6 +385,97 @@
                 alert("Error saving: " + e.message);
                 document.getElementById('loadingMsg').style.display = 'none';
             }
+        });
+
+        // Link Rendering & Actions
+        window.renderAdminLinks = function() {
+            const container = document.getElementById('linksListContainer');
+            container.innerHTML = '';
+            if(myLinks.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:gray; font-size:13px; padding:10px;">No links added.</div>'; return;
+            }
+            myLinks.forEach((link, index) => {
+                const layoutTag = link.layout === 'full' ? '▬ Full' : '■ Half';
+                const clicksCount = link.clicks || 0;
+                container.innerHTML += `
+                    <div class="link-item" draggable="true" ondragstart="dragStart(${index})" ondragover="allowDrop(event)" ondrop="drop(event, ${index})" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                        <div class="link-item-info">
+                            <i class="fa-solid fa-grip-vertical drag-handle"></i>
+                            <i class="${link.icon} app-icon"></i>
+                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">
+                                <strong>${link.title}</strong>
+                                <div style="font-size:11px; color:var(--text-muted);">${layoutTag}</div>
+                            </div>
+                        </div>
+                        <div class="action-btns">
+                            <div class="stats-badge"><i class="fa-solid fa-chart-line"></i> ${clicksCount}</div>
+                            <button class="edit-btn" onclick="editLink(${index})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="delete-btn" onclick="removeLink(${index})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`;
+            });
+        }
+        window.renderAdminSocialLinks = function() {
+            const container = document.getElementById('socialListContainer');
+            container.innerHTML = '';
+            mySocialLinks.forEach((link, index) => {
+                container.innerHTML += `
+                    <div class="link-item">
+                        <div class="link-item-info"><i class="${link.icon} app-icon"></i><span>${link.url}</span></div>
+                        <button class="delete-btn" onclick="removeSocialLink(${index})"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
+            });
+        }
+        window.dragStart = function(index) { window.draggedIdx = index; }
+        window.allowDrop = function(e) { e.preventDefault(); }
+        window.drop = function(e, targetIdx) {
+            e.preventDefault(); if(window.draggedIdx === targetIdx) return;
+            const item = myLinks.splice(window.draggedIdx, 1)[0];
+            myLinks.splice(targetIdx, 0, item);
+            window.renderAdminLinks();
+        }
+        window.removeLink = function(index) { myLinks.splice(index, 1); window.renderAdminLinks(); }
+        window.removeSocialLink = function(index) { mySocialLinks.splice(index, 1); window.renderAdminSocialLinks(); }
+        window.editLink = function(index) {
+            const linkToEdit = myLinks[index];
+            document.getElementById('newTitle').value = linkToEdit.title;
+            document.getElementById('newSubtext').value = linkToEdit.subtext || '';
+            document.getElementById('newUrl').value = linkToEdit.url;
+            document.getElementById('newIcon').value = linkToEdit.icon;
+            window.editingClicks = linkToEdit.clicks || 0; 
+            myLinks.splice(index, 1);
+            window.renderAdminLinks();
+            document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
+        }
+        function setupShareBox(username) {
+            const baseUrl = window.location.href.split('admin.html')[0];
+            const publicUrl = baseUrl + 'index.html?u=' + username;
+            document.getElementById('myPublicLink').href = publicUrl;
+            document.getElementById('myPublicLink').innerText = publicUrl.replace(/(^\w+:|^)\/\//, '').substring(0, 35) + '...';
+            document.getElementById('shareBox').style.display = 'flex';
+            document.getElementById('copyLinkBtn').onclick = function() {
+                navigator.clipboard.writeText(publicUrl).then(() => alert("Link Copied!"));
+            };
+        }
+        document.getElementById('addNewBtn').addEventListener('click', () => {
+            const title = document.getElementById('newTitle').value;
+            const subtext = document.getElementById('newSubtext').value;
+            const url = document.getElementById('newUrl').value;
+            const icon = document.getElementById('newIcon').value;
+            const badge = document.getElementById('newBadge').value;
+            const layout = document.getElementById('newLayout').value;
+            if(title && url) {
+                let currentClicks = window.editingClicks !== undefined ? window.editingClicks : 0;
+                myLinks.push({ title, subtext, url, icon, badge, layout, clicks: currentClicks });
+                window.editingClicks = undefined;
+                window.renderAdminLinks();
+                document.getElementById('newTitle').value = ''; document.getElementById('newUrl').value = '';
+            }
+        });
+        document.getElementById('addSocialBtn').addEventListener('click', () => {
+            const url = document.getElementById('newSocialUrl').value;
+            const icon = document.getElementById('newSocialIcon').value;
+            if(url) { mySocialLinks.push({ url, icon }); window.renderAdminSocialLinks(); }
         });
     </script>
 </body>
