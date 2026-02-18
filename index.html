@@ -38,7 +38,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         body { min-height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); background-attachment: fixed; color: var(--text-main); overflow-x: hidden; }
 
-        /* 💡 الخلفية المتحركة (Floating Orbs) */
+        /* 💡 Floating Orbs Animation */
         .floating-orbs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; }
         .orb { position: absolute; border-radius: 50%; opacity: 0.2; filter: blur(60px); animation: floatOrb 15s infinite linear; }
         .orb:nth-child(1) { top: 10%; left: 10%; width: 300px; height: 300px; background: var(--primary); animation-duration: 25s; }
@@ -71,19 +71,16 @@
         .hero-visual { flex: 1; display: flex; justify-content: center; position: relative; }
         /* 💡 Samsung S24 Ultra Mockup Style */
         .phone-mockup { width: 300px; height: 600px; border: 4px solid #2c2c2c; border-radius: 24px; overflow: hidden; position: relative; background: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform: rotate(-5deg) translateY(-20px); animation: float 6s ease-in-out infinite; }
-        /* S24 Ultra Sharp Corners & Minimal Bezel */
         .phone-mockup::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid #1a1a1a; border-radius: 22px; pointer-events: none; }
-        .phone-screen { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); border-radius: 20px; } /* Hidden overflow for scrolling iframe */
-        /* S24 Ultra Camera Hole */
+        .phone-screen { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); border-radius: 20px; } 
         .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: #000; border-radius: 50%; z-index: 5; }
         
         @keyframes float { 0% { transform: rotate(-5deg) translateY(0px); } 50% { transform: rotate(-5deg) translateY(-20px); } 100% { transform: rotate(-5deg) translateY(0px); } }
 
-        /* === 2. Profile Page Styles (Hidden by default) === */
+        /* === 2. Profile Page Styles === */
         #profile-page { display: none; justify-content: center; padding: 40px 20px; position: relative; }
         .profile-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 24px; }
         
-        /* ... (Same Profile Styles as before) ... */
         .liquid-card { background: var(--liquid-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--liquid-border); border-radius: 28px; padding: 4px; transition: 0.5s; }
         .avatar-wrapper { width: 110px; height: 110px; margin: 0 auto 15px; position: relative; }
         .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg-base); }
@@ -108,11 +105,10 @@
         .watermark { text-align: center; margin-top: 30px; font-size: 12px; color: var(--text-muted); opacity: 0.6; }
         .watermark a { color: var(--primary); text-decoration: none; }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero-title { font-size: 42px; }
             .hero-section { flex-direction: column; text-align: center; padding-top: 100px; }
-            .hero-visual { display: none; } /* Hide 3D phone on very small screens to save space */
+            .hero-visual { display: none; } 
             .navbar { position: relative; }
         }
     </style>
@@ -142,7 +138,7 @@
                 <p class="hero-desc">Create a stunning digital identity for your Instagram, TikTok, and Twitter. Share everything you create, curate, and sell in one simple link.</p>
                 <div class="cta-group">
                     <a href="signup.html" class="btn-hero"><i class="fa-solid fa-bolt"></i> Claim Your Link</a>
-                    <a href="?u=fathy" class="btn-outline">View Demo</a>
+                    <a href="?u=atdesign" class="btn-outline">View Demo</a>
                 </div>
             </div>
 
@@ -150,7 +146,7 @@
                 <div class="phone-mockup">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
-                        <iframe id="demo-frame" src="?u=fathy&embed=true" style="width:100%; height:100%; border:none; background: #050810;" title="Demo Profile"></iframe>
+                        <iframe id="demo-frame" src="?u=atdesign&embed=true" style="width:100%; height:100%; border:none; background: #050810;" title="Demo Profile"></iframe>
                     </div>
                 </div>
             </div>
@@ -159,7 +155,6 @@
 
     <div id="profile-page">
         <div class="profile-container">
-            
             <header class="profile-header">
                 <div class="avatar-wrapper">
                     <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" id="renderAvatar" class="avatar">
@@ -208,7 +203,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 💡 Router Logic
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
         const isEmbed = urlParams.get('embed');
@@ -219,7 +213,6 @@
                 document.body.style.backgroundColor = "transparent";
                 document.body.style.backgroundImage = "none";
                 document.querySelector('.watermark').style.display = 'none';
-                // 💡 Auto-Scroll Logic (Only runs inside the iframe)
                 startAutoScroll();
             }
             fetchAndRenderData(username);
@@ -227,12 +220,12 @@
             document.getElementById('landing-page').style.display = 'flex';
         }
 
-        // 💡 Auto-Scroll Function
+        // 💡 Auto-Scroll Logic
         function startAutoScroll() {
             const profilePage = document.getElementById('profile-page');
             let scrollAmount = 0;
-            const scrollSpeed = 0.5; // Adjust speed here
-            const scrollDelay = 2000; // Delay before scrolling starts/restarts
+            const scrollSpeed = 0.5;
+            const scrollDelay = 2000;
 
             function scroll() {
                 scrollAmount += scrollSpeed;
@@ -250,10 +243,16 @@
             setTimeout(scroll, scrollDelay);
         }
 
-
         async function fetchAndRenderData(user) {
             try {
-                const docRef = doc(db, "users", user);
+                let docRef;
+                // 💡 التعديل هنا: لو اليوزر "atdesign"، يجيب بيانات الـ master_data
+                if (user === 'atdesign') {
+                    docRef = doc(db, "settings", "master_data");
+                } else {
+                    docRef = doc(db, "users", user);
+                }
+
                 const docSnap = await getDoc(docRef);
                 
                 if (docSnap.exists()) {
@@ -290,7 +289,7 @@
                         });
                     }
 
-                    if(user === 'fathy' || user === 'master_data') {
+                    if(user === 'atdesign' || user === 'master_data') {
                         document.getElementById('wallpaperWidget').style.display = 'flex';
                     }
 
@@ -303,7 +302,10 @@
         window.trackClick = async function(user, index) {
             if(isEmbed) return;
             try {
-                const docRef = doc(db, "users", user);
+                let docRef;
+                if (user === 'atdesign') docRef = doc(db, "settings", "master_data");
+                else docRef = doc(db, "users", user);
+
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
