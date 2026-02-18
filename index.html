@@ -67,9 +67,10 @@
             z-index: 100;
             color: var(--text-main);
             font-size: 18px;
+            border: 1px solid var(--border-color);
         }
         .theme-toggle::before { content: var(--theme-icon); font-family: "Font Awesome 6 Free"; font-weight: 900; }
-        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); background: var(--icon-bg); color: var(--primary); }
 
         /* === Container === */
         .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 60px 20px 40px; display: flex; flex-direction: column; gap: 20px; position: relative; }
@@ -98,31 +99,42 @@
         .bio-text { font-size: 15px; color: var(--text-muted); font-weight: 500; line-height: 1.5; }
         .bio-sub { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* === 🖼️ Wallpaper Widget (With Nav) === */
+        /* === 🖼️ Wallpaper Widget (Taller & Balanced) === */
         .wall-widget {
-            background: var(--card-bg); border-radius: var(--card-radius); padding: 15px;
-            display: flex; align-items: center; gap: 15px;
+            background: var(--card-bg); border-radius: var(--card-radius); padding: 18px;
+            display: flex; align-items: center; gap: 18px;
             box-shadow: var(--shadow-soft); transition: var(--transition);
             border: 1px solid var(--border-color);
         }
         .wall-widget:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
         
-        .wall-thumb { width: 70px; height: 100px; border-radius: 16px; object-fit: cover; flex-shrink: 0; }
+        /* 💡 التعديل هنا: تكبير الصورة لزيادة طول الويدجت */
+        .wall-thumb { 
+            width: 95px;  /* عرض أكبر */
+            height: 140px; /* طول أكبر بكتير */
+            border-radius: 18px; 
+            object-fit: cover; 
+            flex-shrink: 0;
+            box-shadow: var(--shadow-soft); /* ضل للصورة نفسها */
+        }
         
-        .wall-content { flex: 1; }
-        .wall-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+        .wall-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .wall-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
         
         .wall-btn {
-            background: var(--primary); color: white; padding: 8px 16px; border-radius: 50px;
-            font-size: 13px; font-weight: 700; text-decoration: none; flex: 1; text-align: center;
+            background: var(--primary); color: white; padding: 10px 16px; border-radius: 50px;
+            font-size: 14px; font-weight: 700; text-decoration: none; flex: 1; text-align: center;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); transition: 0.2s;
         }
+        .wall-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4); }
+
         .nav-btn {
-            width: 32px; height: 32px; border-radius: 50%; border: none;
+            width: 36px; height: 36px; border-radius: 50%; border: none;
             background: var(--icon-bg); color: var(--primary); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
             transition: 0.2s;
         }
-        .nav-btn:hover { background: var(--primary); color: white; }
+        .nav-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
         /* === Links === */
         .links-container { display: flex; flex-direction: column; gap: 16px; }
@@ -153,9 +165,10 @@
         .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--icon-bg); color: var(--text-muted); font-size: 20px; text-decoration: none; transition: 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* === Landing Page (No Mockup) === */
+        /* === Landing Page === */
         #home-screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .home-btn { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-hover); }
+        .home-btn { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-hover); transition: 0.3s; }
+        .home-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(14, 165, 233, 0.4); }
         
         .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.8; }
         .footer a { color: var(--text-main); text-decoration: none; font-weight: 700; }
@@ -173,7 +186,7 @@
             </div>
             <div class="profile-name">
                 <span id="p_name">...</span>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:20px;"></i>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:22px;"></i>
             </div>
             <div class="bio-text" id="p_bio"></div>
             <div class="bio-sub" id="p_sub"></div>
@@ -183,8 +196,8 @@
             <div class="wall-widget">
                 <img src="wallpapers/wallpaper1.png" class="wall-thumb" id="wallImg">
                 <div class="wall-content">
-                    <h3 style="font-size:16px; margin-bottom:2px; color:var(--text-main);">Wall of the Day</h3>
-                    <p style="font-size:12px; color:var(--text-muted);">Exclusive 4K Wallpaper</p>
+                    <h3 style="font-size:17px; font-weight: 800; margin-bottom:4px; color:var(--text-main);">Wall of the Day</h3>
+                    <p style="font-size:13px; color:var(--text-muted); font-weight: 500;">Exclusive 4K Wallpaper</p>
                     <div class="wall-actions">
                         <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
                         <a href="#" download id="downloadBtn" class="wall-btn">Download</a>
@@ -201,10 +214,10 @@
     </div>
 
     <div id="home-screen">
-        <h1 style="font-size:3rem; font-weight:800; color:var(--text-main); margin-bottom:10px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
-        <p style="color:var(--text-muted); margin-bottom:40px;">Create your bio link in seconds.</p>
-        <a href="signup.html" class="home-btn">Create Yours Free</a>
-        <a href="admin.html" style="margin-top:20px; display:block; color:var(--text-muted); font-weight:600; text-decoration:none;">Login</a>
+        <h1 style="font-size:3.5rem; font-weight:900; color:var(--text-main); margin-bottom:10px; letter-spacing: -1.5px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
+        <p style="color:var(--text-muted); margin-bottom:40px; font-size: 1.2rem; font-weight: 500;">Create your stunning bio link in seconds.</p>
+        <a href="signup.html" class="home-btn">Get Started for Free</a>
+        <a href="admin.html" style="margin-top:25px; display:block; color:var(--text-muted); font-weight:700; text-decoration:none; font-size: 15px;">Login to Dashboard</a>
     </div>
 
     <script type="module">
@@ -232,7 +245,7 @@
             loadData(username);
         } else {
             document.getElementById('home-screen').style.display = 'flex';
-            document.getElementById('themeToggle').style.display = 'none'; // Hide toggle on landing
+            document.getElementById('themeToggle').style.display = 'none';
         }
 
         async function loadData(user) {
@@ -319,7 +332,6 @@
     </script>
 
     <script>
-        // Theme Logic
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme');
@@ -327,24 +339,27 @@
             html.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
         }
-        // Load Saved Theme
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
 
-        // Wallpaper Logic
+        // 🖼️ Wallpaper Slideshow
         const wallpapers = [
             "wallpapers/wallpaper1.png",
             "wallpapers/wallpaper2.png",
-            "wallpapers/wallpaper3.png",
-            "wallpapers/wallpaper4.png"
+            "wallpapers/wallpaper3.png"
         ];
         let currentWall = 0;
         
         function updateWall() {
             const img = document.getElementById('wallImg');
             const btn = document.getElementById('downloadBtn');
-            img.src = wallpapers[currentWall];
-            btn.href = wallpapers[currentWall];
+            // Simple fade effect
+            img.style.opacity = 0;
+            setTimeout(() => {
+                img.src = wallpapers[currentWall];
+                btn.href = wallpapers[currentWall];
+                img.style.opacity = 1;
+            }, 200);
         }
         window.nextSlide = function() {
             currentWall = (currentWall + 1) % wallpapers.length;
@@ -354,6 +369,8 @@
             currentWall = (currentWall - 1 + wallpapers.length) % wallpapers.length;
             updateWall();
         }
+        // Initialize first wallpaper link
+        document.getElementById('downloadBtn').href = wallpapers[0];
     </script>
 </body>
 </html>
