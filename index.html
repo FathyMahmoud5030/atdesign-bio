@@ -7,222 +7,155 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
-        /* === 🎨 إعدادات الألوان (Theming) === */
         :root {
-            --card-radius: 24px;
-            --font-family: 'Outfit', sans-serif;
-            --primary: #0ea5e9;
-            --transition: 0.3s ease;
+            --primary: #ff5e57; /* لون برتقالي زي الفيديو */
+            --bg-color: #ffffff;
+            --text-main: #1e272e;
+            --text-muted: #808e9b;
         }
 
-        /* ☀️ Light Mode (التصميم الافتراضي - Soft UI) */
-        [data-theme="light"] {
-            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #f8fafc 100%);
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --card-bg: #ffffff;
-            --icon-bg: #e0f2fe;
-            --border-color: rgba(255,255,255,0.8);
-            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
-            --shadow-hover: 0 20px 40px -10px rgba(14, 165, 233, 0.15);
-            --theme-icon: '\f186'; /* أيقونة القمر */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background: var(--bg-color); color: var(--text-main); overflow: hidden; }
+
+        /* === 🚀 Onboarding Screen (الشاشة الجديدة) === */
+        #onboarding-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; z-index: 999;
+            background: linear-gradient(180deg, #fff0f0 0%, #ffffff 100%);
         }
 
-        /* 🌑 Dark Mode (دارك مود ناعم) */
-        [data-theme="dark"] {
-            --bg-gradient: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --card-bg: #1e293b;
-            --icon-bg: rgba(14, 165, 233, 0.15);
-            --border-color: rgba(255,255,255,0.05);
-            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.3);
-            --shadow-hover: 0 20px 40px -10px rgba(0,0,0,0.5);
-            --theme-icon: '\f185'; /* أيقونة الشمس */
+        .swiper { width: 100%; height: 85%; }
+        .swiper-slide {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        /* Mockup Container */
+        .mockup-container {
+            width: 260px; height: 500px;
+            position: relative; margin-bottom: 30px;
+        }
         
-        body { 
-            min-height: 100vh; 
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main); 
-            overflow-x: hidden; 
+        .phone-frame {
+            width: 100%; height: 100%;
+            background: #fff; border: 8px solid #2d3436; border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            overflow: hidden; position: relative; z-index: 2;
         }
 
-        /* إخفاء شريط التمرير */
-        ::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* === 🌓 زرار تغيير الثيم === */
-        .theme-toggle {
-            position: absolute; top: 20px; right: 20px;
-            width: 44px; height: 44px;
-            background: var(--card-bg);
-            border-radius: 50%;
+        /* Floating Elements Animation */
+        .float-icon {
+            position: absolute; width: 50px; height: 50px;
+            background: white; border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-soft);
-            cursor: pointer;
-            z-index: 100;
-            color: var(--text-main);
-            font-size: 18px;
-            border: 1px solid var(--border-color);
+            font-size: 24px; z-index: 3;
+            animation: float 3s ease-in-out infinite;
         }
-        .theme-toggle::before { content: var(--theme-icon); font-family: "Font Awesome 6 Free"; font-weight: 900; }
-        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); background: var(--icon-bg); color: var(--primary); }
+        .float-1 { top: 20%; left: -20px; color: #E1306C; animation-delay: 0s; } /* Instagram */
+        .float-2 { top: 40%; right: -25px; color: #000; animation-delay: 1s; } /* TikTok */
+        .float-3 { bottom: 20%; left: -10px; color: #FF0000; animation-delay: 2s; } /* YouTube */
 
-        /* === الحاوية الرئيسية === */
-        .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 60px 20px 40px; display: flex; flex-direction: column; gap: 20px; position: relative; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* === الهيدر والصورة === */
-        .profile-header { text-align: center; margin-bottom: 10px; }
-        
-        .avatar-wrapper {
-            position: relative; width: 120px; height: 120px; margin: 0 auto 15px; z-index: 1;
+        .slide-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; color: #2d3436; }
+        .slide-desc { font-size: 16px; color: var(--text-muted); padding: 0 20px; line-height: 1.5; }
+
+        /* Bottom Action Area */
+        .bottom-action {
+            height: 15%; width: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding-bottom: 20px;
         }
-        
-        /* ✨ تأثير التوهج (The Glow) ✨ */
-        .avatar-wrapper::before {
-            content: ''; position: absolute;
-            top: -5px; left: -5px; right: -5px; bottom: -5px;
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
-            border-radius: 50%; z-index: -1;
-            filter: blur(15px); opacity: 0.6;
-            animation: glowPulse 3s infinite alternate;
+
+        .btn-start {
+            background: var(--primary); color: white;
+            width: 80%; padding: 16px; border-radius: 50px;
+            font-size: 18px; font-weight: 700; text-decoration: none;
+            box-shadow: 0 10px 20px rgba(255, 94, 87, 0.4);
+            transition: 0.3s; text-align: center;
         }
-        @keyframes glowPulse { 0% { transform: scale(0.95); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.8; } }
+        .btn-start:active { transform: scale(0.95); }
 
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--card-bg); }
+        .swiper-pagination-bullet-active { background-color: var(--primary) !important; }
 
-        .profile-name { font-size: 28px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
-        .bio-text { font-size: 15px; color: var(--text-muted); font-weight: 500; line-height: 1.5; }
-        .bio-sub { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* === 🖼️ ويدجت الخلفيات (تعديل الحجم والأزرار) === */
-        .wall-widget {
-            background: var(--card-bg); border-radius: var(--card-radius); padding: 18px;
-            display: flex; align-items: center; gap: 18px;
-            box-shadow: var(--shadow-soft); transition: var(--transition);
-            border: 1px solid var(--border-color);
-        }
-        .wall-widget:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        /* === 👤 Profile Styles (زي ما هي) === */
+        /* ... نفس أكواد البروفايل القديمة عشان لما يدخل يلاقيه ... */
+        :root[data-page="profile"] { --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%); }
+        #profile-screen { display: none; width: 100%; max-width: 480px; margin: 0 auto; padding: 40px 20px; flex-direction: column; gap: 20px; overflow-y: auto; height: 100vh;}
         
-        .wall-thumb { 
-            width: 95px;  /* عرض متناسق */
-            height: 140px; /* طول مناسب */
-            border-radius: 18px; 
-            object-fit: cover; 
-            flex-shrink: 0;
-            box-shadow: var(--shadow-soft);
-        }
-        
-        .wall-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .wall-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
-        
-        .wall-btn {
-            background: var(--primary); color: white; padding: 10px 16px; border-radius: 50px;
-            font-size: 14px; font-weight: 700; text-decoration: none; flex: 1; text-align: center;
-            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); transition: 0.2s;
-        }
-        .wall-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4); }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display:block; margin:0 auto;}
+        .profile-name { text-align: center; font-size: 24px; font-weight: 800; margin-top: 10px; }
+        .link-card { background: white; padding: 18px; border-radius: 20px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: #333; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .social-dock { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+        .social-btn { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #555; text-decoration: none; }
 
-        .nav-btn {
-            width: 36px; height: 36px; border-radius: 50%; border: none;
-            background: var(--icon-bg); color: var(--primary); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 14px;
-            transition: 0.2s;
-        }
-        .nav-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
-
-        /* === الكروت (Links) === */
-        .links-container { display: flex; flex-direction: column; gap: 16px; }
-        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-        .link-card {
-            background: var(--card-bg); border-radius: var(--card-radius); padding: 20px;
-            display: flex; align-items: center; gap: 15px;
-            text-decoration: none; color: var(--text-main);
-            box-shadow: var(--shadow-soft); transition: var(--transition);
-            border: 1px solid var(--border-color); position: relative;
-        }
-        .link-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-
-        .half-card { flex-direction: column; text-align: center; justify-content: center; padding: 30px 15px; gap: 12px; }
-        
-        .icon-box { width: 50px; height: 50px; background: var(--icon-bg); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-        
-        .link-info { flex: 1; overflow: hidden; }
-        .link-title { font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .link-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-
-        .badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(238, 82, 83, 0.3); }
-        .half-card .badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
-
-        /* === أيقونات السوشيال === */
-        .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; background: var(--card-bg); padding: 12px 20px; border-radius: 100px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
-        .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--icon-bg); color: var(--text-muted); font-size: 20px; text-decoration: none; transition: 0.3s; }
-        .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
-
-        /* === صفحة الهبوط (بدون موك آب) === */
-        #home-screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .home-btn { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-hover); transition: 0.3s; }
-        .home-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(14, 165, 233, 0.4); }
-        
-        .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.8; }
-        .footer a { color: var(--text-main); text-decoration: none; font-weight: 700; }
     </style>
 </head>
 <body>
 
-    <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
-
-    <div id="profile-screen" class="main-container" style="display:none;">
-        
-        <div class="profile-header">
-            <div class="avatar-wrapper">
-                <img src="" id="p_avatar" class="avatar">
-            </div>
-            <div class="profile-name">
-                <span id="p_name">...</span>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:22px;"></i>
-            </div>
-            <div class="bio-text" id="p_bio"></div>
-            <div class="bio-sub" id="p_sub"></div>
-        </div>
-
-        <div id="widget-area" style="display:none;">
-            <div class="wall-widget">
-                <img src="wallpapers/wallpaper1.png" class="wall-thumb" id="wallImg">
-                <div class="wall-content">
-                    <h3 style="font-size:17px; font-weight: 800; margin-bottom:4px; color:var(--text-main);">Wall of the Day</h3>
-                    <p style="font-size:13px; color:var(--text-muted); font-weight: 500;">Exclusive 4K Wallpaper</p>
-                    <div class="wall-actions">
-                        <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-                        
-                        <a href="#" download id="downloadBtn" class="wall-btn">Download</a>
-                        
-                        <button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+    <div id="onboarding-screen">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                
+                <div class="swiper-slide">
+                    <div class="mockup-container">
+                        <div class="phone-frame" style="background: url('https://i.pinimg.com/564x/df/76/6d/df766d669229410118501255e2439a37.jpg') center/cover;"></div>
+                        <div class="float-icon float-1"><i class="fa-brands fa-instagram"></i></div>
+                        <div class="float-icon float-2"><i class="fa-brands fa-tiktok"></i></div>
+                        <div class="float-icon float-3"><i class="fa-brands fa-youtube"></i></div>
                     </div>
+                    <div class="slide-title">One Link for All</div>
+                    <div class="slide-desc">Connect your TikTok, Instagram, and more in one beautiful page.</div>
                 </div>
+
+                <div class="swiper-slide">
+                    <div class="mockup-container">
+                        <div class="phone-frame" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); display:flex; align-items:center; justify-content:center;">
+                            <div style="background:white; padding:10px 20px; border-radius:12px; font-weight:bold;">Themes 🎨</div>
+                        </div>
+                        <div class="float-icon" style="top:50%; right:-30px; background:#00d2ff;"><i class="fa-solid fa-palette" style="color:white;"></i></div>
+                    </div>
+                    <div class="slide-title">Custom Design</div>
+                    <div class="slide-desc">Choose from premium themes or create your own style instantly.</div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="mockup-container">
+                        <div class="phone-frame" style="background: #f5f6fa; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                            <i class="fa-solid fa-chart-pie" style="font-size:80px; color:#ff5e57;"></i>
+                            <h3 style="margin-top:20px;">+12K Visits</h3>
+                        </div>
+                        <div class="float-icon" style="bottom:30%; left:-20px; color:#2ecc71;"><i class="fa-solid fa-dollar-sign"></i></div>
+                    </div>
+                    <div class="slide-title">Track & Earn</div>
+                    <div class="slide-desc">See who visits your link and monetize your audience easily.</div>
+                </div>
+
             </div>
+            <div class="swiper-pagination"></div>
         </div>
 
-        <div id="links-area" class="links-container"></div>
-        <div id="social-area" class="social-dock"></div>
-
-        <div class="footer">Crafted by <a href="index.html">CraftBio</a></div>
+        <div class="bottom-action">
+            <a href="admin.html" class="btn-start">Sign Up Free</a>
+            <div style="margin-top:10px; font-size:13px; color:#aaa;">Already have an account? <a href="admin.html" style="color:var(--primary); font-weight:bold; text-decoration:none;">Login</a></div>
+        </div>
     </div>
 
-    <div id="home-screen">
-        <h1 style="font-size:3.5rem; font-weight:900; color:var(--text-main); margin-bottom:10px; letter-spacing: -1.5px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
-        <p style="color:var(--text-muted); margin-bottom:40px; font-size: 1.2rem; font-weight: 500;">Create your stunning bio link in seconds.</p>
-        <a href="signup.html" class="home-btn">Get Started for Free</a>
-        <a href="admin.html" style="margin-top:25px; display:block; color:var(--text-muted); font-weight:700; text-decoration:none; font-size: 15px;">Login to Dashboard</a>
+    <div id="profile-screen">
+        <img id="p_avatar" class="avatar" src="">
+        <div class="profile-name" id="p_name"></div>
+        <div style="text-align:center; color:#777; margin-bottom:20px;" id="p_bio"></div>
+        
+        <div id="links-container"></div>
+        <div id="social-container" class="social-dock"></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -239,148 +172,61 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Routing
+        // Routing Logic
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
 
         if (username) {
+            // ✅ لو فيه يوزر -> اعرض البروفايل واخفي الـ Onboarding
+            document.getElementById('onboarding-screen').style.display = 'none';
             document.getElementById('profile-screen').style.display = 'flex';
-            loadData(username);
+            document.documentElement.setAttribute('data-page', 'profile');
+            document.body.style.background = "#eff6ff"; // خلفية البروفايل
+            document.body.style.overflow = "auto";
+            loadProfile(username);
         } else {
-            document.getElementById('home-screen').style.display = 'flex';
-            document.getElementById('themeToggle').style.display = 'none';
+            // ❌ مفيش يوزر -> اعرض الـ Onboarding (السلايدر)
+            // تشغيل السلايدر
+            new Swiper(".mySwiper", {
+                pagination: { el: ".swiper-pagination", dynamicBullets: true },
+                autoplay: { delay: 3000, disableOnInteraction: false },
+                loop: true
+            });
         }
 
-        async function loadData(user) {
+        async function loadProfile(user) {
             try {
                 let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
                 let colName = (docId === 'master_data') ? 'settings' : 'users';
-
                 const docRef = doc(db, colName, docId);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-
                     document.getElementById('p_avatar').src = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                     document.getElementById('p_name').innerText = data.profile?.name || "User";
                     document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
-                    document.getElementById('p_sub').innerText = data.profile?.bioSub || "";
 
-                    if (user === 'atdesign' || user === 'master_data') {
-                        document.getElementById('widget-area').style.display = 'block';
-                    }
-
-                    const linksContainer = document.getElementById('links-area');
-                    if (data.links) {
-                        let currentRow = null;
-                        data.links.forEach((link, idx) => {
-                            const isHalf = link.layout === 'half';
-                            const badgeHTML = link.badge ? `<span class="badge">${link.badge}</span>` : '';
-                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="color:var(--text-muted); opacity:0.5;"></i>' : '';
-                            const subHTML = (!isHalf && link.subtext) ? `<div class="link-sub">${link.subtext}</div>` : '';
-
-                            const cardHTML = `
-                                <a href="${link.url}" target="_blank" class="link-card ${isHalf ? 'half-card' : ''}" onclick="track('${docId}', '${colName}', ${idx})">
-                                    ${badgeHTML}
-                                    <div class="icon-box"><i class="${link.icon}"></i></div>
-                                    <div class="link-info">
-                                        <div class="link-title">${link.title}</div>
-                                        ${subHTML}
-                                    </div>
-                                    ${chevron}
-                                </a>
-                            `;
-
-                            if (isHalf) {
-                                if (!currentRow) {
-                                    currentRow = document.createElement('div');
-                                    currentRow.className = 'grid-row';
-                                    linksContainer.appendChild(currentRow);
-                                }
-                                currentRow.innerHTML += cardHTML;
-                                if (currentRow.children.length >= 2) currentRow = null;
-                            } else {
-                                currentRow = null;
-                                const div = document.createElement('div');
-                                div.innerHTML = cardHTML;
-                                linksContainer.appendChild(div.firstElementChild);
-                            }
+                    const linksDiv = document.getElementById('links-container');
+                    if(data.links) {
+                        data.links.forEach(link => {
+                            linksDiv.innerHTML += `
+                                <a href="${link.url}" target="_blank" class="link-card">
+                                    <i class="${link.icon}" style="font-size:20px; color:#00a8ff;"></i>
+                                    <span style="font-weight:600; flex:1;">${link.title}</span>
+                                    <i class="fa-solid fa-chevron-right" style="color:#ccc;"></i>
+                                </a>`;
                         });
                     }
-
-                    const socialArea = document.getElementById('social-area');
-                    if (data.socialLinks) {
+                    const socialDiv = document.getElementById('social-container');
+                    if(data.socialLinks) {
                         data.socialLinks.forEach(s => {
-                            socialArea.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
+                            socialDiv.innerHTML += `<a href="${s.url}" class="social-btn"><i class="${s.icon}"></i></a>`;
                         });
                     }
-                } else {
-                    document.getElementById('p_name').innerText = "User not found";
                 }
             } catch (e) { console.error(e); }
         }
-
-        window.track = async (id, col, idx) => {
-            try {
-                const ref = doc(db, col, id);
-                const s = await getDoc(ref);
-                if (s.exists()) {
-                    let links = s.data().links;
-                    links[idx].clicks = (links[idx].clicks || 0) + 1;
-                    await updateDoc(ref, { links: links });
-                }
-            } catch(e) {}
-        }
-    </script>
-
-    <script>
-        // تغيير الثيم
-        function toggleTheme() {
-            const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        }
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-
-        // 🖼️ Wallpaper Logic (تم التعديل: اليمين يجيب التالي)
-        const wallpapers = [
-            "wallpapers/wallpaper1.png",
-            "wallpapers/wallpaper2.png",
-            "wallpapers/wallpaper3.png",
-            "wallpapers/wallpaper4.png"
-        ];
-        let currentWall = 0;
-        
-        function updateWall() {
-            const img = document.getElementById('wallImg');
-            const btn = document.getElementById('downloadBtn');
-            img.style.opacity = 0.5; // تأثير بصري
-            setTimeout(() => {
-                img.src = wallpapers[currentWall];
-                btn.href = wallpapers[currentWall];
-                img.style.opacity = 1;
-            }, 150);
-        }
-
-        // زرار اليمين (>) يجيب الصورة التالية
-        window.nextSlide = function() {
-            currentWall++;
-            if (currentWall >= wallpapers.length) currentWall = 0;
-            updateWall();
-        }
-
-        // زرار الشمال (<) يرجع للصورة السابقة
-        window.prevSlide = function() {
-            currentWall--;
-            if (currentWall < 0) currentWall = wallpapers.length - 1;
-            updateWall();
-        }
-        
-        document.getElementById('downloadBtn').href = wallpapers[0];
     </script>
 </body>
 </html>
