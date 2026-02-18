@@ -34,7 +34,7 @@
 
         #dashboard-section { display: none; }
         
-        /* 💡 ستايل صندوق المشاركة الجديد */
+        /* Share Box */
         .share-box { background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; padding: 15px 20px; display: none; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
         .share-text { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
         .share-text span { font-size: 12px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
@@ -43,6 +43,9 @@
         .copy-btn { background: var(--primary); color: #050810; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
         .copy-btn:hover { background: white; transform: translateY(-2px); }
         .copy-btn.copied { background: #00e676; color: #050810; }
+
+        /* 💡 ستايل عداد الإحصائيات الجديد */
+        .stats-badge { background: rgba(0, 210, 255, 0.15); color: var(--primary); padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.2); }
 
         .links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
         .links-list::-webkit-scrollbar { width: 6px; }
@@ -55,7 +58,7 @@
         .link-item-info { display: flex; align-items: center; gap: 10px; font-size: 14px; flex-grow: 1; overflow: hidden;}
         .link-item-info .app-icon { font-size: 18px; color: var(--primary); width: 20px; text-align: center;}
         
-        .action-btns { display: flex; gap: 8px; }
+        .action-btns { display: flex; gap: 8px; align-items: center; }
         .edit-btn, .delete-btn { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; }
         .edit-btn { background: rgba(0, 210, 255, 0.2); color: var(--primary); }
         .edit-btn:hover { background: var(--primary); color: white; }
@@ -201,7 +204,9 @@
         let mySocialLinks = [];
         window.draggedIdx = null;
         window.userDocRef = null; 
+        window.editingClicks = undefined; // 💡 متغير لحفظ عدد الضغطات عند تعديل الرابط
 
+        // Image Upload
         document.getElementById('avatarUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -241,13 +246,10 @@
                     progressText.style.display = 'none';
                 }
             };
-            xhr.onerror = function() {
-                alert("Network error occurred while uploading. Please check your internet connection.");
-                progressText.style.display = 'none';
-            };
             xhr.send(formData);
         });
 
+        // 💡 تحديث العرض عشان يشمل عدد الضغطات
         window.renderAdminLinks = function() {
             const container = document.getElementById('linksListContainer');
             container.innerHTML = '';
@@ -257,6 +259,8 @@
             }
             myLinks.forEach((link, index) => {
                 const layoutTag = link.layout === 'full' ? '▬ Full' : '■ Half';
+                const clicksCount = link.clicks || 0; // جلب عدد الضغطات
+
                 container.innerHTML += `
                     <div class="link-item" draggable="true" ondragstart="dragStart(${index})" ondragover="allowDrop(event)" ondrop="drop(event, ${index})" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
                         <div class="link-item-info">
@@ -268,6 +272,7 @@
                             </div>
                         </div>
                         <div class="action-btns">
+                            <div class="stats-badge" title="Total Clicks"><i class="fa-solid fa-chart-line"></i> ${clicksCount}</div>
                             <button class="edit-btn" onclick="editLink(${index})"><i class="fa-solid fa-pen"></i></button>
                             <button class="delete-btn" onclick="removeLink(${index})"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -317,38 +322,32 @@
             document.getElementById('newIcon').value = linkToEdit.icon;
             document.getElementById('newBadge').value = linkToEdit.badge || '';
             document.getElementById('newLayout').value = linkToEdit.layout || 'half';
+            
+            // 💡 حفظ عدد الضغطات عشان ميضيعش لما نعدل الرابط
+            window.editingClicks = linkToEdit.clicks || 0; 
+            
             myLinks.splice(index, 1);
             window.renderAdminLinks();
             document.getElementById('addBoxTitle').innerHTML = "<span style='color:var(--primary);'>✏️ Edit Link</span>";
             document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 💡 السحر بتاع تجهيز رابط المشاركة
         function setupShareBox(username) {
             const baseUrl = window.location.href.split('admin.html')[0];
             const publicUrl = baseUrl + 'index.html?u=' + username;
-            
             const linkElement = document.getElementById('myPublicLink');
             linkElement.href = publicUrl;
-            
-            // عشان الرابط يبقى شكله شيك وصغير في العرض
             let displayUrl = publicUrl.replace('https://', '').replace('http://', '');
             if(displayUrl.length > 35) { displayUrl = displayUrl.substring(0, 35) + '...'; }
             linkElement.innerText = displayUrl;
-            
             document.getElementById('shareBox').style.display = 'flex';
-
-            // زرار الكوبي
             document.getElementById('copyLinkBtn').onclick = function() {
                 navigator.clipboard.writeText(publicUrl).then(() => {
                     const btn = document.getElementById('copyLinkBtn');
                     const originalHTML = '<i class="fa-regular fa-copy"></i> Copy';
                     btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
                     btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.innerHTML = originalHTML;
-                        btn.classList.remove('copied');
-                    }, 2500);
+                    setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('copied'); }, 2500);
                 });
             };
         }
@@ -361,7 +360,6 @@
                 const avatarUrl = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                 document.getElementById('profileAvatar').value = avatarUrl;
                 document.getElementById('avatarPreview').src = avatarUrl; 
-                
                 document.getElementById('profileName').value = data.profile?.name || "";
                 document.getElementById('profileBioMain').value = data.profile?.bioMain || "";
                 document.getElementById('profileBioSub').value = data.profile?.bioSub || "";
@@ -386,14 +384,13 @@
                 document.getElementById('dashboard-section').style.display = 'block';
                 const q = query(collection(db, "users"), where("uid", "==", user.uid));
                 const querySnapshot = await getDocs(q);
-                
                 if (!querySnapshot.empty) {
                     const username = querySnapshot.docs[0].id;
                     window.userDocRef = doc(db, "users", username);
-                    setupShareBox(username); // تفعيل صندوق المشاركة لليوزر الجديد
+                    setupShareBox(username);
                 } else {
                     window.userDocRef = doc(db, "settings", "master_data");
-                    setupShareBox("master_data"); // للاحتياط لو ده حسابك القديم
+                    setupShareBox("master_data");
                 }
                 loadData();
             } else {
@@ -418,7 +415,12 @@
             const layout = document.getElementById('newLayout').value;
             
             if(title && url) {
-                myLinks.push({ title, subtext, url, icon, badge, layout });
+                // 💡 استرجاع عدد الضغطات لو كنا بنعدل رابط، أو صفر لو ده رابط جديد
+                let currentClicks = window.editingClicks !== undefined ? window.editingClicks : 0;
+                
+                myLinks.push({ title, subtext, url, icon, badge, layout, clicks: currentClicks });
+                
+                window.editingClicks = undefined; // تصفير المتغير
                 window.renderAdminLinks();
                 document.getElementById('newTitle').value = ''; document.getElementById('newSubtext').value = ''; document.getElementById('newUrl').value = '';
                 document.getElementById('addBoxTitle').innerText = "+ Add / Edit Link";
