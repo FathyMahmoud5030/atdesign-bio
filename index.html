@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CraftBio</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === 🎨 THEME VARIABLES === */
+        /* === 🎨 إعدادات الألوان (Theming) === */
         :root {
             --card-radius: 24px;
             --font-family: 'Outfit', sans-serif;
@@ -16,7 +17,7 @@
             --transition: 0.3s ease;
         }
 
-        /* ☀️ Light Mode (الافتراضي - Soft UI) */
+        /* ☀️ Light Mode (التصميم الافتراضي - Soft UI) */
         [data-theme="light"] {
             --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #f8fafc 100%);
             --text-main: #0f172a;
@@ -52,10 +53,11 @@
             overflow-x: hidden; 
         }
 
+        /* إخفاء شريط التمرير */
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === 🌙 Theme Toggle === */
+        /* === 🌓 زرار تغيير الثيم === */
         .theme-toggle {
             position: absolute; top: 20px; right: 20px;
             width: 44px; height: 44px;
@@ -72,10 +74,10 @@
         .theme-toggle::before { content: var(--theme-icon); font-family: "Font Awesome 6 Free"; font-weight: 900; }
         .theme-toggle:hover { transform: rotate(15deg) scale(1.1); background: var(--icon-bg); color: var(--primary); }
 
-        /* === Container === */
+        /* === الحاوية الرئيسية === */
         .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 60px 20px 40px; display: flex; flex-direction: column; gap: 20px; position: relative; }
 
-        /* === Header & Glow === */
+        /* === الهيدر والصورة === */
         .profile-header { text-align: center; margin-bottom: 10px; }
         
         .avatar-wrapper {
@@ -99,7 +101,7 @@
         .bio-text { font-size: 15px; color: var(--text-muted); font-weight: 500; line-height: 1.5; }
         .bio-sub { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* === 🖼️ Wallpaper Widget (Taller & Balanced) === */
+        /* === 🖼️ ويدجت الخلفيات (تعديل الحجم والأزرار) === */
         .wall-widget {
             background: var(--card-bg); border-radius: var(--card-radius); padding: 18px;
             display: flex; align-items: center; gap: 18px;
@@ -108,14 +110,13 @@
         }
         .wall-widget:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
         
-        /* 💡 التعديل هنا: تكبير الصورة لزيادة طول الويدجت */
         .wall-thumb { 
-            width: 95px;  /* عرض أكبر */
-            height: 140px; /* طول أكبر بكتير */
+            width: 95px;  /* عرض متناسق */
+            height: 140px; /* طول مناسب */
             border-radius: 18px; 
             object-fit: cover; 
             flex-shrink: 0;
-            box-shadow: var(--shadow-soft); /* ضل للصورة نفسها */
+            box-shadow: var(--shadow-soft);
         }
         
         .wall-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -136,7 +137,7 @@
         }
         .nav-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* === Links === */
+        /* === الكروت (Links) === */
         .links-container { display: flex; flex-direction: column; gap: 16px; }
         .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
@@ -160,13 +161,13 @@
         .badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(238, 82, 83, 0.3); }
         .half-card .badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
 
-        /* === Socials === */
+        /* === أيقونات السوشيال === */
         .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; background: var(--card-bg); padding: 12px 20px; border-radius: 100px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
         .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--icon-bg); color: var(--text-muted); font-size: 20px; text-decoration: none; transition: 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* === Landing Page === */
-        #home-screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* === صفحة الهبوط (بدون موك آب) === */
+        #home-screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
         .home-btn { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: var(--shadow-hover); transition: 0.3s; }
         .home-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(14, 165, 233, 0.4); }
         
@@ -200,7 +201,9 @@
                     <p style="font-size:13px; color:var(--text-muted); font-weight: 500;">Exclusive 4K Wallpaper</p>
                     <div class="wall-actions">
                         <button class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+                        
                         <a href="#" download id="downloadBtn" class="wall-btn">Download</a>
+                        
                         <button class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
@@ -332,6 +335,7 @@
     </script>
 
     <script>
+        // تغيير الثيم
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme');
@@ -342,34 +346,40 @@
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
 
-        // 🖼️ Wallpaper Slideshow
+        // 🖼️ Wallpaper Logic (تم التعديل: اليمين يجيب التالي)
         const wallpapers = [
             "wallpapers/wallpaper1.png",
             "wallpapers/wallpaper2.png",
-            "wallpapers/wallpaper3.png"
+            "wallpapers/wallpaper3.png",
+            "wallpapers/wallpaper4.png"
         ];
         let currentWall = 0;
         
         function updateWall() {
             const img = document.getElementById('wallImg');
             const btn = document.getElementById('downloadBtn');
-            // Simple fade effect
-            img.style.opacity = 0;
+            img.style.opacity = 0.5; // تأثير بصري
             setTimeout(() => {
                 img.src = wallpapers[currentWall];
                 btn.href = wallpapers[currentWall];
                 img.style.opacity = 1;
-            }, 200);
+            }, 150);
         }
+
+        // زرار اليمين (>) يجيب الصورة التالية
         window.nextSlide = function() {
-            currentWall = (currentWall + 1) % wallpapers.length;
+            currentWall++;
+            if (currentWall >= wallpapers.length) currentWall = 0;
             updateWall();
         }
+
+        // زرار الشمال (<) يرجع للصورة السابقة
         window.prevSlide = function() {
-            currentWall = (currentWall - 1 + wallpapers.length) % wallpapers.length;
+            currentWall--;
+            if (currentWall < 0) currentWall = wallpapers.length - 1;
             updateWall();
         }
-        // Initialize first wallpaper link
+        
         document.getElementById('downloadBtn').href = wallpapers[0];
     </script>
 </body>
