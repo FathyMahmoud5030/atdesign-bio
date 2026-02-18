@@ -8,15 +8,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === 🎨 THEME: SOFT SKY (زي الصور بالظبط) === */
+        /* === 🎨 تصميم Soft UI (زي الصور بالظبط) === */
         :root {
-            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #ffffff 100%); /* سماوي في أبيض */
-            --text-main: #0f172a; /* كحلي غامق للنصوص */
-            --text-muted: #64748b; /* رمادي للوصف */
-            --card-bg: #ffffff; /* كروت بيضاء */
-            --primary: #0ea5e9; /* أزرق سماوي للأيقونات */
-            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08); /* ضل ناعم */
-            --card-radius: 24px; /* حواف دائرية جداً */
+            /* الخلفية المتدرجة السماوية */
+            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #f8fafc 100%);
+            
+            --text-main: #0f172a;   /* كحلي غامق */
+            --text-muted: #64748b;  /* رمادي */
+            --card-bg: #ffffff;     /* أبيض ناصع */
+            --primary: #0ea5e9;     /* أزرق للأيقونات */
+            
+            /* الضلال الناعمة */
+            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 40px -10px rgba(14, 165, 233, 0.15);
+            
+            --card-radius: 28px;    /* زوايا دائرية جداً */
             --font-family: 'Outfit', sans-serif;
         }
 
@@ -34,123 +40,243 @@
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === 🏠 LANDING PAGE === */
-        #landing-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        
-        .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; color: #1e293b; }
-        .hero-title span { color: var(--primary); }
-        
-        .phone-mockup { 
-            width: 300px; height: 600px; border: 8px solid #1a1a1a; border-radius: 40px; 
-            background: #fff; overflow: hidden; position: relative; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); margin-bottom: 30px;
-            transform: rotate(-2deg);
+        /* === الكونتينر الرئيسي === */
+        .main-container { 
+            width: 100%; 
+            max-width: 480px; /* عرض الموبايل المثالي */
+            margin: 0 auto; 
+            padding: 60px 20px 40px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
         }
-        .phone-mockup iframe { width: 100%; height: 100%; border: none; }
-        
-        .btn-cta { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3); transition: 0.3s; }
-        .btn-cta:hover { transform: translateY(-3px); }
 
-        /* === 👤 PROFILE PAGE === */
-        #profile-view { display: none; width: 100%; max-width: 500px; margin: 0 auto; padding: 50px 20px; flex-direction: column; gap: 20px; }
+        /* === الهيدر (صورة وبروفايل) === */
+        .profile-header { text-align: center; margin-bottom: 10px; }
         
-        .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; margin: 0 auto; display: block; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .avatar-wrapper {
+            position: relative; 
+            width: 120px; 
+            height: 120px; 
+            margin: 0 auto 15px;
+        }
         
-        .profile-info { text-align: center; margin-bottom: 15px; }
-        .profile-name { font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 15px; color: #0f172a; }
-        .bio-text { color: var(--text-muted); margin-top: 5px; font-size: 15px; font-weight: 500; }
-        .bio-sub { color: var(--primary); font-weight: 700; margin-top: 5px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* الكروت (زي الصور بالظبط) */
-        .link-card {
-            display: flex; align-items: center; gap: 15px;
-            background: var(--card-bg); 
-            padding: 18px 24px; 
-            border-radius: var(--card-radius);
-            text-decoration: none; color: var(--text-main);
+        .avatar { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 5px solid #fff; /* حدود بيضاء عريضة */
             box-shadow: var(--shadow-soft);
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-        .link-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); }
-        
-        .link-icon-bg { 
-            width: 48px; height: 48px; background: #e0f2fe; border-radius: 14px; 
-            display: flex; align-items: center; justify-content: center; 
-            color: var(--primary); font-size: 22px; flex-shrink: 0;
         }
 
-        .link-content { flex: 1; }
-        .link-title { font-weight: 700; font-size: 16px; color: #334155; }
-        .link-sub { font-size: 13px; color: #94a3b8; margin-top: 2px; }
-        
-        /* شارة التريند */
-        .link-badge { 
-            background: linear-gradient(135deg, #ff6b6b, #ee5253); 
-            color: white; padding: 4px 12px; border-radius: 20px; 
-            font-size: 11px; font-weight: 700; 
-            position: absolute; top: -10px; right: 20px; 
-            box-shadow: 0 4px 10px rgba(238, 82, 83, 0.4);
+        .profile-name { 
+            font-size: 28px; 
+            font-weight: 800; 
+            color: var(--text-main);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            margin-bottom: 8px;
         }
 
-        /* الشبكة (Grid) */
+        .bio-text { 
+            font-size: 15px; 
+            color: var(--text-muted); 
+            font-weight: 500; 
+            line-height: 1.5;
+        }
+        
+        .bio-sub {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === الويدجت (Wall of the Day) === */
+        .wall-widget {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow-soft);
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .wall-widget:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        
+        .wall-thumb {
+            width: 70px;
+            height: 100px;
+            border-radius: 16px;
+            object-fit: cover;
+        }
+        
+        .wall-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 8px;
+            text-decoration: none;
+        }
+
+        /* === الكروت والروابط === */
         .links-container { display: flex; flex-direction: column; gap: 16px; }
         .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .half-card { flex-direction: column; text-align: center; padding: 30px 15px; justify-content: center; gap: 15px; }
-        .half-card .link-badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
 
-        /* Social Icons */
-        .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; background: white; padding: 15px; border-radius: 100px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-soft); }
-        .social-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #64748b; font-size: 20px; text-decoration: none; transition: 0.3s; background: #f1f5f9; }
+        .link-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        
+        .link-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+
+        .half-card {
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            padding: 30px 15px;
+            gap: 12px;
+        }
+
+        /* أيقونات التطبيقات */
+        .icon-box {
+            width: 50px; height: 50px;
+            background: #e0f2fe; /* خلفية سماوي فاتحة للأيقونة */
+            color: var(--primary);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .link-info { flex: 1; overflow: hidden; }
+        .link-title { font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .link-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+        /* بادج التريند */
+        .badge {
+            position: absolute;
+            top: -10px; right: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5253);
+            color: white;
+            font-size: 11px; font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(238, 82, 83, 0.3);
+        }
+        .half-card .badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
+
+        /* === السوشيال ميديا (Dock) === */
+        .social-dock {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 100px;
+            width: fit-content;
+            margin-left: auto; margin-right: auto;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .social-btn {
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 20px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
         .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* Widget */
-        .wall-widget { display: flex; background: white; border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
-        .wall-thumb { width: 60px; height: 90px; border-radius: 12px; object-fit: cover; }
-        .dl-btn { background: #0f172a; color: white; padding: 8px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 13px; display: inline-block; margin-top: 8px; }
+        /* === الفوتر === */
+        .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.8; }
+        .footer a { color: var(--text-main); text-decoration: none; font-weight: 700; }
+
+        /* === صفحة الترحيب (بدون موك آب) === */
+        #home-screen {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .home-btn {
+            background: var(--primary); color: white; padding: 15px 40px; 
+            border-radius: 50px; text-decoration: none; font-weight: 700; 
+            font-size: 18px; box-shadow: var(--shadow-hover);
+        }
 
     </style>
 </head>
 <body>
 
-    <div id="landing-view">
-        <h1 class="hero-title">One Link.<br><span>All You.</span></h1>
-        <p style="color:#64748b; margin-bottom: 30px;">Share everything you create in one simple link.</p>
+    <div id="profile-screen" class="main-container" style="display:none;">
         
-        <div class="phone-mockup">
-            <iframe src="?u=atdesign&embed=true"></iframe>
-        </div>
-
-        <a href="signup.html" class="btn-cta">Create Your Bio</a>
-        <a href="admin.html" style="margin-top:20px; display:block; color:#64748b; font-weight:600; text-decoration:none;">Login</a>
-    </div>
-
-    <div id="profile-view">
-        <img src="" id="p_avatar" class="avatar">
-        
-        <div class="profile-info">
+        <div class="profile-header">
+            <div class="avatar-wrapper">
+                <img src="" id="p_avatar" class="avatar">
+            </div>
             <div class="profile-name">
-                <span id="p_name"></span> 
-                <i class="fa-solid fa-circle-check" style="color:#0ea5e9; font-size:20px;"></i>
+                <span id="p_name">...</span>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:20px;"></i>
             </div>
             <div class="bio-text" id="p_bio"></div>
             <div class="bio-sub" id="p_sub"></div>
         </div>
 
-        <div class="wall-widget" id="wallpaperWidget" style="display:none;">
-            <img src="wallpapers/wallpaper1.png" class="wall-thumb">
-            <div>
-                <h4 style="margin:0; color:#1e293b;">Wall of the Day</h4>
-                <p style="margin:4px 0 0; font-size:12px; color:#64748b;">Exclusive 4K Wallpaper</p>
-                <a href="#" download class="dl-btn">Download</a>
+        <div id="widget-area" style="display:none;">
+            <div class="wall-widget">
+                <img src="wallpapers/wallpaper1.png" class="wall-thumb">
+                <div style="flex:1;">
+                    <h3 style="font-size:16px; margin-bottom:4px; color:var(--text-main);">Wall of the Day</h3>
+                    <p style="font-size:12px; color:var(--text-muted);">Exclusive 4K Wallpaper</p>
+                    <a href="#" download class="wall-btn">Download</a>
+                </div>
             </div>
         </div>
 
-        <div id="links-container" class="links-container"></div>
-        <div class="social-dock" id="social-container"></div>
-        
-        <div style="text-align:center; margin-top:40px; font-size:12px; opacity:0.5; color:#64748b;">Crafted by CraftBio</div>
+        <div id="links-area" class="links-container"></div>
+
+        <div id="social-area" class="social-dock"></div>
+
+        <div class="footer">
+            Crafted by <a href="index.html">CraftBio</a>
+        </div>
+    </div>
+
+    <div id="home-screen">
+        <h1 style="font-size:3rem; font-weight:800; color:#0f172a; margin-bottom:10px;">One Link.<br><span style="color:var(--primary);">All You.</span></h1>
+        <p style="color:#64748b; margin-bottom:40px;">Create your bio link in seconds.</p>
+        <a href="signup.html" class="home-btn">Create Yours Free</a>
+        <a href="admin.html" style="margin-top:20px; display:block; color:#64748b; font-weight:600; text-decoration:none;">Login</a>
     </div>
 
     <script type="module">
@@ -169,63 +295,57 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Routing
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
-        const isEmbed = urlParams.get('embed');
-
-        const landingView = document.getElementById('landing-view');
-        const profileView = document.getElementById('profile-view');
 
         if (username) {
-            landingView.remove(); 
-            profileView.style.display = 'flex';
-            if(isEmbed) {
-                document.body.style.background = 'transparent';
-                profileView.style.padding = '20px 10px';
-                document.querySelector('#profile-view > div:last-child').style.display = 'none'; // hide footer
-            }
-            loadProfile(username);
+            document.getElementById('profile-screen').style.display = 'flex';
+            loadData(username);
         } else {
-            profileView.remove();
-            landingView.style.display = 'flex';
+            document.getElementById('home-screen').style.display = 'flex';
         }
 
-        async function loadProfile(user) {
+        async function loadData(user) {
             try {
+                // التعامل مع atdesign كـ master
                 let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
                 let colName = (docId === 'master_data') ? 'settings' : 'users';
-                
+
                 const docRef = doc(db, colName, docId);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
+                    // Profile
                     document.getElementById('p_avatar').src = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                     document.getElementById('p_name').innerText = data.profile?.name || "User";
                     document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
                     document.getElementById('p_sub').innerText = data.profile?.bioSub || "";
 
-                    if(user === 'atdesign' || user === 'master_data') {
-                        document.getElementById('wallpaperWidget').style.display = 'flex';
+                    // Widget (Only for atdesign)
+                    if (user === 'atdesign' || user === 'master_data') {
+                        document.getElementById('widget-area').style.display = 'block';
                     }
 
-                    const container = document.getElementById('links-container');
+                    // Links
+                    const linksContainer = document.getElementById('links-area');
                     if (data.links) {
                         let currentRow = null;
                         data.links.forEach((link, idx) => {
                             const isHalf = link.layout === 'half';
-                            const badge = link.badge ? `<span class="link-badge">${link.badge}</span>` : '';
-                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="font-size:12px; opacity:0.5;"></i>' : '';
-                            const subText = (!isHalf && link.subtext) ? `<div class="link-sub">${link.subtext}</div>` : '';
-                            
-                            const cardHtml = `
+                            const badgeHTML = link.badge ? `<span class="badge">${link.badge}</span>` : '';
+                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i>' : '';
+                            const subHTML = (!isHalf && link.subtext) ? `<div class="link-sub">${link.subtext}</div>` : '';
+
+                            const cardHTML = `
                                 <a href="${link.url}" target="_blank" class="link-card ${isHalf ? 'half-card' : ''}" onclick="track('${docId}', '${colName}', ${idx})">
-                                    ${badge}
-                                    <div class="link-icon-bg"><i class="${link.icon}"></i></div>
-                                    <div class="link-content">
+                                    ${badgeHTML}
+                                    <div class="icon-box"><i class="${link.icon}"></i></div>
+                                    <div class="link-info">
                                         <div class="link-title">${link.title}</div>
-                                        ${subText}
+                                        ${subHTML}
                                     </div>
                                     ${chevron}
                                 </a>
@@ -235,25 +355,29 @@
                                 if (!currentRow) {
                                     currentRow = document.createElement('div');
                                     currentRow.className = 'grid-row';
-                                    container.appendChild(currentRow);
+                                    linksContainer.appendChild(currentRow);
                                 }
-                                currentRow.innerHTML += cardHtml;
+                                currentRow.innerHTML += cardHTML;
                                 if (currentRow.children.length >= 2) currentRow = null;
                             } else {
-                                currentRow = null; 
+                                currentRow = null;
                                 const div = document.createElement('div');
-                                div.innerHTML = cardHtml;
-                                container.appendChild(div.firstElementChild);
+                                div.innerHTML = cardHTML;
+                                linksContainer.appendChild(div.firstElementChild);
                             }
                         });
                     }
 
-                    const socialCont = document.getElementById('social-container');
-                    if(data.socialLinks) {
+                    // Socials
+                    const socialArea = document.getElementById('social-area');
+                    if (data.socialLinks) {
                         data.socialLinks.forEach(s => {
-                            socialCont.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
+                            socialArea.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
                         });
                     }
+
+                } else {
+                    document.getElementById('p_name').innerText = "User not found";
                 }
             } catch (e) { console.error(e); }
         }
@@ -262,7 +386,7 @@
             try {
                 const ref = doc(db, col, id);
                 const s = await getDoc(ref);
-                if(s.exists()) {
+                if (s.exists()) {
                     let links = s.data().links;
                     links[idx].clicks = (links[idx].clicks || 0) + 1;
                     await updateDoc(ref, { links: links });
