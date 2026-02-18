@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CraftBio</title>
+    <title>CraftBio | Digital Identity</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === 🛠️ SYSTEM RESET (استعادة تصميمك الأصلي) === */
+        /* === 👑 SYSTEM CORE (تصميمك الأصلي - Premium Plus) === */
         :root {
-            /* ده التصميم البريميوم بتاعك بالظبط */
             --bg-base: #050810; 
             --text-main: #ffffff; 
             --text-muted: rgba(255, 255, 255, 0.7); 
@@ -34,32 +33,36 @@
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === 🌌 Floating Orbs (خلفية البريميوم) === */
+        /* === 🌌 Floating Orbs (خلفية البريميوم المتحركة) === */
         .floating-orbs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
         .orb { position: absolute; border-radius: 50%; opacity: 0.3; filter: blur(80px); animation: floatOrb 20s infinite linear; background: var(--primary); }
         .orb:nth-child(1) { top: -10%; left: -10%; width: 50vw; height: 50vw; }
         .orb:nth-child(2) { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #3a7bd5; animation-direction: reverse; }
         @keyframes floatOrb { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(50px,50px) rotate(180deg); } 100% { transform: translate(0,0) rotate(360deg); } }
 
-        /* === 📱 MOCKUP VIEW (صفحة المتجر فقط) === */
+        /* === 📱 LANDING VIEW (صفحة المتجر والموك-آب) === */
         #landing-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        
         .phone-mockup { 
             width: 300px; height: 600px; border: 8px solid #1a1a1a; border-radius: 40px; 
             background: #000; overflow: hidden; position: relative; 
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); margin-bottom: 30px;
+            transform: rotate(-3deg);
         }
         .phone-mockup iframe { width: 100%; height: 100%; border: none; }
-        .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; }
+        
+        .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
         .hero-title span { color: var(--primary); }
-        .btn-cta { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; }
+        .btn-cta { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; margin-top: 20px; display: inline-block;}
 
         /* === 👤 PROFILE VIEW (صفحتك الشخصية) === */
         #profile-view { display: none; width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 20px; flex-direction: column; gap: 20px; }
         
-        .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); margin: 0 auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .avatar { width: 115px; height: 115px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); margin: 0 auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .profile-info { text-align: center; margin-bottom: 10px; }
-        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 15px; }
-        .bio-text { color: var(--text-muted); margin-top: 5px; }
+        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; }
+        .bio-text { color: var(--text-muted); margin-top: 5px; font-size: 15px; }
+        .bio-sub { color: var(--primary); font-weight: 600; margin-top: 5px; font-size: 14px; }
 
         /* الكروت بتصميمك الأصلي */
         .link-card {
@@ -67,7 +70,7 @@
             background: var(--liquid-bg); border: 1px solid var(--liquid-border);
             padding: 18px; border-radius: var(--card-radius);
             text-decoration: none; color: var(--text-main);
-            transition: transform 0.2s; backdrop-filter: blur(12px);
+            transition: transform 0.2s; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             position: relative;
         }
         .link-card:hover { transform: translateY(-3px); border-color: var(--primary); }
@@ -75,13 +78,19 @@
         .link-title { font-weight: 600; font-size: 16px; }
         .link-badge { background: #ff4757; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; position: absolute; top: -10px; right: 15px; }
 
+        /* Grid Layout */
+        .links-container { display: flex; flex-direction: column; gap: 15px; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .half-card { flex-direction: column; text-align: center; padding: 25px 10px; justify-content: center; }
+        .half-card .link-badge { right: auto; left: 50%; transform: translateX(-50%); top: -10px; }
+
         /* Social Icons */
         .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
         .social-btn { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: 50%; color: var(--text-main); font-size: 20px; text-decoration: none; transition: 0.3s; }
         .social-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); }
 
         /* Wall Widget (Exclusive) */
-        .wall-widget { display: flex; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; }
+        .wall-widget { display: flex; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; backdrop-filter: blur(12px); }
         .wall-thumb { width: 70px; height: 100px; border-radius: 12px; object-fit: cover; }
         .dl-btn { background: var(--primary); color: #000; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block; margin-top: 8px; }
 
@@ -93,7 +102,7 @@
 
     <div id="landing-view">
         <h1 class="hero-title">One Link.<br><span>Infinite Possibilities.</span></h1>
-        <p style="color:var(--text-muted); margin-bottom: 30px;">Your ultimate digital identity.</p>
+        <p style="color:var(--text-muted); margin-bottom: 30px; font-size: 1.1rem;">Your ultimate digital identity.</p>
         
         <div class="phone-mockup">
             <iframe src="?u=atdesign&embed=true"></iframe>
@@ -112,7 +121,7 @@
                 <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:18px;"></i>
             </div>
             <div class="bio-text" id="p_bio"></div>
-            <div style="color:var(--primary); font-weight:600; margin-top:5px;" id="p_sub"></div>
+            <div class="bio-sub" id="p_sub"></div>
         </div>
 
         <div class="wall-widget" id="wallpaperWidget" style="display:none;">
@@ -124,7 +133,7 @@
             </div>
         </div>
 
-        <div id="links-container" style="display:flex; flex-direction:column; gap:15px;"></div>
+        <div id="links-container" class="links-container"></div>
         <div class="social-dock" id="social-container"></div>
         
         <div style="text-align:center; margin-top:40px; font-size:12px; opacity:0.5;">Crafted by CraftBio</div>
@@ -154,26 +163,31 @@
         const landingView = document.getElementById('landing-view');
         const profileView = document.getElementById('profile-view');
 
+        // 1. تحديد الصفحة المعروضة
         if (username) {
-            // ✅ لو في يوزر: امسح صفحة الهبوط فوراً من الوجود
-            landingView.remove(); 
+            // ✅ لو في يوزر: امسح صفحة الهبوط فوراً من الوجود (عشان التداخل)
+            if(landingView) landingView.remove(); 
             profileView.style.display = 'flex';
             
+            // لو جوه الموك-آب، نظف الصفحة عشان تبقى شفافة
             if(isEmbed) {
                 document.body.style.background = 'transparent';
                 document.querySelector('.floating-orbs').style.display = 'none';
                 profileView.style.padding = '20px 10px';
+                // إخفاء الفوتر في الموك-آب
+                document.querySelector('#profile-view > div:last-child').style.display = 'none';
             }
             
             loadProfile(username);
         } else {
-            // ❌ لو مفيش يوزر: امسح البروفايل واعرض الهبوط
-            profileView.remove();
+            // ❌ لو مفيش يوزر (الصفحة الرئيسية): امسح البروفايل واعرض الهبوط
+            if(profileView) profileView.remove();
             landingView.style.display = 'flex';
         }
 
         async function loadProfile(user) {
             try {
+                // التعامل مع atdesign كـ master_data
                 let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
                 let colName = (docId === 'master_data') ? 'settings' : 'users';
                 
@@ -189,27 +203,51 @@
                     document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
                     document.getElementById('p_sub').innerText = data.profile?.bioSub || "";
 
-                    // Widget Logic (Show for you)
-                    if(user === 'atdesign' || user === 'fathy' || user === 'master_data') {
+                    // Widget Logic (Show for atdesign only)
+                    if(user === 'atdesign' || user === 'master_data') {
                         document.getElementById('wallpaperWidget').style.display = 'flex';
                     }
 
-                    // Render Links
+                    // Render Links Logic (Full vs Half)
                     const container = document.getElementById('links-container');
                     if (data.links) {
+                        let currentRow = null; // للصفوف الثنائية
+
                         data.links.forEach((link, idx) => {
+                            const isHalf = link.layout === 'half';
                             const badge = link.badge ? `<span class="link-badge">${link.badge}</span>` : '';
-                            container.innerHTML += `
-                                <a href="${link.url}" target="_blank" class="link-card" onclick="track('${docId}', '${colName}', ${idx})">
+                            const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="font-size:12px; opacity:0.5;"></i>' : '';
+                            const subText = (!isHalf && link.subtext) ? `<div style="font-size:12px; opacity:0.7;">${link.subtext}</div>` : '';
+                            
+                            const cardHtml = `
+                                <a href="${link.url}" target="_blank" class="link-card ${isHalf ? 'half-card' : ''}" onclick="track('${docId}', '${colName}', ${idx})">
                                     ${badge}
                                     <i class="${link.icon} link-icon"></i>
                                     <div style="flex:1;">
                                         <div class="link-title">${link.title}</div>
-                                        ${link.subtext ? `<div style="font-size:12px; opacity:0.7;">${link.subtext}</div>` : ''}
+                                        ${subText}
                                     </div>
-                                    <i class="fa-solid fa-chevron-right" style="font-size:12px; opacity:0.5;"></i>
+                                    ${chevron}
                                 </a>
                             `;
+
+                            if (isHalf) {
+                                // لو عنصر نصفي، نفتح له صف جديد لو مفيش
+                                if (!currentRow) {
+                                    currentRow = document.createElement('div');
+                                    currentRow.className = 'grid-row';
+                                    container.appendChild(currentRow);
+                                }
+                                currentRow.innerHTML += cardHtml;
+                                // لو الصف اتملى (عنصرين)، نقفله
+                                if (currentRow.children.length >= 2) currentRow = null;
+                            } else {
+                                // لو عنصر كامل، نقفل الصف القديم (لو كان مفتوح بـ 1 عنصر) ونضيف ده تحته
+                                currentRow = null; 
+                                const div = document.createElement('div');
+                                div.innerHTML = cardHtml;
+                                container.appendChild(div.firstElementChild);
+                            }
                         });
                     }
 
@@ -217,13 +255,16 @@
                     const socialCont = document.getElementById('social-container');
                     if(data.socialLinks) {
                         data.socialLinks.forEach(s => {
-                            socialCont.innerHTML += `<a href="${s.url}" class="social-btn"><i class="${s.icon}"></i></a>`;
+                            socialCont.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
                         });
                     }
+                } else {
+                    document.getElementById('p_name').innerText = "User not found";
                 }
             } catch (e) { console.error(e); }
         }
 
+        // Click Analytics
         window.track = async (id, col, idx) => {
             try {
                 const ref = doc(db, col, id);
