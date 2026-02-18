@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CraftBio | Premium Portfolio</title>
+    <title>CraftBio | Your Digital Identity</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -64,14 +64,12 @@
         .avatar-wrapper { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
         .avatar-wrapper::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px); animation: glowPulse 2s infinite alternate; }
         @keyframes glowPulse { 0% { transform: scale(0.95); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.9; } }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); position: relative; z-index: 1; transition: border-color 0.5s ease;}
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); position: relative; z-index: 1; transition: border-color 0.5s ease; background-color: rgba(255,255,255,0.1);}
         .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .verify-badge { color: var(--text-accent); width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
         .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
         .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
         .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
-        .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
-        .bio-tags i { font-size: 15px; }
 
         /* Liquid Card Core */
         .liquid-card {
@@ -85,25 +83,9 @@
             border-radius: var(--squircle-radius); 
             box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
             position: relative; 
-            overflow: visible; /* لكي يظهر البادج بالخارج */
+            overflow: visible; 
             transition: all 0.5s ease;
         }
-
-        /* Wallpaper Widget */
-        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; overflow: hidden;}
-        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
-        .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
-        .slide.active { opacity: 1; }
-        .wall-info { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 170px; }
-        .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
-        .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
-        .wall-actions { display: flex; flex-direction: column; gap: 10px; }
-        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
-        .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
-        .widget-nav { display: flex; gap: 10px; }
-        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--liquid-border-top); color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
-        .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
 
         /* Apps & Links Grid */
         .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
@@ -153,7 +135,8 @@
         
         /* العلامة المائية لمنصة CraftBio */
         .watermark { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); opacity: 0.7; }
-        .watermark a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .watermark a { color: var(--primary); text-decoration: none; font-weight: 600; transition: 0.2s; }
+        .watermark a:hover { color: var(--text-main); }
     </style>
 </head>
 
@@ -165,7 +148,7 @@
 
         <header class="profile-section">
             <div class="avatar-wrapper">
-                <img src="wallpapers/avatar.jpg" id="renderAvatar" alt="Profile Avatar" class="avatar">
+                <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" id="renderAvatar" alt="Profile Avatar" class="avatar">
             </div>
             
             <h1 class="profile-name">
@@ -180,29 +163,6 @@
                 <span class="bio-sub" id="renderBioSub">Connecting to CraftBio...</span>
             </div>
         </header>
-
-            <div class="wall-preview">
-                <img src="wallpapers/wallpaper1.png" class="slide active">
-                <img src="wallpapers/wallpaper2.png" class="slide">
-                <img src="wallpapers/wallpaper3.png" class="slide">
-                <img src="wallpapers/wallpaper4.png" class="slide">
-            </div>
-            <div class="wall-info">
-                <div class="wall-header">
-                    <h3>Wall of the Day</h3>
-                    <p>Changes automatically every 24h</p>
-                </div>
-                <div class="wall-actions">
-                    <a id="downloadBtn" href="#" download class="widget-btn-primary">
-                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Now
-                    </a>
-                    <div class="widget-nav">
-                        <button class="widget-icon-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="widget-icon-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="links-grid" id="renderLinksContainer">
             <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">Loading links...</div>
@@ -232,26 +192,12 @@
             if (!localStorage.getItem('theme')) { document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light'); }
         });
         initTheme();
-
-        const slides = document.querySelectorAll(".slide");
-        const downloadBtn = document.getElementById("downloadBtn");
-        let current = Math.floor(Date.now() / 86400000) % slides.length;
-        
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove("active"));
-            slides[index].classList.add("active");
-            downloadBtn.href = slides[index].src;
-        }
-        function nextSlide() { current = (current + 1) % slides.length; showSlide(current); }
-        function prevSlide() { current = (current - 1 + slides.length) % slides.length; showSlide(current); }
-        showSlide(current);
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // مفاتيح فايربيز بتاعتك
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
             authDomain: "atdesign-portfolio.firebaseapp.com",
@@ -276,16 +222,13 @@
 
         async function fetchAndRenderData() {
             try {
-                // 💡 السحر هنا: بنقرا اسم المستخدم من الرابط
                 const urlParams = new URLSearchParams(window.location.search);
                 const usernameFromURL = urlParams.get('u');
 
                 let docRef;
                 if (usernameFromURL) {
-                    // لو الرابط فيه اسم مستخدم (?u=ahmed)، هات بياناته
                     docRef = doc(db, "users", usernameFromURL);
                 } else {
-                    // لو الرابط فاضي، هات بياناتك إنت كواجهة أساسية
                     docRef = doc(db, "settings", "master_data");
                 }
 
@@ -294,15 +237,14 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     
-                    // 1. تحديث البروفايل
                     if(data.profile) {
+                        // لو اليوزر رفع صورة هتتعرض، لو لأ هتفضل الافتراضية
                         if(data.profile.avatar) document.getElementById('renderAvatar').src = data.profile.avatar;
                         if(data.profile.name) document.getElementById('renderName').innerText = data.profile.name;
                         if(data.profile.bioMain) document.getElementById('renderBioMain').innerText = data.profile.bioMain;
                         if(data.profile.bioSub) document.getElementById('renderBioSub').innerText = data.profile.bioSub;
                     }
 
-                    // 2. تحديث روابط التطبيقات
                     const linksContainer = document.getElementById('renderLinksContainer');
                     if(data.links && data.links.length > 0) {
                         linksContainer.innerHTML = ''; 
@@ -339,7 +281,6 @@
                         linksContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 14px;">No links added yet.</div>';
                     }
 
-                    // 3. تحديث السوشيال ميديا
                     const socialContainer = document.getElementById('renderSocialContainer');
                     if(data.socialLinks && data.socialLinks.length > 0) {
                         socialContainer.innerHTML = '';
@@ -355,13 +296,11 @@
                     }
                     
                 } else {
-                    // لو حد كتب اسم مستخدم غلط في الرابط
                     document.getElementById('renderName').innerText = "User Not Found";
                     document.getElementById('renderBioMain').innerText = "This CraftBio profile doesn't exist.";
                     document.getElementById('renderBioSub').innerText = "";
                     document.getElementById('renderLinksContainer').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #ff5e5b; font-size: 14px;">Please check the link and try again.</div>';
                     document.getElementById('renderSocialContainer').style.display = 'none';
-                    document.getElementById('wallpaperWidget').style.display = 'none'; // نخفي الويدجت لو اليوزر مش موجود
                 }
             } catch (error) {
                 console.log("Error loading data:", error);
