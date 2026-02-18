@@ -1,269 +1,352 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CraftBio</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>AT Design | Premium Portfolio</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
+        /* === Theme Variables === */
+        :root[data-theme="dark"] {
+            --bg-base: #050810;
+            --bg-gradient-1: rgba(0, 210, 255, 0.15);
+            --bg-gradient-2: rgba(58, 123, 213, 0.1);
+            
+            --liquid-bg: rgba(20, 25, 40, 0.4);
+            --liquid-border-top: rgba(255, 255, 255, 0.15);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.5);
+            --liquid-shadow-out: 0 20px 40px rgba(0, 0, 0, 0.6);
+            --liquid-shadow-in: inset 0 2px 10px rgba(255, 255, 255, 0.05);
+            
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --text-accent: #00d2ff;
+            --theme-icon: '\f185';
+        }
+
+        :root[data-theme="light"] {
+            --bg-base: #eef2f6;
+            --bg-gradient-1: rgba(0, 153, 255, 0.12);
+            --bg-gradient-2: rgba(0, 210, 255, 0.15);
+            
+            --liquid-bg: rgba(255, 255, 255, 0.85); 
+            --liquid-border-top: rgba(255, 255, 255, 1);
+            --liquid-border-bottom: rgba(0, 0, 0, 0.04);
+            --liquid-shadow-out: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --liquid-shadow-in: inset 0 2px 15px rgba(255, 255, 255, 0.8);
+            
+            --text-main: #0a0d14;
+            --text-muted: #4a5568;
+            --text-accent: #005bb5;
+            --theme-icon: '\f186';
+        }
+
         :root {
-            --primary: #ff5e57;
-            --bg-warm: #fff0f0; /* نفس لون السبلاش في أندرويد */
-            --text-main: #2d3436;
-            --text-muted: #636e72;
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --glass-blur: blur(24px);
+            --squircle-radius: 28px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute; top: -20px; right: 0;
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--liquid-border-top); width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer;
+            box-shadow: var(--liquid-shadow-out); z-index: 100;
+        }
+        .theme-toggle::before { content: var(--theme-icon); font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 18px; }
+
+        /* === Profile === */
+        .profile-section { text-align: center; }
         
-        /* الخلفية الأساسية دافئة لمنع الوميض الأبيض */
-        body { background: var(--bg-warm); color: var(--text-main); overflow: hidden; }
-
-        /* === 🚀 ONBOARDING SCREEN (الافتراضي: ظاهر) === */
-        #onboarding-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; z-index: 999;
-            background: linear-gradient(180deg, #fff0f0 0%, #ffffff 100%);
+        .avatar-wrapper {
+            position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto;
+        }
+        .avatar-wrapper::before {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%; background: var(--primary); z-index: -1; filter: blur(15px);
+            animation: glowPulse 2s infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.9; }
+        }
+        .avatar {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--bg-base); position: relative; z-index: 1;
         }
 
-        .swiper { width: 100%; height: 85%; }
-        .swiper-slide {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 20px;
-        }
-
-        /* Mockup Design */
-        .mockup-container {
-            width: 260px; height: 520px;
-            position: relative; margin-bottom: 25px;
-        }
+        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
         
-        .phone-frame {
-            width: 100%; height: 100%;
-            border: 12px solid #2d3436; border-radius: 45px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
-            overflow: hidden; position: relative; z-index: 2;
-            background: white;
+        /* تعديل كلاس التوثيق عشان يظبط حجم الفيكتور الجديد */
+        .verify-badge { 
+            color: var(--text-accent); 
+            width: 24px; 
+            height: 24px; 
+            fill: currentColor;
+            flex-shrink: 0;
         }
 
-        /* Floating Elements Animation */
-        .float-icon {
-            position: absolute; width: 48px; height: 48px;
-            background: white; border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; z-index: 3;
-            animation: float 3s ease-in-out infinite;
-        }
-        .float-1 { top: 20%; left: -25px; color: #E1306C; animation-delay: 0s; }
-        .float-2 { top: 40%; right: -30px; color: #000; animation-delay: 1s; }
-        .float-3 { bottom: 20%; left: -15px; color: #FF0000; animation-delay: 2s; }
+        .profile-bio { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+        .bio-main { font-size: 15px; color: var(--text-muted); font-weight: 500; }
+        .bio-sub { font-size: 14px; color: var(--text-accent); font-weight: 600; letter-spacing: 0.5px; }
+        .bio-tags { font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 2px; }
+        .bio-tags i { font-size: 15px; }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-
-        .slide-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #2d3436; }
-        .slide-desc { font-size: 16px; color: var(--text-muted); padding: 0 30px; line-height: 1.5; }
-
-        /* Bottom Action */
-        .bottom-action {
-            height: 15%; width: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        /* === Shared Liquid Card === */
+        .liquid-card {
+            background: var(--liquid-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--liquid-border-top); border-left: 1px solid var(--liquid-border-top);
+            border-bottom: 1px solid var(--liquid-border-bottom); border-right: 1px solid var(--liquid-border-bottom);
+            border-radius: var(--squircle-radius); box-shadow: var(--liquid-shadow-out), var(--liquid-shadow-in);
+            position: relative; overflow: hidden;
         }
 
-        .btn-start {
-            background: var(--primary); color: white;
-            width: 85%; padding: 16px; border-radius: 50px;
-            font-size: 18px; font-weight: 700; text-decoration: none;
-            box-shadow: 0 10px 20px rgba(255, 94, 87, 0.3);
-            transition: 0.2s; text-align: center;
-        }
-        .btn-start:active { transform: scale(0.98); }
-        .swiper-pagination-bullet-active { background-color: var(--primary) !important; }
+        /* === Wallpaper Widget === */
+        .wall-widget { display: flex; padding: 18px; gap: 18px; align-items: center; }
+        .wall-preview { width: 120px; height: 180px; flex-shrink: 0; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 1px solid var(--liquid-border-top); }
+        .wall-preview::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); pointer-events: none; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; }
+        .slide.active { opacity: 1; }
+        .wall-info { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 170px; }
+        .wall-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.2;}
+        .wall-header p { font-size: 13px; color: var(--text-muted); font-weight: 400;}
+        .wall-actions { display: flex; flex-direction: column; gap: 10px; }
+        .widget-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; padding: 12px 15px; border-radius: 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
+        .widget-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 210, 255, 0.3); }
+        .widget-nav { display: flex; gap: 10px; }
+        .widget-icon-btn { flex: 1; height: 42px; border-radius: 14px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--liquid-border-top); color: var(--text-main); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .widget-icon-btn:hover { background: var(--primary); color: white; border-color: transparent;}
 
-        /* === 👤 PROFILE SCREEN (الافتراضي: مخفي) === */
-        #profile-screen { 
-            display: none; 
-            width: 100%; max-width: 480px; margin: 0 auto; 
-            padding: 40px 20px; flex-direction: column; gap: 20px; 
-            overflow-y: auto; height: 100vh;
-            background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
-        }
+        /* === Apps & Links Grid === */
+        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .full-width { grid-column: 1 / -1; }
+        .app-link { text-decoration: none; color: var(--text-main); padding: 18px; display: flex; align-items: center; gap: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 24px 12px; gap: 12px; }
         
-        /* تنسيقات البروفايل */
-        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display:block; margin:0 auto; object-fit: cover;}
-        .profile-name { text-align: center; font-size: 24px; font-weight: 800; margin-top: 10px; color: #0f172a;}
-        .bio-text { text-align: center; color: #64748b; font-size: 15px; }
+        .app-link:hover { transform: translateY(-4px) scale(1.02); }
+        .app-link:hover .app-icon-wrapper { transform: scale(1.1); }
         
-        .link-card { background: white; padding: 18px; border-radius: 24px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: #333; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.2s;}
-        .link-card:hover { transform: translateY(-3px); }
-        .social-dock { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .social-btn { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #555; text-decoration: none; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .app-icon-wrapper { 
+            width: 50px; height: 50px; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; flex-shrink: 0; 
+            transition: transform 0.3s ease;
+        }
+        .half-width .app-icon-wrapper { width: 55px; height: 55px; }
+        .app-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .app-icon-wrapper i { font-size: 24px; }
 
+        /* === Brand Colors & Tints === */
+        .brand-play { background: rgba(0, 210, 255, 0.15); color: #00d2ff; }
+        .brand-gumroad { background: rgba(255, 42, 133, 0.15); color: #ff2a85; }
+        .brand-kofi { background: rgba(255, 94, 91, 0.15); color: #ff5e5b; }
+        .brand-paypal { background: rgba(0, 112, 186, 0.15); color: #0070ba; }
+        .brand-apple { background: rgba(130, 130, 130, 0.15); color: var(--text-main); } 
+
+        .app-text { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--text-main); }
+        .app-subtext { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+
+        .social-dock { display: flex; justify-content: center; gap: 15px; padding: 20px; }
+        .social-btn { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 22px; text-decoration: none; background: rgba(128, 128, 128, 0.1); transition: all 0.3s; }
+        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-5px); }
     </style>
 </head>
+
 <body>
 
-    <div id="onboarding-screen">
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                
-                <div class="swiper-slide">
-                    <div class="mockup-container">
-                        <div class="phone-frame">
-                            <iframe src="?u=atdesign&embed=true" style="width:100%; height:100%; border:none; pointer-events: none;"></iframe>
-                        </div>
-                        <div class="float-icon float-1"><i class="fa-brands fa-instagram"></i></div>
-                        <div class="float-icon float-2"><i class="fa-brands fa-tiktok"></i></div>
-                        <div class="float-icon float-3"><i class="fa-brands fa-youtube"></i></div>
-                    </div>
-                    <div class="slide-title">One Link for All</div>
-                    <div class="slide-desc">Connect your TikTok, Instagram, and more in one beautiful page.</div>
-                </div>
+    <div class="main-container">
 
-                <div class="swiper-slide">
-                    <div class="mockup-container">
-                        <div class="phone-frame" style="background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%); display:flex; align-items:center; justify-content:center;">
-                            <div style="background:rgba(255,255,255,0.95); padding:15px 25px; border-radius:20px; font-weight:800; color:#333; box-shadow:0 10px 30px rgba(0,0,0,0.2);">Themes 🎨</div>
-                        </div>
-                        <div class="float-icon" style="top:50%; right:-30px; background:#00d2ff;"><i class="fa-solid fa-palette" style="color:white;"></i></div>
-                    </div>
-                    <div class="slide-title">Custom Design</div>
-                    <div class="slide-desc">Choose from premium themes or create your own style instantly.</div>
-                </div>
+        <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
 
-                <div class="swiper-slide">
-                    <div class="mockup-container">
-                        <div class="phone-frame" style="background: #f8f9fa; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                            <i class="fa-solid fa-chart-pie" style="font-size:80px; color:#ff5e57;"></i>
-                            <h3 style="margin-top:20px; color:#2d3436; font-size:24px;">+12K Visits</h3>
-                            <div style="width:120px; height:8px; background:#eee; margin-top:10px; border-radius:10px;">
-                                <div style="width:70%; height:100%; background:#2ecc71; border-radius:10px;"></div>
-                            </div>
-                        </div>
-                        <div class="float-icon" style="bottom:30%; left:-20px; color:#2ecc71;"><i class="fa-solid fa-dollar-sign"></i></div>
-                    </div>
-                    <div class="slide-title">Track & Earn</div>
-                    <div class="slide-desc">See who visits your link and monetize your audience easily.</div>
-                </div>
-
+        <header class="profile-section">
+            <div class="avatar-wrapper">
+                <img src="wallpapers/avatar.jpg" alt="AT Design" class="avatar">
             </div>
-            <div class="swiper-pagination"></div>
-        </div>
-
-        <div class="bottom-action">
-            <a href="admin.html" class="btn-start">Sign Up Free</a>
-            <div style="margin-top:15px; font-size:14px; color:#aaa;">Already have an account? <a href="admin.html" style="color:var(--primary); font-weight:bold; text-decoration:none;">Login</a></div>
-        </div>
-    </div>
-
-    <div id="profile-screen">
-        <img id="p_avatar" class="avatar" src="">
-        <div class="profile-name">
-            <span id="p_name"></span> 
-            <i class="fa-solid fa-circle-check" style="color:#0ea5e9; font-size:20px;"></i>
-        </div>
-        <div class="bio-text" id="p_bio"></div>
-        
-        <div id="links-container"></div>
-        <div id="social-container" class="social-dock"></div>
-        
-        <div style="text-align:center; margin-top:40px; font-size:12px; color:#94a3b8;">Crafted by CraftBio</div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
-            authDomain: "atdesign-portfolio.firebaseapp.com",
-            projectId: "atdesign-portfolio",
-            storageBucket: "atdesign-portfolio.firebasestorage.app",
-            messagingSenderId: "893862249348",
-            appId: "1:893862249348:web:50d3e683bba425eb1953d1"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Routing Logic
-        const urlParams = new URLSearchParams(window.location.search);
-        const username = urlParams.get('u');
-        const isEmbed = urlParams.get('embed'); // هل الصفحة معروضة جوه الموك-آب؟
-
-        if (username) {
-            // ✅ لو فيه يوزر: اخفي البداية واعرض البروفايل
-            document.getElementById('onboarding-screen').style.display = 'none';
-            const profileScreen = document.getElementById('profile-screen');
-            profileScreen.style.display = 'flex';
             
-            // 🎨 تجهيز البروفايل (عادي vs موك-آب)
-            if (isEmbed) {
-                // لو جوه الموك-آب: خلي الخلفية شفافة
-                document.body.style.background = "transparent";
-                profileScreen.style.background = "transparent";
-                profileScreen.style.padding = "0"; // شيلنا الهوامش
-                profileScreen.style.height = "auto";
+            <h1 class="profile-name">
+                AT Design 
+                <svg class="verify-badge" viewBox="0 0 24 24" aria-label="Verified">
+                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path>
+                </svg>
+            </h1>
+            
+            <div class="profile-bio">
+                <span class="bio-main">Android Developer & UI Asset Designer</span>
+                <span class="bio-sub">Premium Wallpapers • Icons • Widgets</span>
+                <span class="bio-tags">
+                    <span><i class="fa-brands fa-android" style="color: #3DDC84;"></i> Android</span>
+                    •
+                    <span><i class="fa-brands fa-apple" style="color: var(--text-main);"></i> iOS</span>
+                </span>
+            </div>
+        </header>
+
+        <div class="liquid-card wall-widget">
+            <div class="wall-preview">
+                <img src="wallpapers/wallpaper1.png" class="slide active">
+                <img src="wallpapers/wallpaper2.png" class="slide">
+                <img src="wallpapers/wallpaper3.png" class="slide">
+                <img src="wallpapers/wallpaper4.png" class="slide">
+            </div>
+
+            <div class="wall-info">
+                <div class="wall-header">
+                    <h3>Wall of the Day</h3>
+                    <p>Changes automatically every 24h</p>
+                </div>
                 
-                // 🔥🔥 تصغير الحجم بنسبة 65% عشان يليق مع شاشة الموك-آب 🔥🔥
-                document.body.style.zoom = "0.65"; 
+                <div class="wall-actions">
+                    <a id="downloadBtn" href="#" download class="widget-btn-primary">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Now
+                    </a>
+                    
+                    <div class="widget-nav">
+                        <button class="widget-icon-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="widget-icon-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                // اخفاء العناصر الغير ضرورية
-                profileScreen.querySelector('.profile-name i').style.display = "none"; 
-                profileScreen.lastElementChild.style.display = "none"; // اخفاء الفوتر
-            } else {
-                // لو بروفايل عادي: رجع الخلفية الزرقاء
-                document.body.style.overflow = "auto";
-            }
+        <div class="links-grid">
             
-            loadProfile(username);
-        } else {
-            // ❌ مفيش يوزر: شغل السلايدر
-            new Swiper(".mySwiper", {
-                pagination: { el: ".swiper-pagination", dynamicBullets: true },
-                autoplay: { delay: 3000, disableOnInteraction: false },
-                loop: true
-            });
+            <a href="https://play.google.com/store/apps/dev?id=5213352977383623076" class="liquid-card app-link full-width" target="_blank">
+                <div class="app-icon-wrapper brand-play">
+                    <img src="your-app-icon.png" alt="App Icon" onerror="this.style.display='none'">
+                    <i class="fa-brands fa-google-play"></i>
+                </div>
+                <div>
+                    <div class="app-text">My Apps on Play Store</div>
+                    <div class="app-subtext">Download my latest Android projects</div>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: var(--text-muted);"></i>
+            </a>
+
+            <a href="https://androidtools4u.gumroad.com/" class="liquid-card app-link half-width" target="_blank">
+                <div class="app-icon-wrapper brand-gumroad">
+                    <i class="fa-solid fa-layer-group"></i> 
+                </div>
+                <div class="app-text">Gumroad</div>
+            </a>
+
+            <a href="https://ko-fi.com/androidtools4u/shop" class="liquid-card app-link half-width" target="_blank">
+                <div class="app-icon-wrapper brand-kofi">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <div class="app-text">My Apps on Ko-fi</div>
+            </a>
+
+            <a href="https://paypal.me/fathyibrahim2020" class="liquid-card app-link half-width" target="_blank">
+                <div class="app-icon-wrapper brand-paypal">
+                    <i class="fa-brands fa-paypal"></i>
+                </div>
+                <div class="app-text">PayPal</div>
+            </a>
+
+            <a href="https://apps.apple.com/us/app/wallspot-4k-wallpapers/id6746551004" class="liquid-card app-link half-width" target="_blank">
+                <div class="app-icon-wrapper brand-apple">
+                    <i class="fa-brands fa-apple"></i>
+                </div>
+                <div class="app-text">WallSpot on iOS</div>
+            </a>
+
+        </div>
+
+        <div class="liquid-card social-dock">
+            <a href="https://x.com/AndroidTools3" class="social-btn" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/android_tools4u" class="social-btn" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://t.me/androidtools4walls" class="social-btn" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.threads.com/@android_tools4u" class="social-btn" target="_blank"><i class="fa-brands fa-threads"></i></a>
+        </div>
+
+    </div>
+
+    <script>
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            }
         }
 
-        async function loadProfile(user) {
-            try {
-                let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
-                let colName = (docId === 'master_data') ? 'settings' : 'users';
-                const docRef = doc(db, colName, docId);
-                const docSnap = await getDoc(docRef);
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('p_avatar').src = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                    document.getElementById('p_name').innerText = data.profile?.name || "User";
-                    document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+        });
 
-                    const linksDiv = document.getElementById('links-container');
-                    if(data.links) {
-                        data.links.forEach(link => {
-                            linksDiv.innerHTML += `
-                                <a href="${link.url}" target="_blank" class="link-card">
-                                    <i class="${link.icon}" style="font-size:22px; color:#0ea5e9;"></i>
-                                    <span style="font-weight:600; flex:1;">${link.title}</span>
-                                    <i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i>
-                                </a>`;
-                        });
-                    }
-                    const socialDiv = document.getElementById('social-container');
-                    if(data.socialLinks) {
-                        data.socialLinks.forEach(s => {
-                            socialDiv.innerHTML += `<a href="${s.url}" class="social-btn"><i class="${s.icon}"></i></a>`;
-                        });
-                    }
-                }
-            } catch (e) { console.error(e); }
+        initTheme();
+
+        const slides = document.querySelectorAll(".slide");
+        const downloadBtn = document.getElementById("downloadBtn");
+        
+        const daysSinceEpoch = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+        let current = daysSinceEpoch % slides.length;
+        
+        showSlide(current);
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove("active"));
+            slides[index].classList.add("active");
+            downloadBtn.href = slides[index].src;
+        }
+
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+        }
+
+        function prevSlide() {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlide(current);
         }
     </script>
+
 </body>
 </html>
