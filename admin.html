@@ -34,6 +34,16 @@
 
         #dashboard-section { display: none; }
         
+        /* 💡 ستايل صندوق المشاركة الجديد */
+        .share-box { background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; padding: 15px 20px; display: none; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        .share-text { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+        .share-text span { font-size: 12px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .share-text a { color: white; text-decoration: none; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; font-weight: 500; transition: color 0.2s; }
+        .share-text a:hover { color: var(--primary); text-decoration: underline; }
+        .copy-btn { background: var(--primary); color: #050810; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .copy-btn:hover { background: white; transform: translateY(-2px); }
+        .copy-btn.copied { background: #00e676; color: #050810; }
+
         .links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
         .links-list::-webkit-scrollbar { width: 6px; }
         .links-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
@@ -71,6 +81,16 @@
     <div class="glass-panel" id="dashboard-section">
         <div class="header"><h2><i class="fa-solid fa-sliders"></i> My CraftBio</h2></div>
         <div id="loadingMsg">Saving Data...</div>
+
+        <div class="share-box" id="shareBox">
+            <div class="share-text">
+                <span><i class="fa-solid fa-link"></i> Your Public Link</span>
+                <a id="myPublicLink" href="#" target="_blank">craftbio.app/...</a>
+            </div>
+            <button class="copy-btn" id="copyLinkBtn">
+                <i class="fa-regular fa-copy"></i> Copy
+            </button>
+        </div>
 
         <div class="section-title">👤 Profile Settings</div>
         
@@ -164,7 +184,6 @@
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
-        // مفاتيح فايربيز بتاعتك (للتسجيل وقاعدة البيانات)
         const firebaseConfig = {
             apiKey: "AIzaSyDZnFN7bRbO-S_gw519xTcPR17j1zGyxc4",
             authDomain: "atdesign-portfolio.firebaseapp.com",
@@ -183,15 +202,12 @@
         window.draggedIdx = null;
         window.userDocRef = null; 
 
-        // 💡 رفع الصورة لـ Cloudinary باستخدام بياناتك
         document.getElementById('avatarUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // تم وضع بياناتك هنا مباشرة لتعمل فوراً
             const cloudName = "dyszr2eog"; 
             const uploadPreset = "craftbio_preset"; 
-            
             const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
             
             const formData = new FormData();
@@ -202,26 +218,21 @@
             const percentText = document.getElementById('uploadPercent');
             progressText.style.display = 'block';
 
-            // استخدام XMLHttpRequest عشان نقدر نجيب نسبة التحميل (Progress Bar)
             const xhr = new XMLHttpRequest();
             xhr.open('POST', url, true);
-
             xhr.upload.onprogress = function(e) {
                 if (e.lengthComputable) {
                     const percentComplete = Math.round((e.loaded / e.total) * 100);
                     percentText.innerText = percentComplete + '%';
                 }
             };
-
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
-                    const imageUrl = response.secure_url; // ده الرابط المباشر للصورة
-                    
+                    const imageUrl = response.secure_url;
                     document.getElementById('profileAvatar').value = imageUrl; 
                     document.getElementById('avatarPreview').src = imageUrl; 
                     progressText.style.display = 'none';
-                    
                     document.getElementById('loadingMsg').innerText = "Image Uploaded! Click 'Save & Publish All' to apply.";
                     document.getElementById('loadingMsg').style.display = 'block';
                     setTimeout(() => document.getElementById('loadingMsg').style.display = 'none', 3000);
@@ -230,18 +241,12 @@
                     progressText.style.display = 'none';
                 }
             };
-
             xhr.onerror = function() {
                 alert("Network error occurred while uploading. Please check your internet connection.");
                 progressText.style.display = 'none';
             };
-
             xhr.send(formData);
         });
-
-        // ----------------------------------------------------
-        // باقي أكواد الأدمن
-        // ----------------------------------------------------
 
         window.renderAdminLinks = function() {
             const container = document.getElementById('linksListContainer');
@@ -318,6 +323,36 @@
             document.getElementById('addLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 💡 السحر بتاع تجهيز رابط المشاركة
+        function setupShareBox(username) {
+            const baseUrl = window.location.href.split('admin.html')[0];
+            const publicUrl = baseUrl + 'index.html?u=' + username;
+            
+            const linkElement = document.getElementById('myPublicLink');
+            linkElement.href = publicUrl;
+            
+            // عشان الرابط يبقى شكله شيك وصغير في العرض
+            let displayUrl = publicUrl.replace('https://', '').replace('http://', '');
+            if(displayUrl.length > 35) { displayUrl = displayUrl.substring(0, 35) + '...'; }
+            linkElement.innerText = displayUrl;
+            
+            document.getElementById('shareBox').style.display = 'flex';
+
+            // زرار الكوبي
+            document.getElementById('copyLinkBtn').onclick = function() {
+                navigator.clipboard.writeText(publicUrl).then(() => {
+                    const btn = document.getElementById('copyLinkBtn');
+                    const originalHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('copied');
+                    }, 2500);
+                });
+            };
+        }
+
         async function loadData() {
             if (!window.userDocRef) return; 
             const docSnap = await getDoc(window.userDocRef);
@@ -351,10 +386,14 @@
                 document.getElementById('dashboard-section').style.display = 'block';
                 const q = query(collection(db, "users"), where("uid", "==", user.uid));
                 const querySnapshot = await getDocs(q);
+                
                 if (!querySnapshot.empty) {
-                    window.userDocRef = doc(db, "users", querySnapshot.docs[0].id);
+                    const username = querySnapshot.docs[0].id;
+                    window.userDocRef = doc(db, "users", username);
+                    setupShareBox(username); // تفعيل صندوق المشاركة لليوزر الجديد
                 } else {
                     window.userDocRef = doc(db, "settings", "master_data");
+                    setupShareBox("master_data"); // للاحتياط لو ده حسابك القديم
                 }
                 loadData();
             } else {
