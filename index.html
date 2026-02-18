@@ -12,22 +12,22 @@
     <style>
         :root {
             --primary: #ff5e57;
-            --bg-color: #fff0f0; /* نفس لون خلفية البداية عشان ميبانش فرق */
+            --bg-warm: #fff0f0; /* نفس لون السبلاش في أندرويد */
             --text-main: #2d3436;
             --text-muted: #636e72;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         
-        /* جعل الخلفية الأساسية نفس لون الاسبلاش لتفادي الوميض */
-        body { background: var(--bg-color); color: var(--text-main); overflow: hidden; }
+        /* الخلفية الأساسية دافئة عشان تمنع الوميض الأبيض */
+        body { background: var(--bg-warm); color: var(--text-main); overflow: hidden; }
 
         /* === 🚀 ONBOARDING (الافتراضي: ظاهر) === */
         #onboarding-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; z-index: 999;
+            /* تدريج لوني مطابق للسبلاش */
             background: linear-gradient(180deg, #fff0f0 0%, #ffffff 100%);
-            /* مهم: مفيش display:none هنا عشان يظهر فوراً */
         }
 
         .swiper { width: 100%; height: 85%; }
@@ -38,16 +38,16 @@
 
         /* Mockup Design */
         .mockup-container {
-            width: 240px; height: 480px;
+            width: 250px; height: 500px;
             position: relative; margin-bottom: 25px;
         }
         
         .phone-frame {
             width: 100%; height: 100%;
-            border: 8px solid #2d3436; border-radius: 40px;
+            border: 10px solid #2d3436; border-radius: 45px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
             overflow: hidden; position: relative; z-index: 2;
-            background: white; /* لون احتياطي */
+            background: white;
         }
 
         /* Floating Elements */
@@ -59,14 +59,14 @@
             font-size: 22px; z-index: 3;
             animation: float 3s ease-in-out infinite;
         }
-        .float-1 { top: 25%; left: -20px; color: #E1306C; animation-delay: 0s; }
-        .float-2 { top: 45%; right: -25px; color: #000; animation-delay: 1s; }
-        .float-3 { bottom: 25%; left: -10px; color: #FF0000; animation-delay: 2s; }
+        .float-1 { top: 20%; left: -25px; color: #E1306C; animation-delay: 0s; }
+        .float-2 { top: 40%; right: -30px; color: #000; animation-delay: 1s; }
+        .float-3 { bottom: 20%; left: -15px; color: #FF0000; animation-delay: 2s; }
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-        .slide-title { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: #2d3436; }
-        .slide-desc { font-size: 15px; color: var(--text-muted); padding: 0 30px; line-height: 1.5; }
+        .slide-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #2d3436; }
+        .slide-desc { font-size: 16px; color: var(--text-muted); padding: 0 30px; line-height: 1.5; }
 
         /* Bottom Action */
         .bottom-action {
@@ -76,7 +76,7 @@
 
         .btn-start {
             background: var(--primary); color: white;
-            width: 85%; padding: 15px; border-radius: 50px;
+            width: 85%; padding: 16px; border-radius: 50px;
             font-size: 18px; font-weight: 700; text-decoration: none;
             box-shadow: 0 10px 20px rgba(255, 94, 87, 0.3);
             transition: 0.2s; text-align: center;
@@ -85,20 +85,24 @@
         .swiper-pagination-bullet-active { background-color: var(--primary) !important; }
 
         /* === 👤 PROFILE (الافتراضي: مخفي) === */
-        /* مهم: مخفي بـ CSS عشان ميظهرش لحظياً */
         #profile-screen { 
             display: none; 
             width: 100%; max-width: 480px; margin: 0 auto; 
             padding: 40px 20px; flex-direction: column; gap: 20px; 
             overflow-y: auto; height: 100vh;
+            /* خلفية البروفايل العادي */
+            background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
         }
         
         /* تنسيقات البروفايل */
         .avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display:block; margin:0 auto; object-fit: cover;}
-        .profile-name { text-align: center; font-size: 24px; font-weight: 800; margin-top: 10px; }
-        .link-card { background: white; padding: 18px; border-radius: 20px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: #333; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .profile-name { text-align: center; font-size: 24px; font-weight: 800; margin-top: 10px; color: #0f172a;}
+        .bio-text { text-align: center; color: #64748b; font-size: 15px; }
+        
+        .link-card { background: white; padding: 18px; border-radius: 24px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: #333; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.2s;}
+        .link-card:hover { transform: translateY(-3px); }
         .social-dock { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .social-btn { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #555; text-decoration: none; border: 1px solid #eee; }
+        .social-btn { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #555; text-decoration: none; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
 
     </style>
 </head>
@@ -110,9 +114,8 @@
                 
                 <div class="swiper-slide">
                     <div class="mockup-container">
-                        <div class="phone-frame" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                            <div style="width:60px; height:60px; background:rgba(255,255,255,0.3); border-radius:50%; margin-bottom:10px;"></div>
-                            <div style="width:100px; height:10px; background:rgba(255,255,255,0.3); border-radius:10px;"></div>
+                        <div class="phone-frame">
+                            <iframe src="?u=atdesign&embed=true" style="width:100%; height:100%; border:none; pointer-events: none;"></iframe>
                         </div>
                         <div class="float-icon float-1"><i class="fa-brands fa-instagram"></i></div>
                         <div class="float-icon float-2"><i class="fa-brands fa-tiktok"></i></div>
@@ -124,8 +127,8 @@
 
                 <div class="swiper-slide">
                     <div class="mockup-container">
-                        <div class="phone-frame" style="background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); display:flex; align-items:center; justify-content:center;">
-                            <div style="background:white; padding:10px 20px; border-radius:12px; font-weight:bold; box-shadow:0 10px 20px rgba(0,0,0,0.1);">Themes 🎨</div>
+                        <div class="phone-frame" style="background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%); display:flex; align-items:center; justify-content:center;">
+                            <div style="background:rgba(255,255,255,0.9); padding:15px 25px; border-radius:20px; font-weight:800; color:#333; box-shadow:0 10px 30px rgba(0,0,0,0.2);">Themes 🎨</div>
                         </div>
                         <div class="float-icon" style="top:50%; right:-30px; background:#00d2ff;"><i class="fa-solid fa-palette" style="color:white;"></i></div>
                     </div>
@@ -136,8 +139,11 @@
                 <div class="swiper-slide">
                     <div class="mockup-container">
                         <div class="phone-frame" style="background: #f8f9fa; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                            <i class="fa-solid fa-chart-pie" style="font-size:70px; color:#ff5e57;"></i>
-                            <h3 style="margin-top:20px; color:#2d3436;">+12K Visits</h3>
+                            <i class="fa-solid fa-chart-pie" style="font-size:80px; color:#ff5e57;"></i>
+                            <h3 style="margin-top:20px; color:#2d3436; font-size:24px;">+12K Visits</h3>
+                            <div style="width:120px; height:8px; background:#eee; margin-top:10px; border-radius:10px;">
+                                <div style="width:70%; height:100%; background:#2ecc71; border-radius:10px;"></div>
+                            </div>
                         </div>
                         <div class="float-icon" style="bottom:30%; left:-20px; color:#2ecc71;"><i class="fa-solid fa-dollar-sign"></i></div>
                     </div>
@@ -151,19 +157,22 @@
 
         <div class="bottom-action">
             <a href="admin.html" class="btn-start">Sign Up Free</a>
-            <div style="margin-top:12px; font-size:13px; color:#aaa;">Already have an account? <a href="admin.html" style="color:var(--primary); font-weight:bold; text-decoration:none;">Login</a></div>
+            <div style="margin-top:15px; font-size:14px; color:#aaa;">Already have an account? <a href="admin.html" style="color:var(--primary); font-weight:bold; text-decoration:none;">Login</a></div>
         </div>
     </div>
 
     <div id="profile-screen">
         <img id="p_avatar" class="avatar" src="">
-        <div class="profile-name" id="p_name"></div>
-        <div style="text-align:center; color:#777; margin-bottom:20px;" id="p_bio"></div>
+        <div class="profile-name">
+            <span id="p_name"></span> 
+            <i class="fa-solid fa-circle-check" style="color:#0ea5e9; font-size:20px;"></i>
+        </div>
+        <div class="bio-text" id="p_bio"></div>
         
         <div id="links-container"></div>
         <div id="social-container" class="social-dock"></div>
         
-        <div style="text-align:center; margin-top:30px; font-size:12px; color:#ccc;">Crafted by CraftBio</div>
+        <div style="text-align:center; margin-top:40px; font-size:12px; color:#94a3b8;">Crafted by CraftBio</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -187,6 +196,7 @@
         // Routing Logic
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
+        const isEmbed = urlParams.get('embed'); // هل الصفحة معروضة جوه الموك-آب؟
 
         if (username) {
             // ✅ لو فيه يوزر: اخفي البداية واعرض البروفايل
@@ -194,16 +204,27 @@
             const profileScreen = document.getElementById('profile-screen');
             profileScreen.style.display = 'flex';
             
-            // تغيير خلفية الصفحة لتناسب البروفايل
-            document.body.style.background = "#eff6ff";
-            document.body.style.overflow = "auto";
+            // 🎨 تجهيز البروفايل
+            if (isEmbed) {
+                // لو جوه الموك-آب: خلي الخلفية شفافة وشيل الهوامش
+                document.body.style.background = "transparent";
+                profileScreen.style.background = "transparent";
+                profileScreen.style.padding = "20px 10px";
+                profileScreen.style.height = "auto";
+                profileScreen.querySelector('.profile-name i').style.display = "none"; // اخفاء علامة التوثيق في المصغر
+                // اخفاء الفوتر في المصغر
+                profileScreen.lastElementChild.style.display = "none";
+            } else {
+                // لو بروفايل عادي: رجع الخلفية الزرقاء
+                document.body.style.overflow = "auto";
+            }
             
             loadProfile(username);
         } else {
-            // ❌ مفيش يوزر: السلايدر ظاهر أصلاً (من CSS)، بس هنشغله هنا
+            // ❌ مفيش يوزر: شغل السلايدر
             new Swiper(".mySwiper", {
                 pagination: { el: ".swiper-pagination", dynamicBullets: true },
-                autoplay: { delay: 2500, disableOnInteraction: false },
+                autoplay: { delay: 3000, disableOnInteraction: false },
                 loop: true
             });
         }
@@ -226,9 +247,9 @@
                         data.links.forEach(link => {
                             linksDiv.innerHTML += `
                                 <a href="${link.url}" target="_blank" class="link-card">
-                                    <i class="${link.icon}" style="font-size:20px; color:#00a8ff;"></i>
+                                    <i class="${link.icon}" style="font-size:22px; color:#0ea5e9;"></i>
                                     <span style="font-weight:600; flex:1;">${link.title}</span>
-                                    <i class="fa-solid fa-chevron-right" style="color:#ccc;"></i>
+                                    <i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i>
                                 </a>`;
                         });
                     }
