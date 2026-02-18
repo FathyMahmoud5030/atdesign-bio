@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="premium_plus">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,10 +8,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === Themes System === */
+        /* === 🎨 THEME ENGINE (نظام الألوان الذكي) === */
         
-        /* 👑 1. Premium Plus (تصميمك الأصلي المفضل) */
-        :root[data-theme="premium_plus"] {
+        /* 1. القيم الأساسية (هي نفسها Premium Plus عشان نضمن إنها متبوظش أبداً) */
+        :root {
             --bg-base: #050810; 
             --text-main: #ffffff; 
             --text-muted: rgba(255, 255, 255, 0.7); 
@@ -21,154 +21,170 @@
             --card-radius: 28px; 
             --bg-image: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(58, 123, 213, 0.1) 0%, transparent 50%);
             --font-family: 'Outfit', sans-serif;
+            --orb-opacity: 0.4;
         }
 
-        /* 2. Default Dark */
-        :root[data-theme="default"] {
-            --bg-base: #121212; --text-main: #fff; --text-muted: #aaa; --primary: #bb86fc;
-            --liquid-bg: #1e1e1e; --liquid-border: #333;
-            --card-radius: 12px; --bg-image: none;
-        }
-
-        /* 3. Light Mode */
-        :root[data-theme="light"] {
+        /* 2. Light Mode */
+        [data-theme="light"] {
             --bg-base: #f4f6f8; --text-main: #1a1a1a; --text-muted: #666; --primary: #007aff;
             --liquid-bg: #ffffff; --liquid-border: rgba(0,0,0,0.05);
-            --card-radius: 20px; --bg-image: none;
+            --card-radius: 20px; --bg-image: none; --orb-opacity: 0;
         }
 
-        /* 4. Fluffy */
-        :root[data-theme="fluffy"] {
+        /* 3. Fluffy Theme */
+        [data-theme="fluffy"] {
             --bg-base: #fff5f8; --text-main: #5d4e60; --text-muted: #9e8fa3; --primary: #ff8fa3;
             --liquid-bg: #fff; --liquid-border: transparent;
-            --card-radius: 40px; --bg-image: none;
+            --card-radius: 40px; --bg-image: none; --orb-opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        /* 5. Woven */
-        :root[data-theme="woven"] {
+        /* 4. Woven Theme */
+        [data-theme="woven"] {
             --bg-base: #e8e0d5; --text-main: #4a3b32; --text-muted: #7d6b5d; --primary: #d35400;
             --liquid-bg: #f4ece4; --liquid-border: #d6c6b3;
-            --card-radius: 8px; --bg-image: repeating-linear-gradient(45deg, #e0d4c5 0, #e0d4c5 1px, transparent 0, transparent 50%);
+            --card-radius: 8px; 
+            --bg-image: repeating-linear-gradient(45deg, #e0d4c5 0, #e0d4c5 1px, transparent 0, transparent 50%);
+            --orb-opacity: 0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        
+        /* 5. Glass Theme */
+        [data-theme="glass"] {
+            --bg-base: #000; --text-main: #fff; --text-muted: #ccc; --primary: #00d2ff;
+            --liquid-bg: rgba(255,255,255,0.05); --liquid-border: rgba(255,255,255,0.2);
+            --card-radius: 24px; 
+            --bg-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --orb-opacity: 0.2;
+        }
+
+        /* === الأساسيات === */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
         body { 
             min-height: 100vh; background-color: var(--bg-base); 
-            background-image: var(--bg-image); 
-            background-attachment: fixed; color: var(--text-main); overflow-x: hidden; transition: 0.5s; 
+            background-image: var(--bg-image); background-attachment: fixed;
+            color: var(--text-main); overflow-x: hidden; transition: background 0.5s ease;
         }
+        ::-webkit-scrollbar { display: none; } /* إخفاء السكرول بار */
 
-        ::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
+        /* === 🌟 Floating Orbs (خلفية البريميوم المتحركة) === */
+        .floating-orbs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; }
+        .orb { position: absolute; border-radius: 50%; opacity: var(--orb-opacity); filter: blur(80px); animation: floatOrb 20s infinite linear; background: var(--primary); }
+        .orb:nth-child(1) { top: -10%; left: -10%; width: 50vw; height: 50vw; }
+        .orb:nth-child(2) { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #3a7bd5; animation-duration: 25s; animation-direction: reverse; }
+        @keyframes floatOrb { 0% { transform: rotate(0deg) translate(0,0); } 50% { transform: rotate(180deg) translate(50px,50px); } 100% { transform: rotate(360deg) translate(0,0); } }
 
-        /* Floating Orbs (Only for Premium Plus) */
-        .floating-orbs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; display: none; }
-        :root[data-theme="premium_plus"] .floating-orbs { display: block; }
-        .orb { position: absolute; border-radius: 50%; opacity: 0.2; filter: blur(60px); animation: floatOrb 15s infinite linear; background: var(--primary); }
-        .orb:nth-child(1) { top: 10%; left: 10%; width: 300px; height: 300px; }
-        .orb:nth-child(2) { bottom: 10%; right: 10%; width: 250px; height: 250px; background: #3a7bd5; }
-        @keyframes floatOrb { 0% { transform: translate(0,0); } 50% { transform: translate(50px,30px); } 100% { transform: translate(0,0); } }
+        /* === 🏠 Landing Page Styling (المتجر) === */
+        #landing-page { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; position: relative; }
+        .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+        .hero-title span { color: var(--primary); background: linear-gradient(to right, var(--primary), #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 500px; }
+        
+        .phone-mockup { 
+            width: 300px; height: 600px; border: 8px solid #1a1a1a; border-radius: 40px; 
+            background: #000; overflow: hidden; position: relative; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+        .phone-mockup iframe { width: 100%; height: 100%; border: none; }
 
-        /* UI Components */
-        .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 24px; }
+        .btn-cta { 
+            background: linear-gradient(135deg, var(--primary), #3a7bd5); color: white; 
+            padding: 16px 40px; border-radius: 50px; font-weight: 700; font-size: 18px; 
+            text-decoration: none; box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3); 
+            transition: transform 0.2s; 
+        }
+        .btn-cta:hover { transform: scale(1.05); }
+
+        /* === 👤 Profile Page Styling (صفحتك الشخصية) === */
+        #profile-page { display: none; width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 20px; flex-direction: column; gap: 20px; position: relative; z-index: 2;}
         
-        .avatar-wrapper { width: 110px; height: 110px; margin: 0 auto; position: relative; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); }
-        
-        .profile-header { text-align: center; }
-        .profile-name { font-size: 26px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px;}
-        .profile-bio div:first-child { font-weight: 500; font-size: 16px; }
-        .profile-bio div:last-child { color: var(--primary); font-size: 14px; font-weight: 600; margin-top: 4px;}
-        
-        /* Links */
-        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .app-link { 
-            text-decoration: none; color: var(--text-main); 
+        .avatar-container { text-align: center; margin-bottom: 10px; }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .name-tag { font-size: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; }
+        .bio-text { text-align: center; color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+        .bio-sub { color: var(--primary); font-weight: 600; font-size: 13px; margin-top: 5px; }
+
+        /* Links Card Style */
+        .link-card {
+            display: flex; align-items: center; gap: 15px;
             background: var(--liquid-bg); border: 1px solid var(--liquid-border);
-            border-radius: var(--card-radius); padding: 18px; 
-            display: flex; align-items: center; gap: 12px; 
-            transition: 0.3s; position: relative; 
-            backdrop-filter: blur(10px);
+            padding: 18px; border-radius: var(--card-radius);
+            text-decoration: none; color: var(--text-main);
+            transition: transform 0.2s, background 0.2s;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            position: relative;
         }
-        .app-link:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .link-card:hover { transform: translateY(-3px); border-color: var(--primary); }
         
-        .full-width { grid-column: 1 / -1; }
-        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 25px 10px; }
-        .app-icon { font-size: 24px; color: var(--primary); }
-        .badge { position: absolute; top: -10px; right: 10px; background: #ff4757; color: white; padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; }
-        .half-width .badge { right: auto; left: 50%; transform: translateX(-50%); }
+        .link-icon { font-size: 24px; color: var(--primary); width: 30px; text-align: center; }
+        .link-info { flex: 1; }
+        .link-title { font-weight: 600; font-size: 16px; }
+        .link-sub { font-size: 12px; color: var(--text-muted); }
+        .link-badge { background: #ff4757; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; position: absolute; top: -10px; right: 15px; }
 
-        /* Wall Widget (Only for Premium Plus) */
-        .wall-widget { display: flex; gap: 15px; padding: 15px; border-radius: var(--card-radius); background: var(--liquid-bg); border: 1px solid var(--liquid-border); align-items: center; backdrop-filter: blur(10px); }
-        .wall-preview { width: 80px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
-        .wall-preview img { width: 100%; height: 100%; object-fit: cover; }
+        /* Grid Layout for Half Width */
+        .links-container { display: flex; flex-direction: column; gap: 15px; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .half-card { flex-direction: column; text-align: center; padding: 25px 10px; justify-content: center; }
+        .half-card .link-badge { right: auto; left: 50%; transform: translateX(-50%); top: -10px; }
 
         /* Social Icons */
-        .social-dock { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
-        .social-btn { 
-            width: 45px; height: 45px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            background: var(--liquid-bg); color: var(--text-main); font-size: 20px; 
-            text-decoration: none; transition: 0.3s; border: 1px solid var(--liquid-border);
-        }
-        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+        .social-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .social-item { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: 50%; color: var(--text-main); font-size: 20px; text-decoration: none; transition: 0.3s; }
+        .social-item:hover { background: var(--primary); color: white; transform: translateY(-3px); }
 
-        /* Landing Page */
-        #landing-page { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .hero-title { font-size: 40px; font-weight: 800; margin-bottom: 20px; }
-        .hero-title span { color: var(--primary); }
-        .btn-cta { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4); transition: 0.3s; }
+        /* Wall Widget */
+        .wall-widget { display: flex; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; backdrop-filter: blur(10px); }
+        .wall-thumb { width: 70px; height: 100px; border-radius: 12px; object-fit: cover; }
+        .dl-btn { background: var(--primary); color: #000; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block; margin-top: 8px; }
+
+        /* Footer */
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: var(--text-muted); padding-bottom: 20px; }
+        .footer a { color: var(--text-main); text-decoration: none; font-weight: 600; }
 
     </style>
 </head>
 <body>
 
+    <div class="floating-orbs"><div class="orb"></div><div class="orb"></div></div>
+
     <div id="landing-page">
-        <div class="floating-orbs" style="display:block;"><div class="orb"></div><div class="orb"></div></div>
         <h1 class="hero-title">One Link.<br><span>Infinite Possibilities.</span></h1>
-        <p style="color:var(--text-muted); max-width: 400px; margin-bottom: 30px;">Join 100+ creators using CraftBio.</p>
-        <div style="width: 280px; height: 550px; border: 8px solid #333; border-radius: 30px; overflow: hidden; background: #000; margin-bottom: 30px;">
-            <iframe src="?u=atdesign&embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
+        <p class="hero-subtitle">Your digital identity, redefined. Create your bio link in seconds.</p>
+        
+        <div class="phone-mockup">
+            <iframe src="?u=atdesign&embed=true" title="Demo"></iframe>
         </div>
-        <a href="signup.html" class="btn-cta">Create Yours Free</a>
-        <a href="admin.html" style="margin-top: 20px; color: var(--text-muted); text-decoration: none; display:block;">Login</a>
+
+        <a href="signup.html" class="btn-cta">Create Your Bio</a>
+        <a href="admin.html" style="margin-top: 20px; display:block; color:white; opacity:0.6; text-decoration:none;">Login</a>
     </div>
 
-    <div id="profile-page" class="main-container" style="display:none;">
-        <div class="floating-orbs"><div class="orb"></div><div class="orb"></div></div>
-        
-        <header class="profile-header">
-            <div class="avatar-wrapper">
-                <img src="" id="renderAvatar" class="avatar">
+    <div id="profile-page">
+        <div class="avatar-container">
+            <img src="" id="p_avatar" class="avatar">
+            <div class="name-tag">
+                <span id="p_name"></span>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:18px;"></i>
             </div>
-            <h1 class="profile-name">
-                <span id="renderName">...</span> 
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--primary)"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path></svg>
-            </h1>
-            <div class="profile-bio">
-                <div id="renderBioMain"></div>
-                <div id="renderBioSub"></div>
-            </div>
-        </header>
+            <div class="bio-text" id="p_bio"></div>
+            <div class="bio-sub" id="p_sub"></div>
+        </div>
 
         <div class="wall-widget" id="wallpaperWidget" style="display:none;">
-            <div class="wall-preview">
-                <img id="wallSlide" src="wallpapers/wallpaper1.png" style="width:100%; height:100%; object-fit: cover;">
-            </div>
-            <div style="flex:1;">
-                <h3 style="font-size:16px; margin-bottom:4px;">Daily Wallpaper</h3>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Exclusive for you.</p>
-                <a href="#" download class="app-link" style="padding: 8px 15px; font-size:13px; justify-content:center; width:fit-content; background:var(--primary); color:black; border:none;">Download</a>
+            <img src="wallpapers/wallpaper1.png" class="wall-thumb" id="wallImg">
+            <div>
+                <h4 style="margin:0;">Wall of the Day</h4>
+                <p style="margin:4px 0 0; font-size:12px; opacity:0.7;">Exclusive 4K Wallpaper</p>
+                <a href="#" download class="dl-btn">Download</a>
             </div>
         </div>
 
-        <div class="links-grid" id="renderLinksContainer"></div>
-        <div class="social-dock" id="renderSocialContainer"></div>
-        
-        <div style="text-align:center; margin-top:30px; font-size:12px; color:var(--text-muted);">
-            <a href="index.html" style="color:var(--text-main); text-decoration:none; font-weight:600;">Create your CraftBio</a>
-        </div>
+        <div class="links-container" id="linksArea"></div>
+
+        <div class="social-row" id="socialArea"></div>
+
+        <div class="footer">Crafted by <a href="index.html">CraftBio</a></div>
     </div>
 
     <script type="module">
@@ -187,88 +203,118 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // 🕵️‍♂️ Router Logic
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
         const isEmbed = urlParams.get('embed');
 
         if (username) {
+            // ✅ حالة البروفايل
             document.getElementById('profile-page').style.display = 'flex';
-            if(isEmbed) {
-                document.body.style.background = "transparent";
+            if (isEmbed) {
+                // لو جوه الموك-آب، شيل الحواف عشان يبقى شكله نضيف
+                document.body.style.overflowY = "auto";
                 document.querySelector('.main-container').style.padding = "20px 10px";
             }
-            fetchAndRenderData(username);
+            loadProfile(username);
         } else {
+            // ✅ حالة الصفحة الرئيسية (المتجر)
             document.getElementById('landing-page').style.display = 'flex';
         }
 
-        async function fetchAndRenderData(user) {
+        async function loadProfile(user) {
             try {
-                let docRef = (user === 'atdesign') ? doc(db, "settings", "master_data") : doc(db, "users", user);
-                const docSnap = await getDoc(docRef);
+                // لو اليوزر atdesign أو master_data بيجيب من الداتا الرئيسية
+                let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
+                let collectionName = (docId === 'master_data') ? 'settings' : 'users';
                 
+                const docRef = doc(db, collectionName, docId);
+                const docSnap = await getDoc(docRef);
+
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    
-                    // 💡 هنا السر: لو مفيش ثيم، نخليه "premium_plus" أوتوماتيك لليوزر ده
-                    let theme = data.profile?.theme || "default";
-                    if(user === 'atdesign' || user === 'master_data' || user === 'fathy') {
-                        if(!data.profile?.theme) theme = "premium_plus"; // رجعتلك الثيم بتاعك أوتوماتيك
-                    }
+
+                    // 🎨 Apply Theme (Fallback to Premium Plus if missing)
+                    let theme = data.profile?.theme || 'premium_plus'; // Default is YOUR style
+                    if (theme === 'default') theme = 'premium_plus'; // Override 'default' to mean Premium Plus for you
                     document.documentElement.setAttribute('data-theme', theme);
 
-                    // إظهار الودجت فقط للثيم البريميوم
-                    if(theme === 'premium_plus') {
+                    // Render Profile
+                    document.getElementById('p_avatar').src = data.profile?.avatar || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+                    document.getElementById('p_name').innerText = data.profile?.name || 'User';
+                    document.getElementById('p_bio').innerText = data.profile?.bioMain || '';
+                    document.getElementById('p_sub').innerText = data.profile?.bioSub || '';
+
+                    // Show Widget only for Premium Themes
+                    if(theme === 'premium_plus' || theme === 'glass') {
                         document.getElementById('wallpaperWidget').style.display = 'flex';
                     }
 
-                    if(data.profile) {
-                        document.getElementById('renderAvatar').src = data.profile.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                        document.getElementById('renderName').textContent = data.profile.name;
-                        document.getElementById('renderBioMain').innerText = data.profile.bioMain;
-                        document.getElementById('renderBioSub').innerText = data.profile.bioSub;
-                    }
+                    // Render Links
+                    const linksContainer = document.getElementById('linksArea');
+                    linksContainer.innerHTML = '';
+                    
+                    if (data.links) {
+                        let currentRow = null;
+                        
+                        data.links.forEach((link, idx) => {
+                            const isHalf = link.layout === 'half';
+                            const badgeHtml = link.badge ? `<span class="link-badge">${link.badge}</span>` : '';
+                            
+                            const linkHtml = `
+                                <a href="${link.url}" target="_blank" class="link-card ${isHalf ? 'half-card' : ''}" onclick="track('${docId}', '${collectionName}', ${idx})">
+                                    ${badgeHtml}
+                                    <i class="${link.icon} link-icon"></i>
+                                    <div class="link-info">
+                                        <div class="link-title">${link.title}</div>
+                                        ${!isHalf && link.subtext ? `<div class="link-sub">${link.subtext}</div>` : ''}
+                                    </div>
+                                    ${!isHalf ? '<i class="fa-solid fa-chevron-right" style="opacity:0.5; font-size:12px;"></i>' : ''}
+                                </a>
+                            `;
 
-                    const linksContainer = document.getElementById('renderLinksContainer');
-                    if(data.links) {
-                        linksContainer.innerHTML = '';
-                        data.links.forEach((link, index) => {
-                            const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
-                            const layoutClass = (link.layout === 'full') ? 'full-width' : 'half-width';
-                            linksContainer.innerHTML += `
-                                <a href="${link.url}" class="app-link ${layoutClass}" target="_blank" onclick="trackClick('${user}', ${index})">
-                                    ${badgeHTML}
-                                    <i class="${link.icon} app-icon"></i>
-                                    <span style="font-weight:600;">${link.title}</span>
-                                </a>`;
+                            if (isHalf) {
+                                if (!currentRow) {
+                                    currentRow = document.createElement('div');
+                                    currentRow.className = 'grid-row';
+                                    linksContainer.appendChild(currentRow);
+                                }
+                                currentRow.innerHTML += linkHtml;
+                                if (currentRow.children.length >= 2) currentRow = null; // Row full
+                            } else {
+                                currentRow = null; // Reset row if full width item comes
+                                const div = document.createElement('div');
+                                div.innerHTML = linkHtml;
+                                linksContainer.appendChild(div.firstElementChild);
+                            }
                         });
                     }
 
-                    const socialContainer = document.getElementById('renderSocialContainer');
+                    // Render Socials
+                    const socialArea = document.getElementById('socialArea');
                     if(data.socialLinks) {
-                        socialContainer.innerHTML = '';
-                        data.socialLinks.forEach(social => {
-                            socialContainer.innerHTML += `<a href="${social.url}" target="_blank" class="social-btn"><i class="${social.icon}"></i></a>`;
-                        });
+                        socialArea.innerHTML = data.socialLinks.map(s => 
+                            `<a href="${s.url}" target="_blank" class="social-item"><i class="${s.icon}"></i></a>`
+                        ).join('');
                     }
                 }
-            } catch (error) { console.error(error); }
+            } catch (e) { console.error("Error loading profile:", e); }
         }
 
-        window.trackClick = async function(user, index) {
-            if(isEmbed) return;
+        // Global Track Function
+        window.track = async (id, col, idx) => {
             try {
-                let docRef = (user === 'atdesign') ? doc(db, "settings", "master_data") : doc(db, "users", user);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.links && data.links[index]) {
-                        data.links[index].clicks = (data.links[index].clicks || 0) + 1;
-                        await updateDoc(docRef, { links: data.links });
+                const ref = doc(db, col, id);
+                const snap = await getDoc(ref);
+                if(snap.exists()) {
+                    const d = snap.data();
+                    if(d.links[idx]) {
+                        d.links[idx].clicks = (d.links[idx].clicks || 0) + 1;
+                        await updateDoc(ref, {links: d.links});
                     }
                 }
-            } catch (e) { console.log(e); }
-        }
+            } catch(e) {}
+        };
     </script>
 </body>
 </html>
