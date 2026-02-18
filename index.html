@@ -3,113 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CraftBio | Digital Identity</title>
+    <title>CraftBio</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === 👑 SYSTEM CORE (تصميمك الأصلي - Premium Plus) === */
+        /* === 🎨 THEME: SOFT SKY (زي الصور بالظبط) === */
         :root {
-            --bg-base: #050810; 
-            --text-main: #ffffff; 
-            --text-muted: rgba(255, 255, 255, 0.7); 
-            --primary: #00d2ff;
-            --liquid-bg: rgba(20, 25, 40, 0.6); 
-            --liquid-border: rgba(255, 255, 255, 0.15);
-            --card-radius: 28px; 
-            --bg-image: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(58, 123, 213, 0.1) 0%, transparent 50%);
+            --bg-gradient: linear-gradient(180deg, #dbeafe 0%, #eff6ff 50%, #ffffff 100%); /* سماوي في أبيض */
+            --text-main: #0f172a; /* كحلي غامق للنصوص */
+            --text-muted: #64748b; /* رمادي للوصف */
+            --card-bg: #ffffff; /* كروت بيضاء */
+            --primary: #0ea5e9; /* أزرق سماوي للأيقونات */
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08); /* ضل ناعم */
+            --card-radius: 24px; /* حواف دائرية جداً */
             --font-family: 'Outfit', sans-serif;
         }
 
-        /* إعدادات الصفحة */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
-        body { 
-            min-height: 100vh; background-color: var(--bg-base); 
-            background-image: var(--bg-image); background-attachment: fixed;
-            color: var(--text-main); overflow-x: hidden; 
-        }
         
+        body { 
+            min-height: 100vh; 
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            overflow-x: hidden; 
+        }
+
         /* إخفاء السكرول بار */
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === 🌌 Floating Orbs (خلفية البريميوم المتحركة) === */
-        .floating-orbs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-        .orb { position: absolute; border-radius: 50%; opacity: 0.3; filter: blur(80px); animation: floatOrb 20s infinite linear; background: var(--primary); }
-        .orb:nth-child(1) { top: -10%; left: -10%; width: 50vw; height: 50vw; }
-        .orb:nth-child(2) { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #3a7bd5; animation-direction: reverse; }
-        @keyframes floatOrb { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(50px,50px) rotate(180deg); } 100% { transform: translate(0,0) rotate(360deg); } }
-
-        /* === 📱 LANDING VIEW (صفحة المتجر والموك-آب) === */
+        /* === 🏠 LANDING PAGE === */
         #landing-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        
+        .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; color: #1e293b; }
+        .hero-title span { color: var(--primary); }
         
         .phone-mockup { 
             width: 300px; height: 600px; border: 8px solid #1a1a1a; border-radius: 40px; 
-            background: #000; overflow: hidden; position: relative; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); margin-bottom: 30px;
-            transform: rotate(-3deg);
+            background: #fff; overflow: hidden; position: relative; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); margin-bottom: 30px;
+            transform: rotate(-2deg);
         }
         .phone-mockup iframe { width: 100%; height: 100%; border: none; }
         
-        .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
-        .hero-title span { color: var(--primary); }
-        .btn-cta { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; margin-top: 20px; display: inline-block;}
+        .btn-cta { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3); transition: 0.3s; }
+        .btn-cta:hover { transform: translateY(-3px); }
 
-        /* === 👤 PROFILE VIEW (صفحتك الشخصية) === */
-        #profile-view { display: none; width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 20px; flex-direction: column; gap: 20px; }
+        /* === 👤 PROFILE PAGE === */
+        #profile-view { display: none; width: 100%; max-width: 500px; margin: 0 auto; padding: 50px 20px; flex-direction: column; gap: 20px; }
         
-        .avatar { width: 115px; height: 115px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); margin: 0 auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .profile-info { text-align: center; margin-bottom: 10px; }
-        .profile-name { font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; }
-        .bio-text { color: var(--text-muted); margin-top: 5px; font-size: 15px; }
-        .bio-sub { color: var(--primary); font-weight: 600; margin-top: 5px; font-size: 14px; }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; margin: 0 auto; display: block; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        
+        .profile-info { text-align: center; margin-bottom: 15px; }
+        .profile-name { font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 15px; color: #0f172a; }
+        .bio-text { color: var(--text-muted); margin-top: 5px; font-size: 15px; font-weight: 500; }
+        .bio-sub { color: var(--primary); font-weight: 700; margin-top: 5px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* الكروت بتصميمك الأصلي */
+        /* الكروت (زي الصور بالظبط) */
         .link-card {
             display: flex; align-items: center; gap: 15px;
-            background: var(--liquid-bg); border: 1px solid var(--liquid-border);
-            padding: 18px; border-radius: var(--card-radius);
+            background: var(--card-bg); 
+            padding: 18px 24px; 
+            border-radius: var(--card-radius);
             text-decoration: none; color: var(--text-main);
-            transition: transform 0.2s; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.8);
         }
-        .link-card:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .link-icon { font-size: 24px; color: var(--primary); width: 30px; text-align: center; }
-        .link-title { font-weight: 600; font-size: 16px; }
-        .link-badge { background: #ff4757; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; position: absolute; top: -10px; right: 15px; }
+        .link-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); }
+        
+        .link-icon-bg { 
+            width: 48px; height: 48px; background: #e0f2fe; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: var(--primary); font-size: 22px; flex-shrink: 0;
+        }
 
-        /* Grid Layout */
-        .links-container { display: flex; flex-direction: column; gap: 15px; }
-        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .half-card { flex-direction: column; text-align: center; padding: 25px 10px; justify-content: center; }
-        .half-card .link-badge { right: auto; left: 50%; transform: translateX(-50%); top: -10px; }
+        .link-content { flex: 1; }
+        .link-title { font-weight: 700; font-size: 16px; color: #334155; }
+        .link-sub { font-size: 13px; color: #94a3b8; margin-top: 2px; }
+        
+        /* شارة التريند */
+        .link-badge { 
+            background: linear-gradient(135deg, #ff6b6b, #ee5253); 
+            color: white; padding: 4px 12px; border-radius: 20px; 
+            font-size: 11px; font-weight: 700; 
+            position: absolute; top: -10px; right: 20px; 
+            box-shadow: 0 4px 10px rgba(238, 82, 83, 0.4);
+        }
+
+        /* الشبكة (Grid) */
+        .links-container { display: flex; flex-direction: column; gap: 16px; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .half-card { flex-direction: column; text-align: center; padding: 30px 15px; justify-content: center; gap: 15px; }
+        .half-card .link-badge { right: auto; left: 50%; transform: translateX(-50%); top: -12px; }
 
         /* Social Icons */
-        .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
-        .social-btn { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: 50%; color: var(--text-main); font-size: 20px; text-decoration: none; transition: 0.3s; }
-        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+        .social-dock { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; background: white; padding: 15px; border-radius: 100px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-soft); }
+        .social-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #64748b; font-size: 20px; text-decoration: none; transition: 0.3s; background: #f1f5f9; }
+        .social-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
 
-        /* Wall Widget (Exclusive) */
-        .wall-widget { display: flex; background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; backdrop-filter: blur(12px); }
-        .wall-thumb { width: 70px; height: 100px; border-radius: 12px; object-fit: cover; }
-        .dl-btn { background: var(--primary); color: #000; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block; margin-top: 8px; }
+        /* Widget */
+        .wall-widget { display: flex; background: white; border-radius: var(--card-radius); padding: 15px; align-items: center; gap: 15px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+        .wall-thumb { width: 60px; height: 90px; border-radius: 12px; object-fit: cover; }
+        .dl-btn { background: #0f172a; color: white; padding: 8px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 13px; display: inline-block; margin-top: 8px; }
 
     </style>
 </head>
 <body>
 
-    <div class="floating-orbs"><div class="orb"></div><div class="orb"></div></div>
-
     <div id="landing-view">
-        <h1 class="hero-title">One Link.<br><span>Infinite Possibilities.</span></h1>
-        <p style="color:var(--text-muted); margin-bottom: 30px; font-size: 1.1rem;">Your ultimate digital identity.</p>
+        <h1 class="hero-title">One Link.<br><span>All You.</span></h1>
+        <p style="color:#64748b; margin-bottom: 30px;">Share everything you create in one simple link.</p>
         
         <div class="phone-mockup">
             <iframe src="?u=atdesign&embed=true"></iframe>
         </div>
 
         <a href="signup.html" class="btn-cta">Create Your Bio</a>
-        <a href="admin.html" style="margin-top:20px; display:block; color:white; opacity:0.6; text-decoration:none;">Login</a>
+        <a href="admin.html" style="margin-top:20px; display:block; color:#64748b; font-weight:600; text-decoration:none;">Login</a>
     </div>
 
     <div id="profile-view">
@@ -117,8 +131,8 @@
         
         <div class="profile-info">
             <div class="profile-name">
-                <span id="p_name">Loading...</span> 
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:18px;"></i>
+                <span id="p_name"></span> 
+                <i class="fa-solid fa-circle-check" style="color:#0ea5e9; font-size:20px;"></i>
             </div>
             <div class="bio-text" id="p_bio"></div>
             <div class="bio-sub" id="p_sub"></div>
@@ -127,8 +141,8 @@
         <div class="wall-widget" id="wallpaperWidget" style="display:none;">
             <img src="wallpapers/wallpaper1.png" class="wall-thumb">
             <div>
-                <h4 style="margin:0;">Wall of the Day</h4>
-                <p style="margin:4px 0 0; font-size:12px; opacity:0.7;">Exclusive 4K Wallpaper</p>
+                <h4 style="margin:0; color:#1e293b;">Wall of the Day</h4>
+                <p style="margin:4px 0 0; font-size:12px; color:#64748b;">Exclusive 4K Wallpaper</p>
                 <a href="#" download class="dl-btn">Download</a>
             </div>
         </div>
@@ -136,7 +150,7 @@
         <div id="links-container" class="links-container"></div>
         <div class="social-dock" id="social-container"></div>
         
-        <div style="text-align:center; margin-top:40px; font-size:12px; opacity:0.5;">Crafted by CraftBio</div>
+        <div style="text-align:center; margin-top:40px; font-size:12px; opacity:0.5; color:#64748b;">Crafted by CraftBio</div>
     </div>
 
     <script type="module">
@@ -155,7 +169,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 🟢 كود الفصل الجراحي (الأهم)
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('u');
         const isEmbed = urlParams.get('embed');
@@ -163,31 +176,22 @@
         const landingView = document.getElementById('landing-view');
         const profileView = document.getElementById('profile-view');
 
-        // 1. تحديد الصفحة المعروضة
         if (username) {
-            // ✅ لو في يوزر: امسح صفحة الهبوط فوراً من الوجود (عشان التداخل)
-            if(landingView) landingView.remove(); 
+            landingView.remove(); 
             profileView.style.display = 'flex';
-            
-            // لو جوه الموك-آب، نظف الصفحة عشان تبقى شفافة
             if(isEmbed) {
                 document.body.style.background = 'transparent';
-                document.querySelector('.floating-orbs').style.display = 'none';
                 profileView.style.padding = '20px 10px';
-                // إخفاء الفوتر في الموك-آب
-                document.querySelector('#profile-view > div:last-child').style.display = 'none';
+                document.querySelector('#profile-view > div:last-child').style.display = 'none'; // hide footer
             }
-            
             loadProfile(username);
         } else {
-            // ❌ لو مفيش يوزر (الصفحة الرئيسية): امسح البروفايل واعرض الهبوط
-            if(profileView) profileView.remove();
+            profileView.remove();
             landingView.style.display = 'flex';
         }
 
         async function loadProfile(user) {
             try {
-                // التعامل مع atdesign كـ master_data
                 let docId = (user === 'atdesign' || user === 'master_data') ? 'master_data' : user;
                 let colName = (docId === 'master_data') ? 'settings' : 'users';
                 
@@ -197,33 +201,29 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // Render Basic Info
                     document.getElementById('p_avatar').src = data.profile?.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
                     document.getElementById('p_name').innerText = data.profile?.name || "User";
                     document.getElementById('p_bio').innerText = data.profile?.bioMain || "";
                     document.getElementById('p_sub').innerText = data.profile?.bioSub || "";
 
-                    // Widget Logic (Show for atdesign only)
                     if(user === 'atdesign' || user === 'master_data') {
                         document.getElementById('wallpaperWidget').style.display = 'flex';
                     }
 
-                    // Render Links Logic (Full vs Half)
                     const container = document.getElementById('links-container');
                     if (data.links) {
-                        let currentRow = null; // للصفوف الثنائية
-
+                        let currentRow = null;
                         data.links.forEach((link, idx) => {
                             const isHalf = link.layout === 'half';
                             const badge = link.badge ? `<span class="link-badge">${link.badge}</span>` : '';
                             const chevron = !isHalf ? '<i class="fa-solid fa-chevron-right" style="font-size:12px; opacity:0.5;"></i>' : '';
-                            const subText = (!isHalf && link.subtext) ? `<div style="font-size:12px; opacity:0.7;">${link.subtext}</div>` : '';
+                            const subText = (!isHalf && link.subtext) ? `<div class="link-sub">${link.subtext}</div>` : '';
                             
                             const cardHtml = `
                                 <a href="${link.url}" target="_blank" class="link-card ${isHalf ? 'half-card' : ''}" onclick="track('${docId}', '${colName}', ${idx})">
                                     ${badge}
-                                    <i class="${link.icon} link-icon"></i>
-                                    <div style="flex:1;">
+                                    <div class="link-icon-bg"><i class="${link.icon}"></i></div>
+                                    <div class="link-content">
                                         <div class="link-title">${link.title}</div>
                                         ${subText}
                                     </div>
@@ -232,17 +232,14 @@
                             `;
 
                             if (isHalf) {
-                                // لو عنصر نصفي، نفتح له صف جديد لو مفيش
                                 if (!currentRow) {
                                     currentRow = document.createElement('div');
                                     currentRow.className = 'grid-row';
                                     container.appendChild(currentRow);
                                 }
                                 currentRow.innerHTML += cardHtml;
-                                // لو الصف اتملى (عنصرين)، نقفله
                                 if (currentRow.children.length >= 2) currentRow = null;
                             } else {
-                                // لو عنصر كامل، نقفل الصف القديم (لو كان مفتوح بـ 1 عنصر) ونضيف ده تحته
                                 currentRow = null; 
                                 const div = document.createElement('div');
                                 div.innerHTML = cardHtml;
@@ -251,20 +248,16 @@
                         });
                     }
 
-                    // Render Socials
                     const socialCont = document.getElementById('social-container');
                     if(data.socialLinks) {
                         data.socialLinks.forEach(s => {
                             socialCont.innerHTML += `<a href="${s.url}" target="_blank" class="social-btn"><i class="${s.icon}"></i></a>`;
                         });
                     }
-                } else {
-                    document.getElementById('p_name').innerText = "User not found";
                 }
             } catch (e) { console.error(e); }
         }
 
-        // Click Analytics
         window.track = async (id, col, idx) => {
             try {
                 const ref = doc(db, col, id);
