@@ -1,194 +1,166 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="default">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CraftBio | The Ultimate Link in Bio Tool</title>
-    <meta name="description" content="Create your stunning digital identity in seconds. One link to rule them all.">
-
+    <title>CraftBio</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === Core Variables === */
-        :root[data-theme="dark"] {
-            --bg-base: #050810; 
-            --bg-gradient-1: rgba(0, 210, 255, 0.15); 
-            --bg-gradient-2: rgba(58, 123, 213, 0.1);
-            --liquid-bg: rgba(20, 25, 40, 0.6); 
-            --liquid-border: rgba(255, 255, 255, 0.15); 
-            --text-main: #ffffff; 
-            --text-muted: rgba(255, 255, 255, 0.7); 
-            --primary: #00d2ff; 
-            --secondary: #3a7bd5;
+        /* === Themes Setup === */
+        
+        /* 1. Default Dark */
+        :root[data-theme="default"] {
+            --bg-base: #050810; --text-main: #fff; --text-muted: rgba(255,255,255,0.7); --primary: #00d2ff;
+            --liquid-bg: rgba(20, 25, 40, 0.6); --liquid-border: rgba(255, 255, 255, 0.15);
+            --card-radius: 28px; --btn-radius: 20px;
+            --bg-image: radial-gradient(circle at 10% 20%, rgba(0,210,255,0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(58,123,213,0.1) 0%, transparent 50%);
         }
 
+        /* 2. Light Mode */
         :root[data-theme="light"] {
-            --bg-base: #f0f4f8; 
-            --bg-gradient-1: rgba(0, 153, 255, 0.1); 
-            --bg-gradient-2: rgba(0, 210, 255, 0.2);
-            --liquid-bg: rgba(255, 255, 255, 0.8); 
-            --liquid-border: rgba(0, 0, 0, 0.1); 
-            --text-main: #0a0d14; 
-            --text-muted: #4a5568; 
-            --primary: #0066ff; 
-            --secondary: #00d2ff;
+            --bg-base: #f4f6f8; --text-main: #1a1a1a; --text-muted: #666; --primary: #007aff;
+            --liquid-bg: #ffffff; --liquid-border: rgba(0,0,0,0.05);
+            --card-radius: 28px; --btn-radius: 20px;
+            --bg-image: none;
+        }
+
+        /* 3. 💎 Liquid Glass (Ultra Transparency) */
+        :root[data-theme="glass"] {
+            --bg-base: #000; --text-main: #fff; --text-muted: #ddd; --primary: #00d2ff;
+            --liquid-bg: rgba(255, 255, 255, 0.05); --liquid-border: rgba(255, 255, 255, 0.2);
+            --card-radius: 20px; --btn-radius: 12px;
+            --bg-image: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* 4. 🧸 Fluffy (Soft, 3D, Pastel) */
+        :root[data-theme="fluffy"] {
+            --bg-base: #fff5f8; --text-main: #5d4e60; --text-muted: #9e8fa3; --primary: #ff8fa3;
+            --liquid-bg: #fff; --liquid-border: transparent;
+            --card-radius: 40px; --btn-radius: 30px;
+            --bg-image: none;
+            /* Special Shadow for Fluffy look */
+            --box-shadow: 10px 10px 30px #e6dce0, -10px -10px 30px #ffffff;
+        }
+
+        /* 5. 🧶 Woven (Texture & Warmth) */
+        :root[data-theme="woven"] {
+            --bg-base: #e8e0d5; --text-main: #4a3b32; --text-muted: #7d6b5d; --primary: #d35400;
+            --liquid-bg: #f4ece4; --liquid-border: #d6c6b3;
+            --card-radius: 8px; --btn-radius: 4px;
+            --bg-image: repeating-linear-gradient(45deg, #e0d4c5 0, #e0d4c5 1px, transparent 0, transparent 50%);
+            --box-shadow: 4px 4px 0px rgba(74, 59, 50, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         
-        /* 💡 كود إخفاء شريط السكرول المزعج */
+        body { 
+            min-height: 100vh; background-color: var(--bg-base); 
+            background-image: var(--bg-image); 
+            background-attachment: fixed; color: var(--text-main); overflow-x: hidden; transition: 0.5s; 
+        }
+
+        /* Scrollbar Hide */
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        body { min-height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 10% 20%, var(--bg-gradient-1) 0%, transparent 50%), radial-gradient(circle at 90% 80%, var(--bg-gradient-2) 0%, transparent 50%); background-attachment: fixed; color: var(--text-main); overflow-x: hidden; }
+        /* Floating Orbs (Visible only in Default/Glass) */
+        .floating-orbs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; display: none; }
+        :root[data-theme="default"] .floating-orbs, :root[data-theme="glass"] .floating-orbs { display: block; }
+        .orb { position: absolute; border-radius: 50%; opacity: 0.3; filter: blur(80px); animation: floatOrb 15s infinite linear; background: var(--primary); }
+        .orb:nth-child(1) { top: 10%; left: 10%; width: 300px; height: 300px; }
+        .orb:nth-child(2) { bottom: 10%; right: 10%; width: 250px; height: 250px; background: var(--secondary, #00f); }
+        @keyframes floatOrb { 0% { transform: translate(0,0); } 50% { transform: translate(50px,30px); } 100% { transform: translate(0,0); } }
 
-        /* Floating Orbs Animation */
-        .floating-orbs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; }
-        .orb { position: absolute; border-radius: 50%; opacity: 0.2; filter: blur(60px); animation: floatOrb 15s infinite linear; }
-        .orb:nth-child(1) { top: 10%; left: 10%; width: 300px; height: 300px; background: var(--primary); animation-duration: 25s; }
-        .orb:nth-child(2) { top: 60%; right: 10%; width: 250px; height: 250px; background: var(--secondary); animation-duration: 20s; animation-delay: -5s; }
-        .orb:nth-child(3) { bottom: 10%; left: 30%; width: 200px; height: 200px; background: var(--primary); animation-duration: 18s; animation-delay: -10s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(100px, 50px) rotate(180deg); } 100% { transform: translate(0, 0) rotate(360deg); } }
+        /* General UI */
+        .main-container { width: 100%; max-width: 480px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 24px; }
+        
+        .avatar-wrapper { width: 110px; height: 110px; margin: 0 auto; position: relative; }
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-base); }
+        
+        .profile-header { text-align: center; }
+        .profile-name { font-size: 26px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px;}
+        .profile-bio div:first-child { font-weight: 500; font-size: 16px; }
+        .profile-bio div:last-child { color: var(--primary); font-size: 14px; font-weight: 600; margin-top: 4px;}
+        
+        /* Links Styling based on Theme */
+        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .app-link { 
+            text-decoration: none; color: var(--text-main); 
+            background: var(--liquid-bg); border: 1px solid var(--liquid-border);
+            border-radius: var(--card-radius); padding: 18px; 
+            display: flex; align-items: center; gap: 12px; 
+            transition: 0.3s; position: relative; 
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Theme Specific Overrides */
+        :root[data-theme="fluffy"] .app-link { box-shadow: var(--box-shadow); border: none; }
+        :root[data-theme="woven"] .app-link { box-shadow: var(--box-shadow); border-bottom: 3px solid var(--liquid-border); }
+        :root[data-theme="glass"] .app-link { border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); }
 
-        /* === 1. Landing Page Styles === */
-        #landing-page { display: none; flex-direction: column; min-height: 100vh; position: relative; }
-        
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; width: 100%; position: absolute; top: 0; z-index: 10; }
-        .logo { font-size: 24px; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; margin-left: 20px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--primary); }
-        .btn-nav { background: var(--text-main); color: var(--bg-base) !important; padding: 10px 20px; border-radius: 50px; font-weight: 700 !important; }
-
-        .hero-section { display: flex; align-items: center; justify-content: space-between; padding: 120px 5% 50px; flex-wrap: wrap; gap: 40px; }
-        .hero-text { flex: 1; min-width: 300px; max-width: 600px; }
-        .hero-badge { background: rgba(0, 210, 255, 0.1); color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 20px; border: 1px solid rgba(0, 210, 255, 0.2); }
-        .hero-title { font-size: 64px; line-height: 1.1; font-weight: 700; margin-bottom: 20px; letter-spacing: -2px; }
-        .hero-title span { color: var(--primary); }
-        .hero-desc { font-size: 18px; color: var(--text-muted); line-height: 1.6; margin-bottom: 35px; max-width: 480px; }
-        
-        .cta-group { display: flex; gap: 15px; }
-        .btn-hero { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 16px 32px; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none; box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3); transition: transform 0.3s; display: inline-flex; align-items: center; gap: 10px; }
-        .btn-hero:hover { transform: translateY(-3px); }
-        .btn-outline { border: 1px solid var(--liquid-border); color: var(--text-main); background: rgba(255,255,255,0.05); padding: 16px 32px; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none; transition: 0.3s; }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--text-main); }
-
-        .hero-visual { flex: 1; display: flex; justify-content: center; position: relative; }
-        /* Samsung S24 Ultra Mockup Style - Improved */
-        .phone-mockup { width: 300px; height: 600px; border: 4px solid #2c2c2c; border-radius: 12px; overflow: hidden; position: relative; background: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform: rotate(-5deg) translateY(-20px); animation: float 6s ease-in-out infinite; }
-        .phone-mockup::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 1px solid #1a1a1a; border-radius: 10px; pointer-events: none; }
-        .phone-screen { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); border-radius: 8px; } 
-        .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: #000; border-radius: 50%; z-index: 5; }
-        
-        @keyframes float { 0% { transform: rotate(-5deg) translateY(0px); } 50% { transform: rotate(-5deg) translateY(-20px); } 100% { transform: rotate(-5deg) translateY(0px); } }
-
-        /* === 2. Profile Page Styles === */
-        #profile-page { display: none; justify-content: center; padding: 40px 20px; position: relative; }
-        .profile-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 24px; }
-        
-        .liquid-card { background: var(--liquid-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--liquid-border); border-radius: 28px; padding: 4px; transition: 0.5s; }
-        .avatar-wrapper { width: 110px; height: 110px; margin: 0 auto 15px; position: relative; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg-base); }
-        .profile-header { text-align: center; margin-bottom: 20px; }
-        .profile-name { font-size: 24px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px;}
-        .profile-bio { color: var(--text-muted); font-size: 14px; }
-        .verify-badge { width: 20px; fill: var(--primary); }
-        
-        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .app-link { text-decoration: none; color: var(--text-main); background: var(--liquid-bg); border: 1px solid var(--liquid-border); border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 12px; transition: 0.3s; position: relative; }
-        .app-link:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .app-link:hover { transform: translateY(-3px); }
         .full-width { grid-column: 1 / -1; }
-        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 20px 10px; }
-        .app-icon { font-size: 22px; color: var(--primary); }
-        .badge { position: absolute; top: -10px; right: 10px; background: #ff4757; color: white; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+        .half-width { flex-direction: column; text-align: center; justify-content: center; padding: 25px 10px; }
+        .app-icon { font-size: 24px; color: var(--primary); }
+        .badge { position: absolute; top: -10px; right: 10px; background: #ff4757; color: white; padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; }
         .half-width .badge { right: auto; left: 50%; transform: translateX(-50%); }
 
-        .wall-widget { display: flex; gap: 15px; padding: 15px; border-radius: 24px; background: var(--liquid-bg); border: 1px solid var(--liquid-border); margin-bottom: 15px; align-items: center; }
-        .wall-preview { width: 80px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
-        .wall-preview img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .watermark { text-align: center; margin-top: 30px; font-size: 12px; color: var(--text-muted); opacity: 0.6; }
-        .watermark a { color: var(--primary); text-decoration: none; }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 42px; }
-            .hero-section { flex-direction: column; text-align: center; padding-top: 100px; }
-            .hero-visual { display: none; } 
-            .navbar { position: relative; }
+        /* Social Icons */
+        .social-dock { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
+        .social-btn { 
+            width: 45px; height: 45px; border-radius: var(--btn-radius); 
+            display: flex; align-items: center; justify-content: center; 
+            background: var(--liquid-bg); color: var(--text-main); font-size: 20px; 
+            text-decoration: none; transition: 0.3s;
         }
+        :root[data-theme="fluffy"] .social-btn { box-shadow: var(--box-shadow); }
+        .social-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+
+        /* Landing Page (Simplified) */
+        #landing-page { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .hero-title { font-size: 40px; font-weight: 800; margin-bottom: 20px; }
+        .hero-title span { color: var(--primary); }
+        .btn-cta { background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 18px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4); transition: 0.3s; }
+        .btn-cta:hover { transform: scale(1.05); }
+
     </style>
 </head>
-
 <body>
 
     <div id="landing-page">
-        <div class="floating-orbs">
-            <div class="orb"></div>
-            <div class="orb"></div>
-            <div class="orb"></div>
+        <h1 class="hero-title">One Link.<br><span>Infinite Possibilities.</span></h1>
+        <p style="color:var(--text-muted); max-width: 400px; margin-bottom: 30px;">Join 100+ creators using CraftBio to share their content.</p>
+        <div class="phone-mockup" style="width: 280px; height: 550px; border: 8px solid #333; border-radius: 30px; overflow: hidden; background: #000; margin-bottom: 30px;">
+            <iframe src="?u=atdesign&embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
-
-        <nav class="navbar">
-            <div class="logo">CraftBio.</div>
-            <div class="nav-links">
-                <a href="admin.html">Login</a>
-                <a href="signup.html" class="btn-nav">Get Started</a>
-            </div>
-        </nav>
-
-        <section class="hero-section">
-            <div class="hero-text">
-                <span class="hero-badge">✨ New: Analytics & Themes</span>
-                <h1 class="hero-title">One Link to<br><span>Rule Them All.</span></h1>
-                <p class="hero-desc">Create a stunning digital identity for your Instagram, TikTok, and Twitter. Share everything you create, curate, and sell in one simple link.</p>
-                <div class="cta-group">
-                    <a href="signup.html" class="btn-hero"><i class="fa-solid fa-bolt"></i> Claim Your Link</a>
-                    <a href="?u=atdesign" class="btn-outline">View Demo</a>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="phone-mockup">
-                    <div class="phone-notch"></div>
-                    <div class="phone-screen">
-                        <iframe id="demo-frame" src="?u=atdesign&embed=true" style="width:100%; height:100%; border:none; background: #050810;" title="Demo Profile"></iframe>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <a href="signup.html" class="btn-cta">Create Yours Free</a>
+        <a href="admin.html" style="margin-top: 20px; color: var(--text-muted); text-decoration: none;">Login</a>
     </div>
 
-    <div id="profile-page">
-        <div class="profile-container">
-            <header class="profile-header">
-                <div class="avatar-wrapper">
-                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" id="renderAvatar" class="avatar">
-                </div>
-                <h1 class="profile-name">
-                    <span id="renderName">Loading...</span> 
-                    <svg class="verify-badge" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path></svg>
-                </h1>
-                <div class="profile-bio">
-                    <div id="renderBioMain" style="color: white; font-weight: 500;"></div>
-                    <div id="renderBioSub" style="color: var(--primary);"></div>
-                </div>
-            </header>
-
-            <div class="wall-widget" id="wallpaperWidget" style="display:none;">
-                <div class="wall-preview">
-                    <img id="wallSlide" src="wallpapers/wallpaper1.png" style="width:100%; height:100%; object-fit: cover;">
-                </div>
-                <div style="flex:1;">
-                    <h3 style="font-size:16px; margin-bottom:4px;">Daily Wallpaper</h3>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Exclusive for you.</p>
-                    <a href="#" download class="app-link" style="padding: 8px 15px; font-size:13px; justify-content:center;">Download</a>
-                </div>
+    <div id="profile-page" class="main-container" style="display:none;">
+        <div class="floating-orbs"><div class="orb"></div><div class="orb"></div></div>
+        
+        <header class="profile-header">
+            <div class="avatar-wrapper">
+                <img src="" id="renderAvatar" class="avatar">
             </div>
+            <h1 class="profile-name">
+                <span id="renderName">...</span> 
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--primary)"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.79-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.865 3.45-.06.31-.09.63-.09.95 0 2.21 1.71 4 3.918 4 .546 0 1.07-.12 1.55-.333C9.444 21.84 10.662 22.5 12 22.5s2.555-.66 3.208-1.783c.48.213 1.004.333 1.55.333 2.21 0 3.918-1.79 3.918-4 0-.32-.03-.64-.09-.95 1.125-.704 1.865-1.99 1.865-3.45zm-10.395 4.09c-.27.27-.645.42-.995.42s-.724-.15-.994-.42l-2.73-2.73c-.55-.55-.55-1.44 0-1.99.55-.55 1.44-.55 1.99 0l1.735 1.734 4.15-4.148c.55-.55 1.44-.55 1.99 0 .55.55.55 1.44 0 1.99l-5.146 5.145z"></path></svg>
+            </h1>
+            <div class="profile-bio">
+                <div id="renderBioMain"></div>
+                <div id="renderBioSub"></div>
+            </div>
+        </header>
 
-            <div class="links-grid" id="renderLinksContainer"></div>
-            <div id="renderSocialContainer" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;"></div>
-
-            <div class="watermark">Crafted by <a href="index.html">CraftBio</a></div>
+        <div class="links-grid" id="renderLinksContainer"></div>
+        <div class="social-dock" id="renderSocialContainer"></div>
+        
+        <div style="text-align:center; margin-top:30px; font-size:12px; color:var(--text-muted);">
+            <a href="index.html" style="color:var(--text-main); text-decoration:none; font-weight:600;">Create your CraftBio</a>
         </div>
     </div>
 
@@ -215,67 +187,41 @@
         if (username) {
             document.getElementById('profile-page').style.display = 'flex';
             if(isEmbed) {
-                document.body.style.backgroundColor = "transparent";
-                document.body.style.backgroundImage = "none";
-                document.querySelector('.watermark').style.display = 'none';
-                startAutoScroll();
+                // If inside mockup, remove padding/bg to fit nicely
+                document.body.style.background = "transparent";
+                document.querySelector('.main-container').style.padding = "20px 10px";
             }
             fetchAndRenderData(username);
         } else {
             document.getElementById('landing-page').style.display = 'flex';
         }
 
-        // 💡 Auto-Scroll Logic
-        function startAutoScroll() {
-            const profilePage = document.getElementById('profile-page');
-            let scrollAmount = 0;
-            const scrollSpeed = 0.5;
-            const scrollDelay = 2000;
-
-            function scroll() {
-                scrollAmount += scrollSpeed;
-                if (scrollAmount >= profilePage.scrollHeight - window.innerHeight) {
-                    setTimeout(() => {
-                        scrollAmount = 0;
-                        window.scrollTo(0, 0);
-                        setTimeout(scroll, scrollDelay);
-                    }, scrollDelay);
-                } else {
-                    window.scrollTo(0, scrollAmount);
-                    requestAnimationFrame(scroll);
-                }
-            }
-            setTimeout(scroll, scrollDelay);
-        }
-
         async function fetchAndRenderData(user) {
             try {
-                let docRef;
-                if (user === 'atdesign') {
-                    docRef = doc(db, "settings", "master_data");
-                } else {
-                    docRef = doc(db, "users", user);
-                }
-
+                let docRef = (user === 'atdesign') ? doc(db, "settings", "master_data") : doc(db, "users", user);
                 const docSnap = await getDoc(docRef);
                 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     
+                    // 🎨 Apply Theme
+                    if(data.profile && data.profile.theme) {
+                        document.documentElement.setAttribute('data-theme', data.profile.theme);
+                    }
+
                     if(data.profile) {
-                        if(data.profile.avatar) document.getElementById('renderAvatar').src = data.profile.avatar;
-                        if(data.profile.name) document.getElementById('renderName').firstChild.textContent = data.profile.name;
-                        if(data.profile.bioMain) document.getElementById('renderBioMain').innerText = data.profile.bioMain;
-                        if(data.profile.bioSub) document.getElementById('renderBioSub').innerText = data.profile.bioSub;
+                        document.getElementById('renderAvatar').src = data.profile.avatar || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+                        document.getElementById('renderName').textContent = data.profile.name;
+                        document.getElementById('renderBioMain').innerText = data.profile.bioMain;
+                        document.getElementById('renderBioSub').innerText = data.profile.bioSub;
                     }
 
                     const linksContainer = document.getElementById('renderLinksContainer');
-                    if(data.links && data.links.length > 0) {
-                        linksContainer.innerHTML = ''; 
+                    if(data.links) {
+                        linksContainer.innerHTML = '';
                         data.links.forEach((link, index) => {
                             const badgeHTML = link.badge ? `<div class="badge">${link.badge}</div>` : '';
                             const layoutClass = (link.layout === 'full') ? 'full-width' : 'half-width';
-                            
                             linksContainer.innerHTML += `
                                 <a href="${link.url}" class="app-link ${layoutClass}" target="_blank" onclick="trackClick('${user}', ${index})">
                                     ${badgeHTML}
@@ -289,27 +235,17 @@
                     if(data.socialLinks) {
                         socialContainer.innerHTML = '';
                         data.socialLinks.forEach(social => {
-                            socialContainer.innerHTML += `<a href="${social.url}" target="_blank" style="color:white; font-size:24px;"><i class="${social.icon}"></i></a>`;
+                            socialContainer.innerHTML += `<a href="${social.url}" target="_blank" class="social-btn"><i class="${social.icon}"></i></a>`;
                         });
                     }
-
-                    if(user === 'atdesign' || user === 'master_data') {
-                        document.getElementById('wallpaperWidget').style.display = 'flex';
-                    }
-
-                } else {
-                    document.getElementById('renderName').innerText = "User not found";
                 }
-            } catch (error) { console.error("Error:", error); }
+            } catch (error) { console.error(error); }
         }
 
         window.trackClick = async function(user, index) {
             if(isEmbed) return;
             try {
-                let docRef;
-                if (user === 'atdesign') docRef = doc(db, "settings", "master_data");
-                else docRef = doc(db, "users", user);
-
+                let docRef = (user === 'atdesign') ? doc(db, "settings", "master_data") : doc(db, "users", user);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
